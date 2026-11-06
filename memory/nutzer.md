@@ -11,3 +11,13 @@
   2. Software-/KI-Tool-Tutorials, 3. Bildungs-/Business-Dokus), Affiliate vor Werbung,
   Langform statt Shorts (YPP ab 01.02.2027: 8.000 Std.).
   Offen: Hat der Nutzer Finanz-Fachwissen? Welche Nische wird gewählt? Zeit/Budget pro Woche?
+
+## Entscheidung Nische (2026-11-06)
+- Gewählt: **History / Doku / True (Crime) History / Fakten-History**.
+- Vorbild-Kanäle: Extra History, Historically (@HeyHistorically), Build A Better You, Mapfusion.
+- Analyse: `dokumente/2026-11-06-analyse-history-kanaele.md` (Rohdaten in `dokumente/daten/2026-11-06-history-kanaele/`).
+- Kern: Story statt Liste, Humor, Serien, Shorts für Abos + lange „Die GANZE Geschichte von …“-Videos fürs Geld, „[Ohne KI]“ als Markenversprechen.
+- Offen: Sprache (Deutsch?), Visueller Stil, Zeit/Budget pro Woche.
+
+## Technik-Notiz
+- `yt-dlp` funktioniert hier für Metadaten und Untertitel; Videostreams sind gesperrt.
