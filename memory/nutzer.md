@@ -35,3 +35,4 @@
 - 2026-11-06 Wunsch: auf Kleinigkeiten achten – jedes genannte Detail bekommt Effekt/Emoji/Szene, „richtig unterhaltsam“ → emoji/count-Elemente + auto_emoji (Playbook §4b).
 - 2026-11-06 Korrektur: **KEINE Emojis** im Video. Details stattdessen mit ernsten Effekten (count, Bildwechsel beim Wort, dialog, stamp, mark).
 - 2026-11-06: **History-Fakten** als zweite Nischen-Säule hinzugefügt (Fakten-Shorts neben Story-Dokus). Formate A/B/C im Playbook §2a.
+- 2026-11-06: Ablauf bei „generiere“ als Schrittliste gespeichert: `playbook/GENERIERE.md`.
