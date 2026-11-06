@@ -369,7 +369,141 @@ def draw_spotlight(pen, el, W, H, k, t, pal):
     pen.img.paste(Image.new("RGB", (W, H), (0, 0, 0)), (0, 0), a)
 
 
-DRAWERS_FX = {"stamp": draw_stamp, "embers": draw_embers, "fog": draw_fog, "spotlight": draw_spotlight}
+def draw_dialog(pen, el, W, H, k, t, pal):
+    """Dialogfenster: Porträt-Kreis, Name, Text tippt sich ein. Für Zitate und Emotionen.
+    {type: dialog, who: "Ein Bauer", text: "…", src: assets/bild.jpg, crop: [cx, cy, zoom], emotion: angry,
+     y: 0.56, note: "nachgestellt"}"""
+    s = pen.s
+    since = el.get("_since", 9)
+    p = min(1, since / 0.22)
+    emo = EMOTION.get(el.get("emotion", "neutral"), EMOTION["neutral"])
+    txt = el["text"]
+    n = int(max(0, since - 0.15) / el.get("speed", DIALOG_SPEED))
+    shown = txt[:n]
+    shake = 0
+    if emo["shake"] and since < 0.5:
+        shake = math.sin(since * 70) * 8 * s * (1 - since / 0.5)
+    lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    bx0, bx1 = W * 0.06, W * 0.94
+    y0 = el.get("y", 0.56) * H + (1 - ease_out(p)) * 50 * s
+    f = vfont(F_SANS, el.get("size", 46) * s, "SemiBold")
+    fn = vfont(F_SERIF, 40 * s, "Bold")
+    has_img = bool(el.get("src"))
+    tx0 = bx0 + (190 * s if has_img else 40 * s)
+    maxw = bx1 - tx0 - 36 * s
+    # Zeilenumbruch auf den kompletten Text, damit nichts springt
+    lines, cur = [], ""
+    for w in txt.split():
+        test = (cur + " " + w).strip()
+        if d.textlength(test, font=f) > maxw and cur:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = test
+    lines.append(cur)
+    bh = max(170 * s if has_img else 0, 74 * s + len(lines) * f.size * 1.25 + 30 * s)
+    y0 += shake
+    x0 = bx0 + shake * 0.6
+    d.rounded_rectangle((x0, y0, bx1 + shake * 0.6, y0 + bh), radius=18 * s, fill=(12, 10, 10, int(205 * p)),
+                        outline=emo["color"] + (int(255 * p),), width=max(2, int(4 * s)))
+    # Name-Etikett
+    who = el.get("who", "").upper()
+    nw = d.textlength(who, font=fn) + 40 * s
+    d.rectangle((tx0 - 10 * s, y0 - 26 * s, tx0 - 10 * s + nw, y0 + 26 * s), fill=emo["color"] + (int(255 * p),))
+    d.text((tx0 + 10 * s, y0 - 22 * s), who, font=fn, fill=(15, 12, 10, int(255 * p)))
+    if el.get("note"):
+        fs = vfont(F_SANS, 24 * s, "Medium")
+        d.text((bx1 - d.textlength(el["note"], font=fs) - 24 * s, y0 + bh - 38 * s), el["note"], font=fs,
+               fill=(200, 190, 170, int(170 * p)))
+    # Text Zeile für Zeile tippen
+    yy = y0 + 48 * s
+    left = len(shown)
+    for ln in lines:
+        part = ln[:max(0, left)]
+        left -= len(ln) + 1
+        d.text((tx0, yy), part, font=f, fill=(245, 238, 225, int(255 * p)))
+        yy += f.size * 1.25
+    pen.img.paste(lay, (0, 0), lay)
+    if has_img:   # Porträt im Kreis
+        r = int(70 * s)
+        im = portrait_circle(el["src_abs"], tuple(el.get("crop", [0.5, 0.3, 2.0])), r)
+        pen.img.paste(im, (int(x0 + 36 * s), int(y0 + bh / 2 - r)), im)
+        dd = ImageDraw.Draw(pen.img)
+        dd.ellipse((x0 + 36 * s, y0 + bh / 2 - r, x0 + 36 * s + 2 * r, y0 + bh / 2 + r), outline=emo["color"],
+                   width=max(2, int(4 * s)))
+
+
+DIALOG_SPEED = 0.035
+EMOTION = {
+    "neutral": dict(color=GOLD, shake=False),
+    "angry": dict(color=(190, 40, 30), shake=True),
+    "fear": dict(color=(120, 150, 200), shake=True),
+    "sad": dict(color=(140, 140, 150), shake=False),
+    "proud": dict(color=(222, 186, 90), shake=False),
+    "sly": dict(color=(120, 170, 110), shake=False),
+}
+
+
+@lru_cache(maxsize=16)
+def portrait_circle(path, crop, r):
+    im = load(path)
+    cx, cy, z = crop
+    side = min(im.width, im.height) / z
+    box = (cx * im.width - side / 2, cy * im.height - side / 2, cx * im.width + side / 2, cy * im.height + side / 2)
+    sq = im.resize((2 * r, 2 * r), Image.BILINEAR, box=box).convert("RGBA")
+    mask = Image.new("L", (2 * r, 2 * r), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, 2 * r - 1, 2 * r - 1), fill=255)
+    sq.putalpha(mask)
+    return sq
+
+
+def draw_teaser(pen, el, W, H, k, t, pal):
+    """Neugier-Leiste oben: verspricht, was noch kommt (offene Schleife). {type: teaser, text: "…", until: 6}"""
+    s = pen.s
+    since = el.get("_since", 9)
+    p = min(1, since / 0.3)
+    lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    f = vfont(F_SANS, el.get("size", 38) * s, "Bold")
+    txt = el["text"].upper()
+    tw = d.textlength(txt, font=f)
+    y = el.get("y", 0.2) * H
+    x = W / 2 - tw / 2
+    d.rounded_rectangle((x - 60 * s, y - 16 * s, x + tw + 30 * s, y + f.size + 18 * s), radius=30 * s,
+                        fill=(0, 0, 0, int(170 * p)), outline=GOLD + (int(220 * p),), width=max(1, int(2 * s)))
+    pulse = 0.5 + 0.5 * math.sin(t * 6)
+    r = 9 * s
+    d.ellipse((x - 38 * s - r, y + f.size / 2 - r + 4 * s, x - 38 * s + r, y + f.size / 2 + r + 4 * s),
+              fill=(210, 40, 30, int(255 * p * (0.4 + 0.6 * pulse))))
+    d.text((x, y), txt, font=f, fill=(245, 238, 225, int(255 * p)))
+    pen.img.paste(lay, (0, 0), lay)
+
+
+def draw_bars(pen, el, W, H, k, t, pal):
+    """Kino-Balken oben/unten fahren ein (dramatische Momente)."""
+    since = el.get("_since", 9)
+    h = int(H * el.get("size", 0.1) * ease_out(since / 0.5))
+    d = ImageDraw.Draw(pen.img)
+    d.rectangle((0, 0, W, h), fill=(0, 0, 0))
+    d.rectangle((0, H - h, W, H), fill=(0, 0, 0))
+
+
+def draw_counter(pen, el, W, H, k, t, pal):
+    """Fall-Zähler für Serien: "FALL 1 / 3" oben rechts."""
+    s = pen.s
+    f = vfont(F_SERIF, el.get("size", 44) * s, "Bold")
+    d = ImageDraw.Draw(pen.img)
+    txt = el["text"].upper()
+    tw = d.textlength(txt, font=f)
+    x, y = W - tw - 60 * s, el.get("y", 0.05) * H
+    d.rectangle((x - 20 * s, y - 10 * s, x + tw + 20 * s, y + f.size * 1.3), fill=(10, 10, 12))
+    d.rectangle((x - 20 * s, y - 10 * s, x - 14 * s, y + f.size * 1.3), fill=GOLD)
+    d.text((x, y), txt, font=f, fill=(245, 238, 225))
+
+
+DRAWERS_FX = {"dialog": draw_dialog, "teaser": draw_teaser, "bars": draw_bars, "counter": draw_counter,
+              "stamp": draw_stamp, "embers": draw_embers, "fog": draw_fog, "spotlight": draw_spotlight}
 
 
 # ------------------------------------------------------------------ Nachbearbeitung pro Bild
@@ -461,31 +595,63 @@ DRAWERS = {"title": draw_title, "date": draw_date, "lower": draw_lower, "mark": 
 _grade_cache = {}
 
 
-def grade(img, t, strength=1.0, warm=True, flicker=0.0):
+# Farb-Stimmungen pro Szene (mood:). Werte: Sättigung, Kontrast, Helligkeit, Lichter-RGB, Schatten-RGB, Vignette
+MOODS = {
+    "cinematic": dict(sat=0.86, con=1.16, bri=-4, hi=(12, 4, -8), lo=(-6, 2, 14), vig=0.55),    # Teal & Orange
+    "warm":      dict(sat=0.92, con=1.12, bri=0, hi=(18, 8, -10), lo=(4, 0, 4), vig=0.5),
+    "gold":      dict(sat=0.95, con=1.18, bri=2, hi=(24, 14, -14), lo=(6, 0, -4), vig=0.55),       # Triumph, Macht
+    "cold":      dict(sat=0.62, con=1.14, bri=-8, hi=(-6, 4, 14), lo=(-10, 0, 18), vig=0.62),      # Kälte, Distanz
+    "night":     dict(sat=0.55, con=1.2, bri=-20, hi=(-8, 2, 18), lo=(-14, -4, 22), vig=0.72),     # Nacht, Heimlich
+    "danger":    dict(sat=0.9, con=1.26, bri=-8, hi=(26, -4, -12), lo=(18, -8, -6), vig=0.7),      # Gefahr, Wut
+    "sad":       dict(sat=0.45, con=1.06, bri=-6, hi=(0, 2, 6), lo=(-4, 0, 10), vig=0.6),          # Trauer, Not
+    "mystery":   dict(sat=0.7, con=1.18, bri=-10, hi=(-4, 10, 4), lo=(-10, 6, 12), vig=0.68),      # Rätsel
+}
+
+
+def grade(img, t, strength=1.0, warm=True, flicker=0.0, mood="cinematic", bloom=0.0):
     W, H = img.size
     key = (W, H)
     if key not in _grade_cache:
         yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-        v = 1 - 0.55 * (((xx - W / 2) / (W * 0.75)) ** 2 + ((yy - H / 2) / (H * 0.7)) ** 2)
-        vign = np.clip(v, 0.25, 1)[..., None]
+        r2 = ((xx - W / 2) / (W * 0.75)) ** 2 + ((yy - H / 2) / (H * 0.7)) ** 2
         rng = np.random.default_rng(5)
         grains = [rng.normal(0, 7, (H // 2, W // 2)).astype(np.float32) for _ in range(6)]
         grains = [np.kron(g, np.ones((2, 2), np.float32))[:H, :W][..., None] for g in grains]
-        _grade_cache[key] = (vign, grains)
-    vign, grains = _grade_cache[key]
+        _grade_cache[key] = (r2[..., None], grains)
+    r2, grains = _grade_cache[key]
+    m = MOODS.get(mood, MOODS["cinematic"])
     a = np.asarray(img).astype(np.float32)
     gray = a.mean(axis=2, keepdims=True)
-    a = gray + (a - gray) * (1 - 0.18 * strength)            # leicht entsättigt
-    a = (a - 128) * (1 + 0.12 * strength) + 122               # mehr Kontrast, etwas dunkler
+    a = gray + (a - gray) * (1 - (1 - m["sat"]) * strength)
+    # S-Kurve: tiefe Schatten, leuchtende Lichter
+    x = np.clip(a / 255.0, 0, 1)
+    sc = x * x * (3 - 2 * x)
+    k = (m["con"] - 1) * 2.2 * strength
+    a = (x + (sc - x) * k) * 255 + m["bri"] * strength
     if warm:
-        lum = gray / 255.0
-        a[..., 0] += 10 * lum[..., 0] * strength               # Lichter warm
-        a[..., 2] += 12 * (1 - lum[..., 0]) * strength          # Schatten kühl
-        a[..., 2] -= 6 * lum[..., 0] * strength
+        lum = np.clip(gray / 255.0, 0, 1)
+        a += lum * np.array(m["hi"], np.float32) * strength + (1 - lum) * np.array(m["lo"], np.float32) * strength
+    if bloom:   # Glühen der hellen Stellen (auf kleinem Bild gerechnet = schnell)
+        small = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).resize((W // 6, H // 6), Image.BILINEAR)
+        sm = np.asarray(small, np.float32)
+        sm = np.clip(sm - 170, 0, None) * 1.6
+        bl = Image.fromarray(sm.clip(0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(6)).resize((W, H), Image.BILINEAR)
+        a += np.asarray(bl, np.float32) * bloom
     if flicker:
         a = a * (1 + flicker * (math.sin(t * 37.0) * 0.5 + math.sin(t * 13.3 + 1) * 0.5))
+    vign = np.clip(1 - m["vig"] * r2, 0.2, 1)
     a = a * vign + grains[int(t * 24) % len(grains)] * strength
     return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+
+
+def blur_fast(img, radius):
+    """Weichzeichner über verkleinertes Bild (für Blur-Reveal)."""
+    if radius < 0.5:
+        return img
+    W, H = img.size
+    f = 4
+    sm = img.resize((W // f, H // f), Image.BILINEAR).filter(ImageFilter.GaussianBlur(radius / f))
+    return sm.resize((W, H), Image.BILINEAR)
 
 
 def captions(img, words_chunk, local, W, H, s, y_rel, hl):

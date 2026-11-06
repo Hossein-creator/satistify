@@ -25,8 +25,10 @@ Quellen:
 - Literatur: Kurt Winkler (Hrsg.): König & Kartoffel. Friedrich der Große und die preußischen Tartuffoli, 2012
 
 Bildnachweise (Wikimedia Commons):
+- (Thaler) Showing Frederick the Great – unbekannt – Public domain (CC0, The Met Open Access) – https://www.metmuseum.org/art/collection/search/33004
 - Friedrich der Große (1781 or 1786) - Google Art Project.jpg – Anton Graff – Public domain – https://commons.wikimedia.org/wiki/File:Friedrich_der_Gro%C3%9Fe_(1781_or_1786)_-_Google_Art_Project.jpg
 - Jean-François Millet - Potato Planters - Google Art Project.jpg – Jean-François Millet – Public domain – https://commons.wikimedia.org/wiki/File:Jean-Fran%C3%A7ois_Millet_-_Potato_Planters_-_Google_Art_Project.jpg
+-  Showing Frederick the Great – unbekannt – Public domain (CC0, The Met Open Access) – https://www.metmuseum.org/art/collection/search/33006
 - Robert Warthmüller - Der König überall (1886).jpg – Robert Warthmüller – Public domain – https://commons.wikimedia.org/wiki/File:Robert_Warthm%C3%BCller_-_Der_K%C3%B6nig_%C3%BCberall_(1886).jpg
 - Van Gogh - Die Kartoffelesser.jpeg – Vincent van Gogh – Public domain – https://commons.wikimedia.org/wiki/File:Van_Gogh_-_Die_Kartoffelesser.jpeg
 ```

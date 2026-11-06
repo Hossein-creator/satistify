@@ -85,6 +85,15 @@ Details: `dokumente/2026-11-06-analyse-kanaele-2.md`
 - **Ton:** um −14 LUFS, True Peak −1,5 dB. `render.py` normalisiert automatisch.
 - **Stimme:** Die eingebaute „Thorsten“-Stimme (CC0) ist nur ein **Entwurf**. Für den Upload besser die **eigene Stimme** über `aufnahme/szene_XX.wav`, siehe `output/aufnahme-skript.md` (menschlicher, sicherer bei der „inauthentic content“-Regel) oder eine hochwertige Sprecherstimme per API. Die englische Piper-Stimme „Ryan“ ist **nicht kommerziell** nutzbar (CC BY-NC-SA).
 
+## 4b. Spannung bis zum Ende (Regel vom 06.11.2026, Nutzerwunsch)
+- **Mehr Bilder, mehr B-Roll:** Bildwechsel alle 1,5–3 s. Pro Szene `slides:` mit 2–3 Bildern (verschiedene Ausschnitte, Objekte, Münzen, Karten). Eintritt wechselt automatisch: `slide`, `zoom`, `fade`.
+- **Bildquellen:** Wikimedia Commons (`commons.py`), **The Met Open Access** (`collectionapi.metmuseum.org/public/collection/v1.1/search?isPublicDomain=true&q=…`, CC0, gut für Objekte wie Münzen und Medaillen). Wikimedia drosselt stark, deshalb Met parallel nutzen.
+- **Neugier-Leiste** (`teaser`) in Szene 2: verspricht, was am Ende kommt („Am Ende: …“). Das Versprechen wird in der vorletzten Szene eingelöst.
+- **Blur-Reveal** (`reveal_word:` am Foto): Das Bild bleibt unscharf, bis das Schlüsselwort fällt.
+- **Dialogfenster** (`dialog`) für Emotionen: Porträt im Kreis, Name, Text tippt sich ein. `emotion: angry | fear | sad | proud | sly` ändert Farbe, Wackeln und Ton. Erfundene Sätze bekommen `note: "nachgestellt"`, Sprichwörter `note: "Sprichwort"`. Echte Zitate nur geprüft.
+- **Farbstimmung pro Szene** (`mood:`): `gold` (Macht, Hook), `sad` (Not), `warm`, `mystery` (Wende), `danger` (Gefahr), `night`, `cold` (Enttäuschung, Mythos-Bruch), Grundton `cinematic` (Teal & Orange). Dazu `bloom` (Glühen).
+- **Kino-Balken** (`bars`) im spannenden Mittelteil, **Fall-Zähler** (`counter`) für Serien („Fall 1/3“).
+
 ## 4a. Thema → Musik, Figuren, Bilder (Pflicht für jedes Video)
 Vor dem Skript wird `era:` in der video.yaml festgelegt. Danach richten sich Musik, Bilder und Figuren.
 

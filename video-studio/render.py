@@ -206,6 +206,27 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
         sc["_end"] = t + vd + sc.get("pause", 0.22)
         sc["_words"] = word_timings(sc["text"], vd)
         t = sc["_end"]
+        if sc.get("slides") and not sc.get("_slides_done"):
+            # B-Roll: mehrere Bilder pro Szene, gleichmäßig verteilt, Übergänge abwechselnd
+            sl = sc["slides"]
+            span = vd + sc.get("pause", 0.22)
+            enters = sc.get("slide_enter", ["slide", "zoom", "fade"])
+            ph = []
+            for k, item in enumerate(sl):
+                item = dict(item) if isinstance(item, dict) else {"src": item}
+                item.setdefault("type", "photo")
+                item.setdefault("at", round(k * span / len(sl), 3))
+                item.setdefault("enter", enters[(k - 1) % len(enters)] if k else "fade")
+                ph.append(item)
+            sc["visual"] = ph + [e for e in sc.get("visual", []) if e.get("type") != "photo"]
+            sc["_slides_done"] = True
+        for el in sc.get("visual", []):
+            if el.get("src") and el["type"] == "dialog":
+                el["src_abs"] = os.path.join(base_dir, el["src"])
+            if "reveal_word" in el:
+                key = el["reveal_word"].lower()
+                w = next((w for w in sc["_words"] if key in w[0].lower()), None)
+                el["_reveal"] = w[1] if w else 0.0
         for j, el in enumerate(sc.get("visual", [])):
             if "at_word" in el:
                 key = el["at_word"].lower()
@@ -309,19 +330,32 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
         for ph in photos:
             ph["_t"] = t
             ph["_handheld"] = ph.get("handheld", sc.get("handheld", spec.get("handheld", 0.7)))
-        for idx, ph in enumerate(photos[-2:]):
+        def shot(ph):
             st = max(0.0, ph["_at"])
-            dur_ph = sc["_end"] - sc["_start"] - st + 0.4
-            if idx == 1 or len(photos) == 1:
-                fade = 1.0 if ph["_at"] < 0 or len(photos) == 1 else min(1, (local - ph["_at"]) / 0.35)
-                if fade < 1:
-                    lay = Image.new("RGB", (W, H))
-                    doku.draw_photo(lay, ph, W, H, local - st, dur_ph, base_dir)
-                    img = Image.blend(img, lay, fade)
-                else:
-                    doku.draw_photo(img, ph, W, H, local - st, dur_ph, base_dir)
-            else:
-                doku.draw_photo(img, ph, W, H, local - st, dur_ph, base_dir)
+            lay = Image.new("RGB", (W, H), (8, 8, 10))
+            doku.draw_photo(lay, ph, W, H, local - st, sc["_end"] - sc["_start"] - st + 0.4, base_dir)
+            if "_reveal" in ph:   # unscharf bis zum Schlüsselwort -> Neugier
+                q = (local - ph["_reveal"]) / 0.45
+                if q < 1:
+                    lay = doku.blur_fast(lay, 26 * s * (1 - max(0, q)) ** 2)
+                    if q < 0:
+                        lay = Image.blend(lay, Image.new("RGB", (W, H), (0, 0, 0)), 0.35)
+            return lay
+        if photos:
+            cur = photos[-1]
+            img = shot(cur)
+            if len(photos) > 1 and cur["_at"] >= 0:
+                q = (local - cur["_at"]) / 0.32
+                if q < 1:
+                    prev = shot(photos[-2])
+                    enter = cur.get("enter", "fade")
+                    if enter == "slide":
+                        img = doku.whip(prev, img, q)
+                    elif enter == "zoom":
+                        pz = prev.resize((W, H), Image.BILINEAR, box=(W * q * 0.12, H * q * 0.12, W * (1 - q * 0.12), H * (1 - q * 0.12)))
+                        img = Image.blend(doku.zoom_blur(pz, 0.1), doku.zoom_blur(img, 0.1 * (1 - q)), doku.ease(q))
+                    elif enter != "cut":
+                        img = Image.blend(prev, img, doku.ease(q))
     else:
         pal_name = sc.get("bg", spec.get("bg", "sky"))
         pal = palette(pal_name)
@@ -384,7 +418,8 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
         cy = min(max(fy * H + oy, ch / 2), H - ch / 2)
         img = img.resize((W, H), Image.BILINEAR, box=(cx - cw / 2, cy - ch / 2, cx + cw / 2, cy + ch / 2))
     if doku_style:
-        img = doku.grade(img, t, spec.get("grade", 1.0), flicker=spec.get("flicker", 0.025))
+        img = doku.grade(img, t, spec.get("grade", 1.0), flicker=spec.get("flicker", 0.025),
+                         mood=sc.get("mood", spec.get("mood", "cinematic")), bloom=spec.get("bloom", 0.35))
         if punch > 0.01:
             img = doku.zoom_blur(img, punch * 0.6)
             img = doku.chroma(img, punch * 70 * s)
@@ -518,6 +553,16 @@ def mix_audio(spec, scenes, total, base_dir, build_dir, wav_path, music_override
             at = max(0.0, el["_at"])
             if el["type"] == "stamp":
                 add(fx, sfx("boom"), sc["_start"] + at, 0.55)
+                continue
+            if el["type"] == "dialog":
+                add(fx, sfx("pop"), sc["_start"] + at, 0.12)
+                for c in range(0, len(el["text"]), 3):
+                    add(fx, type_ticks(), sc["_start"] + at + 0.15 + c * doku.DIALOG_SPEED, 0.05)
+                if el.get("emotion") in ("angry", "fear"):
+                    add(fx, sfx("hit"), sc["_start"] + at, 0.25)
+                continue
+            if el["type"] == "photo" and el.get("enter") in ("slide", "zoom") and el["_at"] > 0:
+                add(fx, sfx("whoosh"), sc["_start"] + at - 0.1, 0.12)
                 continue
             if el["type"] == "date" and el.get("typewriter", True) and el["_at"] >= 0:
                 for c in range(len(el["text"])):
