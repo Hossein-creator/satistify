@@ -28,6 +28,7 @@ sys.path.insert(0, HERE)
 import doodle  # noqa: E402
 import cartoon  # noqa: E402
 import doku  # noqa: E402
+import music as score_music  # noqa: E402
 
 DARK_BGS = {"night", "dramatic", "palace", "throne", "red"}
 ROLE_BY_PROP = [("crown", "king"), ("tricorn", "soldier"), ("farmer", "farmer"), ("wig", "noble"), ("helmet", "knight")]
@@ -435,6 +436,7 @@ def main():
     ap.add_argument("spec")
     ap.add_argument("--stills", action="store_true", help="nur ein Vorschaubild pro Szene")
     ap.add_argument("--scale", type=float, default=1.0)
+    ap.add_argument("--audio-only", action="store_true", help="nur Ton neu mischen, Bild aus output/video.mp4 übernehmen")
     args = ap.parse_args()
 
     spec_path = os.path.abspath(args.spec)
@@ -489,7 +491,23 @@ def main():
                 add(fx, sfx(kind), sc["_start"] + el["_at"], 0.22 if kind == "pop" else 0.45)
     music = spec.get("music")
     mus = np.zeros(n)
-    if music:
+    if isinstance(music, dict) and music.get("score"):
+        mpath = os.path.join(build_dir, f"score_{score_music.cache_key(scenes, total, music)}.wav")
+        if not os.path.exists(mpath):
+            print("  komponiere Filmmusik …", flush=True)
+            score_music.compose(scenes, total, music, mpath)
+        m = ffmpeg_to_mono(mpath)
+        m = m / max(1e-6, np.sqrt(np.mean(m[: int(min(len(m), total * SR))] ** 2)))  # auf RMS 1 normieren
+        mus[: min(n, len(m))] = m[:n] * spec.get("music_volume", 0.05)
+        # Ducking: Musik wird leiser, wenn gesprochen wird
+        win = int(0.35 * SR)
+        env = np.convolve(np.abs(voice), np.ones(win) / win, mode="same")
+        act = np.clip(env / 0.03, 0, 1)
+        act = np.convolve(act, np.ones(int(0.5 * SR)) / int(0.5 * SR), mode="same")
+        mus *= 1 - spec.get("duck", 0.5) * act
+        fade = np.minimum(1, (total - np.arange(n) / SR) / 2.0).clip(0, 1)
+        mus *= fade
+    elif music:
         if isinstance(music, str) and os.path.exists(os.path.join(base_dir, music)):
             m = ffmpeg_to_mono(os.path.join(base_dir, music))
             reps = int(np.ceil(n / len(m)))
@@ -508,6 +526,15 @@ def main():
 
     # Video
     out_mp4 = os.path.join(out_dir, "video.mp4")
+    if args.audio_only and os.path.exists(out_mp4):
+        tmp = os.path.join(build_dir, "remux.mp4")
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", out_mp4, "-i", wav_path, "-map", "0:v", "-map", "1:a",
+                        "-c:v", "copy", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "192k",
+                        "-ar", "48000", "-shortest", "-movflags", "+faststart", tmp], check=True)
+        os.replace(tmp, out_mp4)
+        write_docs(spec, scenes, out_dir, total)
+        print("Ton neu gemischt:", out_mp4)
+        return
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
            "-i", "-", "-i", wav_path, "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-maxrate", "8M",
            "-bufsize", "16M", "-pix_fmt", "yuv420p",

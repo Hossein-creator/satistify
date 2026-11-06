@@ -7,8 +7,8 @@ style: doku
 format: short
 voice: de-thorsten-low   # Entwurfsstimme (CC0). Eigene Aufnahmen in aufnahme/ ersetzen sie automatisch.
 speed: 1.0
-music: dark
-music_volume: 0.09
+music: {score: dark, motif: flute, tempo: 66}   # komponierte Filmmusik, Flöte = Friedrichs Instrument
+music_volume: 0.045
 crossfade: 0.45
 
 meta:
