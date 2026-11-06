@@ -93,6 +93,12 @@ Details: `dokumente/2026-11-06-analyse-kanaele-2.md`
 - **Dialogfenster** (`dialog`) für Emotionen: Porträt im Kreis, Name, Text tippt sich ein. `emotion: angry | fear | sad | proud | sly` ändert Farbe, Wackeln und Ton. Erfundene Sätze bekommen `note: "nachgestellt"`, Sprichwörter `note: "Sprichwort"`. Echte Zitate nur geprüft.
 - **Farbstimmung pro Szene** (`mood:`): `gold` (Macht, Hook), `sad` (Not), `warm`, `mystery` (Wende), `danger` (Gefahr), `night`, `cold` (Enttäuschung, Mythos-Bruch), Grundton `cinematic` (Teal & Orange). Dazu `bloom` (Glühen).
 - **Kino-Balken** (`bars`) im spannenden Mittelteil, **Fall-Zähler** (`counter`) für Serien („Fall 1/3“).
+- **Jede Kleinigkeit bekommt einen Effekt, aber KEINE Emojis** (Nutzer 06.11.2026: „lasse die Emojis weg“). Wird ein Ding, eine Zahl, Person oder Emotion genannt, passiert im Bild genau dann etwas, im ernsten Doku-Stil:
+  - Zahl → `count` (zählt hoch, Tick-Geräusch, „Ding“ am Ziel).
+  - Gegenstand/Detail → neues `slides`-Bild oder Großaufnahme genau beim Wort, `mark` (Kreis) oder `spotlight`.
+  - Person → echtes Porträt + `lower`; Emotion → `dialog`; Urteil → `stamp`; Datum/Ort → `date`.
+  - Ziel: etwa alle 2 Sekunden passiert etwas Neues.
+  - `emoji` und `auto_emoji` gibt es im Renderer noch, **nicht benutzen**.
 
 ## 4a. Thema → Musik, Figuren, Bilder (Pflicht für jedes Video)
 Vor dem Skript wird `era:` in der video.yaml festgelegt. Danach richten sich Musik, Bilder und Figuren.

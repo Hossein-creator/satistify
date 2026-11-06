@@ -1,4 +1,4 @@
-# Short #1 – Doku-Stil v6: mehr B-Roll (Slides), Dialogfenster, Farbstimmung pro Szene, Neugier-Effekte
+# Short #1 – Doku-Stil v7: Details mit Effekten (Zähler, Dialog, Stempel) – OHNE Emojis (Nutzer)
 # Hook-Formel: Paradox-Wunsch ("wollte, dass man ihn bestiehlt") + Mythos-Bruch (#9) + Loop-Ende
 # Hook geprüft: video-studio/tools/hook_check.py
 # Fakten geprüft mit de.wikipedia.org/wiki/Kartoffelbefehl (06.11.2026)
@@ -108,6 +108,7 @@ scenes:
       - {src: assets/Coin_Thaler_Showing_Frederick_the_Great_Met33004.jpg, from: [0.5, 0.53, 1.6], to: [0.5, 0.53, 2.0], rot: [-4, 3]}
       - {src: assets/Medal_Showing_Frederick_the_Great_Met33006.jpg, from: [0.42, 0.5, 1.15], to: [0.4, 0.45, 1.6], rot: [3, -2]}
     visual:
+      - {type: count, to: 15, label: "Kartoffelbefehle", at_word: Fünfzehn, y: 0.27, dur: 2.0}
       - {type: lower, text: "Friedrich II.", sub: "König von Preußen · 1740–1786", y: 0.58, at: 0.4, until: 3.0}
       - {type: date, text: "24. März 1756", y: 0.09, at_word: berühmteste}
 

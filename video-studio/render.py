@@ -220,6 +220,15 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
                 ph.append(item)
             sc["visual"] = ph + [e for e in sc.get("visual", []) if e.get("type") != "photo"]
             sc["_slides_done"] = True
+        if spec.get("auto_emoji") and sc.get("auto_emoji", True) and not sc.get("_emoji_done"):
+            have = {e.get("at_word", "").lower() for e in sc.get("visual", []) if e.get("type") == "emoji"}
+            n_have = sum(1 for e in sc.get("visual", []) if e.get("type") in ("emoji", "dialog", "stamp", "count"))
+            if n_have == 0:
+                side = [0.8, 0.2][i % 2]
+                for e in doku.auto_emojis(sc["_words"], have, spec.get("auto_emoji_max", 1)):
+                    e.update({"x": side, "y": 0.63, "at": round(e.pop("_auto_at"), 2)})
+                    sc.setdefault("visual", []).append(e)
+            sc["_emoji_done"] = True
         for el in sc.get("visual", []):
             if el.get("src") and el["type"] == "dialog":
                 el["src_abs"] = os.path.join(base_dir, el["src"])
@@ -365,7 +374,7 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
     boil = int(t * FPS) // 3
     for j, el in enumerate(sc.get("visual", [])):
         at = el["_at"]
-        if el["type"] == "photo" or local < at or ("until" in el and local > float(el["until"])):
+        if el["type"] in ("photo", "emoji", "count") or local < at or ("until" in el and local > float(el["until"])):
             continue
         p = 1.0 if at < 0 else min(1.0, (local - at) / 0.28)
         k = (ease_out_back(p) if not doku_style else p) if p < 1 else 1.0
@@ -429,6 +438,14 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
         img = doku.light_leak(img, leak, t)
         if sc.get("transition") == "flash" and local < 0.3:
             img = Image.blend(img, Image.new("RGB", (W, H), (255, 250, 240)), 1 - local / 0.3)
+    # Emojis und Zähler NACH der Farbkorrektur: sie sollen knallen, nicht im Look untergehen
+    pops = [e for e in sc.get("visual", []) if e["type"] in ("emoji", "count") and local >= e["_at"]]
+    if pops:
+        pen = doodle.Pen(ImageDraw.Draw(img), random.Random(0), s, (255, 255, 255))
+        pen.img = img
+        for el in pops:
+            el["_since"] = local - max(0.0, el["_at"]) if el["_at"] >= 0 else local + 1.0
+            doku.DRAWERS[el["type"]](pen, el, W, H, 1.0, t, None)
     draw_captions(img, sc, local, W, H, s, fmt, spec)
     return img
 
@@ -553,6 +570,14 @@ def mix_audio(spec, scenes, total, base_dir, build_dir, wav_path, music_override
             at = max(0.0, el["_at"])
             if el["type"] == "stamp":
                 add(fx, sfx("boom"), sc["_start"] + at, 0.55)
+                continue
+            if el["type"] == "emoji":
+                add(fx, sfx("pop"), sc["_start"] + at, 0.14)
+                continue
+            if el["type"] == "count":
+                for c in range(0, 12):
+                    add(fx, type_ticks(), sc["_start"] + at + c * el.get("run", 0.9) / 12, 0.08)
+                add(fx, sfx("ding"), sc["_start"] + at + el.get("run", 0.9), 0.18)
                 continue
             if el["type"] == "dialog":
                 add(fx, sfx("pop"), sc["_start"] + at, 0.12)

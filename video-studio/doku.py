@@ -502,7 +502,108 @@ def draw_counter(pen, el, W, H, k, t, pal):
     d.text((x, y), txt, font=f, fill=(245, 238, 225))
 
 
-DRAWERS_FX = {"dialog": draw_dialog, "teaser": draw_teaser, "bars": draw_bars, "counter": draw_counter,
+# ------------------------------------------------------------------ Kleinigkeiten unterhaltsam machen
+EMOJI_FONT = "/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf"   # Noto Color Emoji (OFL)
+
+
+@lru_cache(maxsize=64)
+def emoji_image(ch):
+    f = ImageFont.truetype(EMOJI_FONT, 109)
+    im = Image.new("RGBA", (160 * max(1, len(ch)), 160), (0, 0, 0, 0))
+    ImageDraw.Draw(im).text((10, 10), ch, font=f, embedded_color=True)
+    bb = im.getbbox()
+    return im.crop(bb) if bb else im
+
+
+def ease_out_back(p):
+    p = min(1, max(0, p))
+    c1, c3 = 1.70158, 2.70158
+    return 1 + c3 * (p - 1) ** 3 + c1 * (p - 1) ** 2
+
+
+def draw_emoji(pen, el, W, H, k, t, pal):
+    """Emoji/Symbol springt beim Stichwort ins Bild, schwebt, verschwindet.
+    {type: emoji, char: "🥔", at_word: Kartoffel, x: 0.8, y: 0.6, size: 0.16, dur: 1.6}"""
+    since = el.get("_since", 9)
+    dur = el.get("dur", 1.6)
+    if since > dur + 0.3:
+        return
+    sc = ease_out_back(since / 0.28)
+    fade = 1.0 if since < dur else max(0, 1 - (since - dur) / 0.3)
+    size = el.get("size", 0.19) * W * max(0.01, sc)
+    base = emoji_image(el["char"])
+    im = base.resize((max(2, int(size * base.width / base.height)), max(2, int(size))), Image.BILINEAR)
+    ang = math.sin(since * 5) * 8 * fade + el.get("tilt", 0)
+    im = im.rotate(ang, resample=Image.BICUBIC, expand=True)
+    if fade < 1:
+        im.putalpha(im.getchannel("A").point(lambda v: int(v * fade)))
+    # weicher Schatten für Lesbarkeit auf Gemälden
+    sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    sh.putalpha(im.getchannel("A").point(lambda v: int(v * 0.55)).filter(ImageFilter.GaussianBlur(8)))
+    x = el.get("x", 0.8) * W - im.width / 2
+    y = el.get("y", 0.6) * H - im.height / 2 - since * 18 * pen.s
+    pen.img.paste(sh, (int(x + 6), int(y + 10)), sh)
+    pen.img.paste(im, (int(x), int(y)), im)
+
+
+def draw_count(pen, el, W, H, k, t, pal):
+    """Zahl zählt schnell hoch (z. B. 0 -> 15) mit Beschriftung. {type: count, to: 15, label: "Befehle", y: 0.3}"""
+    s = pen.s
+    since = el.get("_since", 9)
+    dur = el.get("dur", 2.4)
+    if since > dur + 0.3:
+        return
+    p = ease_out(since / el.get("run", 0.9))
+    val = int(round(el.get("from", 0) + (el["to"] - el.get("from", 0)) * p))
+    alpha = min(1, since / 0.15) * (1 if since < dur else max(0, 1 - (since - dur) / 0.3))
+    pop = 1 + 0.25 * max(0, 1 - abs(since - el.get("run", 0.9)) / 0.15)   # kleiner Sprung, wenn das Ziel erreicht ist
+    lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    f = vfont(F_SERIF, el.get("size", 200) * s * pop, "Black")
+    txt = f"{val}{el.get('suffix', '')}"
+    tw = d.textlength(txt, font=f)
+    y = el.get("y", 0.3) * H
+    d.text((W / 2 - tw / 2 + 5 * s, y + 7 * s), txt, font=f, fill=(0, 0, 0, int(170 * alpha)))
+    d.text((W / 2 - tw / 2, y), txt, font=f, fill=GOLD + (int(255 * alpha),))
+    if el.get("label"):
+        fl = vfont(F_SANS, 46 * s, "Bold")
+        lt = el["label"].upper()
+        spaced(d, (W / 2, y + f.size * 1.12), lt, fl, (245, 238, 225, int(255 * alpha)), 6 * s)
+    pen.img.paste(lay, (0, 0), lay)
+
+
+# Stichwort -> Emoji (automatisch, wenn auto_emoji: true). Wortanfang reicht ("kartoffel" trifft "Kartoffelfeld").
+EMOJI_MAP = [
+    ("kartoffel", "🥔"), ("knolle", "🥔"), ("könig", "👑"), ("kaiser", "👑"), ("königin", "👑"),
+    ("soldat", "💂"), ("wache", "💂"), ("dieb", "🦹"), ("stehl", "🫣"), ("bestiehlt", "🫣"),
+    ("hunger", "🍽️"), ("missernte", "🌾"), ("vieh", "🐷"), ("schwein", "🐷"), ("befehl", "📜"), ("erlass", "📜"),
+    ("gesetz", "📜"), ("brief", "✉️"), ("nacht", "🌙"), ("nachts", "🌙"), ("verrückt", "🤯"), ("genial", "💡"),
+    ("beleg", "🔍"), ("beweis", "🔍"), ("grab", "🪦"), ("tod", "💀"), ("starb", "💀"), ("gift", "☠️"),
+    ("krieg", "⚔️"), ("schlacht", "⚔️"), ("geld", "💰"), ("gold", "💰"), ("feuer", "🔥"), ("brand", "🔥"),
+    ("pest", "🐀"), ("ratte", "🐀"), ("schiff", "⛵"), ("meer", "🌊"), ("kirche", "⛪"), ("papst", "⛪"),
+    ("flöte", "🎶"), ("musik", "🎶"), ("bier", "🍺"), ("wein", "🍷"), ("pferd", "🐎"), ("hund", "🐕"),
+    ("frankreich", "🇫🇷"), ("england", "🇬🇧"), ("geheim", "🤫"), ("weg", "🙈"), ("lüge", "🤥"), ("legende", "📖"),
+    ("gefängnis", "⛓️"), ("strafe", "⚖️"), ("gericht", "⚖️"), ("kanone", "💣"), ("bombe", "💣"), ("zeit", "⏳"),
+]
+
+
+def auto_emojis(words, existing_words, max_n=1):
+    """Sucht Stichwörter in den gesprochenen Wörtern einer Szene, gibt Emoji-Elemente zurück."""
+    out = []
+    for w, ws, we in words:
+        lw = w.lower().strip(",.;:!?…\"'")
+        if lw in existing_words:
+            continue
+        for key, ch in EMOJI_MAP:
+            if lw == key or (len(key) >= 5 and lw.startswith(key)):
+                out.append({"type": "emoji", "char": ch, "_auto_at": ws, "auto": True})
+                break
+        if len(out) >= max_n:
+            break
+    return out
+
+
+DRAWERS_FX = {"emoji": draw_emoji, "count": draw_count, "dialog": draw_dialog, "teaser": draw_teaser, "bars": draw_bars, "counter": draw_counter,
               "stamp": draw_stamp, "embers": draw_embers, "fog": draw_fog, "spotlight": draw_spotlight}
 
 
