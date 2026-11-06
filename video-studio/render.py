@@ -83,6 +83,56 @@ def tts(text, voice_name, length_scale, out_path):
         _voices[voice_name].synthesize_wav(text, wf, syn_config=SynthesisConfig(length_scale=length_scale))
 
 
+# ElevenLabs: Stimmen-Kürzel -> voice_id (nur vom Nutzer genehmigte Stimmen eintragen)
+ELEVEN_VOICES = {
+    "george": "JBFqnCBsd6RMkjVDRZzb",  # genehmigt 06.11.2026 (Gratis-Plan)
+}
+
+
+def tts_eleven(text, voice_name, out_path, prev_text="", next_text="", model="eleven_multilingual_v2", speed=1.0):
+    """ElevenLabs mit Zeitstempeln. Schreibt out_path (mp3) und out_path + '.json' (Zeichen-Zeiten).
+    Key nur aus der Umgebung (ELEVENLABS_API_KEY), nie im Repo speichern."""
+    import base64
+    import json as _json
+    import urllib.request
+    key = os.environ.get("ELEVENLABS_API_KEY")
+    if not key:
+        sys.exit("ELEVENLABS_API_KEY fehlt (export ELEVENLABS_API_KEY=...). Key nie ins Repo schreiben.")
+    vid = ELEVEN_VOICES.get(voice_name, voice_name)
+    body = {"text": text, "model_id": model,
+            "voice_settings": {"stability": 0.5, "similarity_boost": 0.75, "style": 0.2, "speed": speed}}
+    if prev_text:
+        body["previous_text"] = prev_text
+    if next_text:
+        body["next_text"] = next_text
+    req = urllib.request.Request(
+        f"https://api.elevenlabs.io/v1/text-to-speech/{vid}/with-timestamps?output_format=mp3_44100_128",
+        data=_json.dumps(body).encode(), headers={"xi-api-key": key, "Content-Type": "application/json"})
+    try:
+        d = _json.load(urllib.request.urlopen(req, timeout=120))
+    except urllib.error.HTTPError as e:
+        sys.exit(f"ElevenLabs-Fehler {e.code}: {e.read()[:300]!r} (Kontingent leer? Neuer Key nötig?)")
+    open(out_path, "wb").write(base64.b64decode(d["audio_base64"]))
+    _json.dump(d.get("alignment") or {}, open(out_path + ".json", "w"))
+
+
+def eleven_word_timings(text, align, offset):
+    """Wort-Zeiten aus der Zeichen-Ausrichtung von ElevenLabs (offset = abgeschnittene Stille am Anfang)."""
+    chars = align.get("characters") or []
+    st, en = align.get("character_start_times_seconds") or [], align.get("character_end_times_seconds") or []
+    out, i = [], 0
+    for w in text.split():
+        # nächstes Nicht-Leerzeichen suchen
+        while i < len(chars) and chars[i].isspace():
+            i += 1
+        j = min(len(chars), i + len(w)) - 1
+        if i >= len(chars):
+            break
+        out.append((w, max(0.0, st[i] - offset), max(0.0, en[max(i, j)] - offset)))
+        i = j + 1
+    return out if len(out) == len(text.split()) else None
+
+
 def sfx(kind):
     """Synthetische, lizenzfreie Soundeffekte."""
     if kind == "pop":
@@ -186,6 +236,18 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
         rec = os.path.join(base_dir, "aufnahme", f"szene_{i + 1:02d}.wav")
         if os.path.exists(rec):
             src, sc["_voice_src"] = rec, "eigene Aufnahme"
+        elif use_tts and str(voice).startswith("eleven:"):
+            say = sc.get("say", sc["text"])
+            vname = voice.split(":", 1)[1]
+            prev_t = scenes[i - 1].get("say", scenes[i - 1]["text"]) if i > 0 else ""
+            next_t = scenes[i + 1].get("say", scenes[i + 1]["text"]) if i + 1 < len(scenes) else ""
+            h = hashlib.md5(f"{voice}|{ls}|{say}|{prev_t}|{next_t}".encode()).hexdigest()[:10]
+            src = os.path.join(build_dir, f"el_{i + 1:02d}_{h}.mp3")
+            if not os.path.exists(src):
+                tts_eleven(say, vname, src, prev_t, next_t, spec.get("eleven_model", "eleven_multilingual_v2"),
+                           spec.get("eleven_speed", 1.0))
+            sc["_voice_src"] = f"KI-Stimme ElevenLabs ({vname})"
+            sc["_align"] = src + ".json"
         elif use_tts:
             say = sc.get("say", sc["text"])
             h = hashlib.md5(f"{voice}|{ls}|{say}".encode()).hexdigest()[:10]
@@ -195,8 +257,12 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
             sc["_voice_src"] = f"Computerstimme ({voice})"
         else:
             src = None
+        lead = 0.0
         if src:
-            audio = trim_silence(ffmpeg_to_mono(src))
+            raw = ffmpeg_to_mono(src)
+            nz = np.where(np.abs(raw) > 0.012)[0]
+            lead = max(0, nz[0] - int(0.04 * SR)) / SR if len(nz) else 0.0
+            audio = trim_silence(raw)
         else:
             audio = np.zeros(int(max(1.5, len(sc["text"]) / 14) * SR))
         sc["_audio"] = audio
@@ -204,7 +270,12 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
         sc["_start"] = t
         sc["_vdur"] = vd
         sc["_end"] = t + vd + sc.get("pause", 0.22)
-        sc["_words"] = word_timings(sc["text"], vd)
+        sc["_words"] = None
+        if sc.get("_align") and os.path.exists(sc["_align"]) and sc.get("say", sc["text"]) == sc["text"]:
+            import json as _json
+            sc["_words"] = eleven_word_timings(sc["text"], _json.load(open(sc["_align"])), lead)
+        if not sc["_words"]:
+            sc["_words"] = word_timings(sc["text"], vd)
         t = sc["_end"]
         if sc.get("slides") and not sc.get("_slides_done"):
             # B-Roll: mehrere Bilder pro Szene, gleichmäßig verteilt, Übergänge abwechselnd

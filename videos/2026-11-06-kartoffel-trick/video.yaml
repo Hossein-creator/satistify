@@ -6,7 +6,7 @@
 title: "Friedrich der Große und die bewachten Kartoffeln"
 style: doku
 format: short
-voice: de-thorsten-low   # Entwurfsstimme (CC0). Eigene Aufnahmen in aufnahme/ ersetzen sie automatisch.
+voice: "eleven:george"   # ElevenLabs George (vom Nutzer genehmigt 06.11.2026). Key: ELEVENLABS_API_KEY.
 speed: 1.0
 era: barock         # Thema: Preußen 1740–1786 -> Musik, Bilder und Figuren aus dieser Zeit
 music: {score: epoche, era: barock, key: D, drop_scene: 1}   # Barock: Flöte (Friedrich war Flötist), Cembalo, Streicher, Pauken

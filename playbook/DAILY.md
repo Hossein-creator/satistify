@@ -24,7 +24,7 @@ Stand: 06.11.2026. Wunsch des Nutzers. Läuft als geplante Aufgabe, jeden Tag fr
 12. Fehler (Bild fehlt, Fakt unsicher, Render kaputt) → Video ersetzen statt schlecht posten. Lieber 2 gute als 3 schlechte, und das im Bericht sagen.
 
 ## Entscheidungen (06.11.2026)
-- **Stimme: ElevenLabs.** Welche Stimme, genehmigt der Nutzer vorher (Hörproben). Ohne Genehmigung keine neue Stimme.
+- **Stimme: ElevenLabs „George“** (`voice: "eleven:george"`, genehmigt). Andere Stimme nur nach Hörprobe + Genehmigung. Key aus `ELEVENLABS_API_KEY`. Gratis-Plan: 10.000 Zeichen/Monat, reicht für ca. 8 Videos. Kontingent vor jedem Lauf prüfen (`/v1/user/subscription`); leer → melden, nicht auf Piper ausweichen ohne Rückfrage.
 - **Ablage: eigenes öffentliches GitHub-Repo** für die Videos (Link für Metricool). Videos klein halten (ca. 15–25 MB), alte Videos nach dem Posten aufräumen.
 
 ## Offen
