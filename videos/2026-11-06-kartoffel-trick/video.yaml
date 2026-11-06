@@ -1,4 +1,4 @@
-# Short #1 – Doku-Stil v4: neuer Hook, Trend-Musik (Dark Phonk), mehr Effekte und Bewegung
+# Short #1 – Doku-Stil v5: Hook v4, Effekte v4, Musik passend zur Epoche (Barock), leiser
 # Hook-Formel: Paradox-Wunsch ("wollte, dass man ihn bestiehlt") + Mythos-Bruch (#9) + Loop-Ende
 # Hook geprüft: video-studio/tools/hook_check.py
 # Fakten geprüft mit de.wikipedia.org/wiki/Kartoffelbefehl (06.11.2026)
@@ -8,10 +8,11 @@ style: doku
 format: short
 voice: de-thorsten-low   # Entwurfsstimme (CC0). Eigene Aufnahmen in aufnahme/ ersetzen sie automatisch.
 speed: 1.0
-music: {score: phonk, tempo: 118, key: D, drop_scene: 1}   # Trend: Dark Phonk, Drop direkt nach dem Hook
-music_db: 17.5      # Musik liegt 17,5 dB unter der Stimme, beim Sprechen zusätzlich abgesenkt (duck)
-duck: 0.45
-beat_bump: 0.010    # Bild pulsiert leicht mit der Kick
+era: barock         # Thema: Preußen 1740–1786 -> Musik, Bilder und Figuren aus dieser Zeit
+music: {score: epoche, era: barock, key: D, drop_scene: 1}   # Barock: Flöte (Friedrich war Flötist), Cembalo, Streicher, Pauken
+music_db: 21        # Musik 21 dB unter der Stimme (Nutzer: leiser), beim Sprechen zusätzlich abgesenkt (duck)
+duck: 0.5
+beat_bump: 0.006    # Bild pulsiert dezent mit der Pauke
 handheld: 0.7       # Handkamera-Bewegung auf allen Bildern
 leaks: 0.10         # leichter Lichteinfall bei Szenenwechseln
 flicker: 0.025      # Projektor-Flackern
@@ -42,7 +43,7 @@ meta:
   thumbnail_time: 0.5
   notes: |
     Alle Bilder: gemeinfrei (Public Domain / CC0), Wikimedia Commons – Nachweise unten.
-    Musik: eigene Komposition (Dark Phonk, synthetisch + FluidR3-Soundfont, MIT) – kein Content-ID-Risiko.
+    Musik: eigene Komposition im Barock-Stil (FluidR3-Soundfont, MIT) – kein Content-ID-Risiko.
     Alternative: video_ohne_musik.mp4 hochladen und einen Trend-Sound direkt in der App wählen.
     KI-Kennzeichnung: nicht nötig (historische Gemälde, keine KI-Bilder).
     Stimme: Entwurfsstimme. Für Upload unbedingt eigene Stimme (aufnahme-skript.md) oder bessere Sprecherstimme.

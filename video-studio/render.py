@@ -30,6 +30,7 @@ import cartoon  # noqa: E402
 import doku  # noqa: E402
 import music as score_music  # noqa: E402
 import beats  # noqa: E402
+import epochen  # noqa: E402
 
 DARK_BGS = {"night", "dramatic", "palace", "throne", "red"}
 ROLE_BY_PROP = [("crown", "king"), ("tricorn", "soldier"), ("farmer", "farmer"), ("wig", "noble"), ("helmet", "knight")]
@@ -478,7 +479,12 @@ def make_music(spec, scenes, total, build_dir, music):
     key = score_music.cache_key(scenes, total, music)
     mpath = os.path.join(build_dir, f"score_{music['score']}_{key}.wav")
     meta = {}
-    if music["score"] in beats.SCORES:
+    if music["score"] == "epoche":
+        if not os.path.exists(mpath):
+            print(f"  komponiere Epochen-Musik ({music.get('era', 'barock')}) …", flush=True)
+            epochen.compose(scenes, total, music, mpath)
+        meta = json.load(open(os.path.splitext(mpath)[0] + ".json"))
+    elif music["score"] in beats.SCORES:
         if not os.path.exists(mpath):
             print(f"  komponiere Trend-Musik ({music['score']}) …", flush=True)
             beats.compose(scenes, total, music, mpath)
@@ -529,14 +535,14 @@ def mix_audio(spec, scenes, total, base_dir, build_dir, wav_path, music_override
         mus[: min(n, len(m))] = m[:n]
         # Lautstärke relativ zur Stimme (in LU): music_db = wie viele dB die Musik unter der Stimme liegt
         v_l, m_l = lufs(voice), lufs(mus[: int(total * SR)])
-        gain_db = (v_l - spec.get("music_db", 17.5)) - m_l
+        gain_db = (v_l - spec.get("music_db", 21.0)) - m_l
         mus *= 10 ** (gain_db / 20)
         # Ducking: Musik wird leiser, wenn gesprochen wird
         win = int(0.35 * SR)
         env = np.convolve(np.abs(voice), np.ones(win) / win, mode="same")
         act = np.clip(env / 0.03, 0, 1)
         act = np.convolve(act, np.ones(int(0.5 * SR)) / int(0.5 * SR), mode="same")
-        mus *= 1 - spec.get("duck", 0.45) * act
+        mus *= 1 - spec.get("duck", 0.5) * act
         fade = np.minimum(1, (total - np.arange(n) / SR) / 2.0).clip(0, 1)
         mus *= fade
         print(f"  Lautheit: Stimme {v_l:.1f} LUFS, Musik {m_l + gain_db:.1f} LUFS "

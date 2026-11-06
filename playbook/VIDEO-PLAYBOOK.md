@@ -7,6 +7,7 @@ Stand: 06.11.2026. Pflichtlektüre vor jedem neuen Video. Quellen: Kanal-Analyse
 - **Stil:** **realistisch und ernst, im Doku-Look.** Echte historische Gemälde, Karten und Stiche, filmische Farbe, ruhige Kamerafahrten. Die Zuschauer sollen sofort neugierig werden. **Kein Cartoon, keine Strichmännchen.** Der Nutzer hat beides abgelehnt.
 - **Skills immer verwenden:** `ig-viral` (Recherche), `ig-human` (jeder Text), `ig-caption` (Beschreibung/Caption).
 - **Sprache:** Deutsch (DACH). Englisch nur auf Wunsch.
+- **Alles passt zum Thema (Regel vom 06.11.2026):** Musik, Figuren und Bilder werden **für jedes Video an Thema, Epoche und Ort angepasst**. Phonk unter Friedrich dem Großen passte laut Nutzer „gar nicht“. Siehe §4a.
 
 ## 1. Ablauf für jedes Video
 
@@ -74,15 +75,38 @@ Details: `dokumente/2026-11-06-analyse-kanaele-2.md`
 - **Übergänge (`transition:`):** `fade` (Standard), `whip` (Wischschwenk mit Bewegungsunschärfe), `zoom` (Zoom-Durchflug), `burn` (Filmbrand/Lichteinfall), `flash` (weißer Blitz, für Twists), `cut`. Abwechseln, etwa alle 2–3 Szenen ein `whip` oder `zoom`.
 - **Effekt-Elemente (`visual:`):** `stamp` (Stempel knallt aufs Bild: NICHT BELEGT, ECHT, LEGENDE), `date` (Schreibmaschine mit Tippgeräusch), `title` (Buchstaben ziehen sich zusammen), `lower` (Bauchbinde), `spotlight` (Blick auf ein Detail lenken), `fog` (Nebel/Rauch), `embers` (Glut/Funken bei Krieg und Feuer), `dust`, `mark`. Foto mit `night: true` wirkt wie bei Nacht.
 - **Beat-Sync:** Bei Trend-Musik pulsiert das Bild leicht auf der Kick (`beat_bump: 0.01`).
-- **Musik = Trend-Sound, selbst komponiert** (`beats.py`, kein Content-ID-Risiko):
+- **Musik zuerst nach Thema wählen (§4a, `epochen.py`).** Trend-Sounds (`beats.py`) nur, wenn sie zum Thema passen:
   - `music: {score: phonk, tempo: 118, key: D, drop_scene: 1}`: **Dark Phonk**, 2025/26 der meistgenutzte Sound in Shorts-Edits (Cowbell-Riff, 808 mit Slides, Hi-Hat-Rolls). Standard für Hook-starke Shorts.
   - `music: {score: trailer, tempo: 96}`: **Trailer/Doku-Spannung** (Ticken, Puls, Braams, Taikos). Für ernste Themen wie Krieg, Tod oder True Crime.
   - `music: {score: dark|mystery|epic|sad|hope}`: alte Orchester-Variante (`music.py`).
   - Die Musik folgt dem Video: Hook nur Riff → **Drop auf Szene 2** → Pause vor jedem `hit` → nur Kick bei `heartbeat` → Ausklang in der letzten Szene.
-  - **Lautstärke:** `music_db: 17.5` (Musik 17,5 dB unter der Stimme, gemessen in LUFS) plus `duck: 0.45` (beim Sprechen weitere 5 dB leiser). Nutzer-Feedback 06.11.: Die vorherige Musik (ca. 12 dB unter der Stimme) war zu laut.
+  - **Lautstärke:** Standard `music_db: 21` (Musik 21 dB unter der Stimme, gemessen in LUFS) plus `duck: 0.5` (beim Sprechen weitere 6 dB leiser). Nutzer-Feedback 06.11.: 12 dB und 17,5 dB waren beide noch zu laut. Nicht lauter machen.
   - **Echte Trend-Songs** (z. B. ein aktueller Phonk-Hit) nur **in der App** hinzufügen: `output/video_ohne_musik.mp4` hochladen und in YouTube Shorts, TikTok oder Instagram den Sound dort wählen. Dann ist er lizenziert. Bei YouTube Shorts geht dafür ein Teil der Einnahmen an die Musikrechte. Nie einen fremden Song in die Datei mischen (Content ID).
 - **Ton:** um −14 LUFS, True Peak −1,5 dB. `render.py` normalisiert automatisch.
 - **Stimme:** Die eingebaute „Thorsten“-Stimme (CC0) ist nur ein **Entwurf**. Für den Upload besser die **eigene Stimme** über `aufnahme/szene_XX.wav`, siehe `output/aufnahme-skript.md` (menschlicher, sicherer bei der „inauthentic content“-Regel) oder eine hochwertige Sprecherstimme per API. Die englische Piper-Stimme „Ryan“ ist **nicht kommerziell** nutzbar (CC BY-NC-SA).
+
+## 4a. Thema → Musik, Figuren, Bilder (Pflicht für jedes Video)
+Vor dem Skript wird `era:` in der video.yaml festgelegt. Danach richten sich Musik, Bilder und Figuren.
+
+| Epoche / Thema | `era` | Musik (`score: epoche`) | Bilder & Figuren |
+|---|---|---|---|
+| Antike (Rom, Griechenland, Ägypten) | `antike` | Hörner, Chor, Kriegstrommeln | Fresken, Statuen, Mosaike, Gemälde des 18./19. Jh. über Rom (Gérôme, Alma-Tadema, David) |
+| Mittelalter (500–1450) | `mittelalter` | Flöte, Mönchschor, Orgel-Bordun, Rahmentrommel | Buchmalerei, Handschriften, Teppich von Bayeux, Holzschnitte |
+| Renaissance / Reformation (1450–1600) | `renaissance` | Blockflöte, Laute, Streicher | Dürer, Cranach (Luther), Holbein, Stiche |
+| Barock / Absolutismus / Preußen (1600–1790) | `barock` | Flöte, Cembalo, Streicher, Pauken | Porträts der Herrscher (Graff, Pesne), Menzel, Warthmüller, Schlachtengemälde |
+| Napoleon / Revolution / 19. Jh. Kriege (1790–1870) | `napoleon` | Trompete, Marschtrommel, Tuba, Pauke | David, Gros, Meissonier; Karikaturen; Schlachtenpläne |
+| Viktorianisch / Kaiserreich / True Crime 19. Jh. | `viktorianisch` | Celesta/Spieluhr, Pizzicato, Uhrticken (unheimlich) | Zeitungsstiche (Illustrated Police News), frühe Fotos, Stadtpläne |
+| Weltkriege (1914–1945) | `weltkrieg` | einzelne Klaviertöne, Streicher, tiefe Trommeln, Posaune | gemeinfreie Fotos (Bundesarchiv nur mit passender Lizenz, US-Archive PD), Karten. Keine NS-Symbole ohne Einordnung (§ 6) |
+| Kalter Krieg / DDR / Raumfahrt | `kalterkrieg` | Synth-Pad, Synth-Bass, Ticken | NASA-Fotos (PD), US-Regierungsfotos, Karten |
+| Orient / Osmanen / Seidenstraße | `orient` | Flöte, Hackbrett, Rahmentrommel | Orientalisten-Gemälde, osmanische Miniaturen, Karten |
+| Freie Wahl (ohne Epoche) | — | `score: trailer` (Spannung) oder `phonk` nur für bewusst „edgy“ Edits | — |
+
+**Figuren und Bilder:**
+1. **Jede genannte Person bekommt ihr echtes Porträt** (zeitgenössisch, wenn möglich) und beim ersten Auftritt eine Bauchbinde mit Name, Rolle und Lebensdaten.
+2. **Bilder aus derselben Zeit und Region** wie die Geschichte. Kein Mittelalter-Bild in einem Barock-Video, kein französisches Motiv für eine preußische Szene, außer der Text spricht genau davon.
+3. **Szenen-Stimmung = Bild-Stimmung:** Bei Hunger arme Bauern (Van Gogh, Millet), nachts `night: true`, bei Krieg `embers`, bei Rätseln `fog`.
+4. **Wechsel zum Hauptgesicht** in Hook, Wende und Ende. Der Loop endet auf demselben Gesicht.
+5. Fehlt ein passendes gemeinfreies Bild, dann lieber ein Detail aus einem passenden Gemälde als ein unpassendes ganzes Bild. Es wird nichts erfunden und keine KI-Figur einer echten Person erzeugt.
 
 ## 5. Verpackung (Titel, Thumbnail, Beschreibung)
 - **Test & Compare:** bis zu 3 Titel- bzw. Thumbnail-Varianten. Gewinner ist die Variante mit dem größten Anteil an Wiedergabezeit, nicht die höchste CTR.

@@ -39,7 +39,7 @@ Geschichte, Preußen, Friedrich der Große, Kartoffelbefehl, Alter Fritz, Doku
 
 ## Hinweise
 Alle Bilder: gemeinfrei (Public Domain / CC0), Wikimedia Commons – Nachweise unten.
-Musik: eigene Komposition (Dark Phonk, synthetisch + FluidR3-Soundfont, MIT) – kein Content-ID-Risiko.
+Musik: eigene Komposition im Barock-Stil (FluidR3-Soundfont, MIT) – kein Content-ID-Risiko.
 Alternative: video_ohne_musik.mp4 hochladen und einen Trend-Sound direkt in der App wählen.
 KI-Kennzeichnung: nicht nötig (historische Gemälde, keine KI-Bilder).
 Stimme: Entwurfsstimme. Für Upload unbedingt eigene Stimme (aufnahme-skript.md) oder bessere Sprecherstimme.
