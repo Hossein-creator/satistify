@@ -1,0 +1,165 @@
+# Historische Fakten (Mythos oder Wahrheit): Napoleon war nicht klein
+# Hook: "Napoleon war nie klein. Ein Zeichner hat ihn geschrumpft." (hook_check 75/100)
+# Fakten: en.wikipedia.org/wiki/Napoleon (Abschnitt Erscheinung), en.wikipedia.org/wiki/Napoleon_complex (abgerufen 06.11.2026)
+title: "War Napoleon wirklich klein?"
+style: doku
+format: short
+voice: "eleven:george"
+speed: 1.0
+era: napoleon
+music: {score: epoche, era: napoleon, key: C, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.10
+flicker: 0.025
+crossfade: 0.4
+pause: 0.12        # kürzere Pausen zwischen Szenen (Ziel 70–75 s)
+mood: cinematic
+bloom: 0.35
+
+meta:
+  titles:
+    - "Napoleon war nie klein: Ein Zeichner hat ihn geschrumpft"
+    - "War Napoleon wirklich klein? Mythos oder Wahrheit"
+    - "Wie ein Karikaturist Napoleon für immer klein machte"
+  description: |
+    Napoleon gilt als kleiner Wüterich. Dabei war er mit etwa 1,68 Metern für seine Zeit durchschnittlich groß.
+
+    Die „5 Fuß 2 Zoll“ sind alte französische Maße, und der französische Zoll war länger als der englische. Den Mythos vom Winzling verbreitete vor allem der britische Karikaturist James Gillray.
+  sources:
+    - "Napoleon – en.wikipedia.org/wiki/Napoleon (abgerufen 06.11.2026)"
+    - "Napoleon complex – en.wikipedia.org/wiki/Napoleon_complex (abgerufen 06.11.2026)"
+    - "Fondation Napoléon: La taille de Napoléon – napoleon.org"
+  pinned_comment: "1,68 Meter, und trotzdem kennt ihn jeder als Winzling. Welcher Mythos aus der Geschichte nervt dich am meisten?"
+  tags: [Geschichte, Napoleon, Mythos, Gillray, Frankreich, History Fakten, Doku]
+  keywords: "Napoleon Größe,war Napoleon klein,Napoleon Komplex"
+  thumbnail_time: 0.5
+  notes: |
+    Alle Bilder: gemeinfrei (CC0), The Met Open Access.
+    Musik: eigene Komposition (Marsch, napoleonische Zeit), kein Content-ID-Risiko.
+    Stimme: KI (ElevenLabs „George“) → KI-Kennzeichnung an.
+
+scenes:
+  # ---------- HOOK
+  - text: "Napoleon war nie klein. Ein Zeichner hat ihn geschrumpft."
+    hit: true
+    mood: gold
+    highlight: [geschrumpft]
+    visual:
+      - {type: photo, src: assets/napoleon_portrait.jpg, from: [0.5, 0.36, 2.2], to: [0.5, 0.38, 1.6], ease: out, rot: [-1.0, 0.4]}
+      - {type: dust, n: 30}
+
+  - text: "Du kennst ihn als kleinen Wüterich mit großem Hut. Aber stimmt das?"
+    transition: whip
+    highlight: [Wüterich]
+    slides:
+      - {src: assets/gillray_plumpudding_1805.jpg, from: [0.72, 0.42, 2.3], to: [0.7, 0.4, 2.7], ease: out}
+      - {src: assets/gillray_tiddydoll_1806.jpg, from: [0.52, 0.38, 2.4], to: [0.52, 0.36, 2.8]}
+    visual:
+      - {type: teaser, text: "Am Ende: wer den Mythos erfunden hat", y: 0.17, at: 0.8, until: 4.6}
+
+  - text: "Auf Sankt Helena, wo er 1821 stirbt, wird er vermessen: fünf Fuß, zwei Zoll."
+    say: "Auf Sankt Helena, wo er achtzehnhunderteinundzwanzig stirbt, wird er vermessen: fünf Fuß, zwei Zoll."
+    transition: burn
+    mood: cold
+    highlight: [Zoll]
+    visual:
+      - {type: photo, src: assets/napoleon_stehend_1807.jpg, from: [0.5, 0.5, 1.15], to: [0.5, 0.45, 1.35]}
+      - {type: date, text: "Sankt Helena · 1821", y: 0.09, at: 0.2}
+      - {type: title, text: "5 Fuß 2 Zoll", y: 0.4, size: 100, at_word: Fuß}
+
+  - text: "Klingt winzig. Aber das sind französische Maße, und der französische Zoll war länger als der englische."
+    mood: mystery
+    highlight: [französische]
+    visual:
+      - {type: photo, src: assets/napoleon_champ_de_mai_1815.jpg, from: [0.5, 0.35, 1.3], to: [0.5, 0.3, 1.6]}
+      - {type: lower, text: "1 franz. Zoll ≈ 2,71 cm", sub: "1 engl. Zoll = 2,54 cm", y: 0.62, at_word: länger}
+
+  - text: "Umgerechnet sind das etwa ein Meter achtundsechzig."
+    transition: zoom
+    mood: gold
+    highlight: [achtundsechzig]
+    visual:
+      - {type: photo, src: assets/napoleon_stehend_1807.jpg, from: [0.5, 0.45, 1.6], to: [0.5, 0.42, 1.2], ease: out}
+      - {type: count, to: 168, label: "Zentimeter", at_word: Meter, y: 0.27, dur: 1.6}
+
+  - text: "Für seine Zeit: ganz normal. Durchschnitt."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/napoleon_portrait.jpg, from: [0.5, 0.4, 1.4], to: [0.5, 0.38, 1.6]}
+      - {type: stamp, text: "Durchschnitt", y: 0.42, at_word: Durchschnitt}
+
+  # ---------- RE-HOOK: der Täter
+  - text: "Woher kommt dann der Mythos? Von einem Mann: James Gillray, britischer Karikaturist."
+    transition: whip
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/gillray_brobdingnag_1803.jpg, from: [0.5, 0.5, 1.15], to: [0.5, 0.5, 1.3]}
+      - {type: bars, size: 0.08}
+      - {type: lower, text: "James Gillray", sub: "britischer Karikaturist · 1756–1815", y: 0.6, at_word: Gillray}
+
+  - text: "Großbritannien kämpft gegen Napoleon. Und Gillray macht ihn klein, Blatt für Blatt."
+    mood: danger
+    highlight: [klein]
+    slides:
+      - {src: assets/gillray_plumpudding_1805.jpg, from: [0.5, 0.45, 1.3], to: [0.55, 0.45, 1.5]}
+      - {src: assets/gillray_tiddydoll_1806.jpg, from: [0.5, 0.45, 1.2], to: [0.52, 0.4, 1.5]}
+      - {src: assets/napoleon_wappen_1814.jpg, from: [0.5, 0.3, 1.4], to: [0.5, 0.28, 1.7]}
+    visual:
+      - {type: bars, size: 0.08}
+
+  - text: "1803 zeichnet er ihn als Winzling in der Hand des englischen Königs."
+    say: "Achtzehnhundertdrei zeichnet er ihn als Winzling in der Hand des englischen Königs."
+    transition: zoom
+    mood: warm
+    highlight: [Winzling]
+    visual:
+      - {type: photo, src: assets/gillray_brobdingnag_1803.jpg, from: [0.5, 0.5, 1.0], to: [0.25, 0.46, 3.0], ease: inout}
+      - {type: date, text: "1803", y: 0.09, at: 0.1}
+
+  - text: "Darüber steht: eines der abscheulichsten kleinen Kriechtiere, die je über die Erde krochen."
+    mood: warm
+    visual:
+      - {type: photo, src: assets/gillray_brobdingnag_1803.jpg, from: [0.6, 0.42, 2.6], to: [0.62, 0.44, 3.0]}
+      - {type: dialog, who: "König Georg III. (Karikatur)", text: "Eines der abscheulichsten kleinen Kriechtiere, die je über die Erde krochen.", src: assets/gillray_brobdingnag_1803.jpg, crop: [0.62, 0.42, 4.5], emotion: angry, y: 0.52, at: 0.3, note: "Text auf dem Blatt, 1803"}
+
+  - text: "Die Briten nennen ihn Little Boney. Der Name bleibt hängen."
+    transition: whip
+    mood: cinematic
+    visual:
+      - {type: photo, src: assets/gillray_brobdingnag_1803.jpg, from: [0.25, 0.45, 3.4], to: [0.25, 0.45, 4.0]}
+      - {type: title, text: "„Little Boney“", y: 0.4, size: 100, at_word: Boney}
+
+  - text: "Sogar die Psychologie hat einen Begriff nach ihm benannt: den Napoleon-Komplex."
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/napoleon_profil.jpg, from: [0.45, 0.42, 1.5], to: [0.45, 0.42, 1.8]}
+      - {type: lower, text: "Napoleon-Komplex", sub: "Klischee: kleine Männer sind aggressiver", y: 0.62, at_word: Napoleon-Komplex}
+
+  - text: "Ganz aus der Luft gegriffen war es aber nicht. Ein englischer Maler traf ihn 1802 und notierte: eher unter mittelgroß."
+    say: "Ganz aus der Luft gegriffen war es aber nicht. Ein englischer Maler traf ihn achtzehnhundertzwei und notierte: eher unter mittelgroß."
+    transition: burn
+    mood: sad
+    visual:
+      - {type: photo, src: assets/napoleon_profil.jpg, from: [0.4, 0.42, 2.0], to: [0.38, 0.4, 2.4]}
+      - {type: dialog, who: "Joseph Farington, Maler", text: "Seine Gestalt ist eher unter mittelgroß.", src: assets/napoleon_profil.jpg, crop: [0.4, 0.4, 2.6], emotion: neutral, y: 0.52, at_word: notierte, note: "Tagebuch, 1802"}
+
+  # ---------- URTEIL
+  - text: "Also, war er klein? Nein. Durchschnitt? Ja. Und Gillray? Der hat gewonnen."
+    transition: flash
+    hit: true
+    mood: gold
+    visual:
+      - {type: photo, src: assets/gillray_brobdingnag_1803.jpg, from: [0.5, 0.5, 1.1], to: [0.5, 0.5, 1.3]}
+      - {type: stamp, text: "Mythos", y: 0.42, at_word: Nein}
+
+  # ---------- LOOP
+  - text: "Darum muss man es bis heute sagen:"
+    visual:
+      - {type: photo, src: assets/napoleon_portrait.jpg, from: [0.5, 0.4, 1.3], to: [0.5, 0.36, 2.2], ease: inout}
+      - {type: title, text: "Mythos\noder Wahrheit?", y: 0.15, size: 92}
+      - {type: dust, n: 30}

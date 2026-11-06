@@ -1,0 +1,162 @@
+# Story-Doku / Ekel-Geschichte: Mumia – als Europa Mumien schluckte
+# Hook: "Apotheken verkauften früher tote Ägypter. Als Medizin." (hook_check 80/100)
+# Fakten: en.wikipedia.org/wiki/Mummia (abgerufen 06.11.2026)
+title: "Als Europa Mumien als Medizin schluckte"
+style: doku
+format: short
+voice: "eleven:george"
+speed: 1.0
+era: orient
+music: {score: epoche, era: orient, key: E, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.10
+flicker: 0.025
+crossfade: 0.4
+mood: cinematic
+bloom: 0.35
+
+meta:
+  titles:
+    - "Apotheken verkauften früher tote Ägypter als Medizin"
+    - "Mumia: Als Europa Mumien schluckte"
+    - "Die ekligste Medizin der Geschichte"
+  description: |
+    Über Jahrhunderte verkauften Europas Apotheken ein Mittel namens Mumia: gemahlene Mumien.
+
+    Schuld war ein Übersetzungsfehler. „Mumiya“ war ursprünglich ein persisches Erdpech gegen Wunden. Als Ägypten die Ausfuhr verbot, fälschten Händler die Ware mit frischen Leichen. Und Maler mischten Mumien in eine Farbe: Mumienbraun.
+  sources:
+    - "Mummia – en.wikipedia.org/wiki/Mummia (abgerufen 06.11.2026)"
+  pinned_comment: "Gemahlene Mumie gegen Knochenbrüche. Welche alte Medizin findest du noch schlimmer?"
+  tags: [Geschichte, Mumien, Medizingeschichte, Ägypten, Mittelalter, Doku, History]
+  keywords: "Mumia,Mumien Medizin,Mumienbraun"
+  thumbnail_time: 0.5
+  notes: |
+    Alle Bilder: gemeinfrei (CC0), The Met Open Access. Die gezeigten Mumien/Porträts sind Beispiele, nicht selbst als Medizin verarbeitet.
+    Musik: eigene Komposition (orientalisch), kein Content-ID-Risiko.
+    Stimme: KI (ElevenLabs „George“) → KI-Kennzeichnung an.
+
+scenes:
+  # ---------- HOOK
+  - text: "Apotheken verkauften früher tote Ägypter. Als Medizin."
+    hit: true
+    mood: gold
+    highlight: [Medizin]
+    visual:
+      - {type: photo, src: assets/fayum_mann.jpg, from: [0.5, 0.42, 2.0], to: [0.5, 0.45, 1.45], ease: out, rot: [-1.0, 0.4]}
+      - {type: dust, n: 30}
+
+  - text: "Kein Witz. Über Jahrhunderte stand in Europas Apotheken ein Mittel namens Mumia."
+    transition: whip
+    highlight: [Mumia]
+    slides:
+      - {src: assets/albarello_1545.jpg, from: [0.5, 0.45, 1.1], to: [0.5, 0.42, 1.3], ease: out}
+      - {src: assets/apothekergefaess_1700.jpg, from: [0.5, 0.5, 1.1], to: [0.5, 0.48, 1.3]}
+    visual:
+      - {type: teaser, text: "Am Ende: wo Mumien sonst noch landeten", y: 0.17, at: 0.8, until: 4.8}
+      - {type: title, text: "MUMIA", y: 0.4, size: 120, at_word: Mumia}
+
+  - text: "Und alles begann mit einem Übersetzungsfehler."
+    transition: burn
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/arabisch_medizin_1224.jpg, from: [0.5, 0.75, 1.6], to: [0.5, 0.72, 1.9]}
+      - {type: fog, strength: 0.22}
+
+  - text: "Persische Ärzte heilten Wunden mit einem schwarzen Erdpech. Sein Name: Mumiya."
+    mood: warm
+    highlight: [Mumiya]
+    visual:
+      - {type: photo, src: assets/arabisch_medizin_1224.jpg, from: [0.5, 0.3, 1.8], to: [0.5, 0.3, 2.3]}
+      - {type: lower, text: "Mumiya", sub: "persisch: heilendes Erdpech (Bitumen)", y: 0.62, at_word: Mumiya}
+
+  - text: "Die alten Ägypter nutzten ähnliches Pech, um ihre Toten einzubalsamieren."
+    transition: whip
+    mood: gold
+    slides:
+      - {src: assets/teynard_sphinx_1851.jpg, from: [0.62, 0.5, 1.0], to: [0.58, 0.5, 1.15]}
+      - {src: assets/mumie_nesiamun.jpg, from: [0.72, 0.4, 1.3], to: [0.72, 0.36, 1.6]}
+
+  - text: "Im Mittelalter übersetzen Gelehrte das falsch. Aus dem Erdpech wird der schwarze Stoff aus Mumien."
+    mood: mystery
+    highlight: [falsch]
+    visual:
+      - {type: photo, src: assets/mumie_nesiamun.jpg, from: [0.3, 0.3, 1.5], to: [0.3, 0.35, 1.8]}
+      - {type: date, text: "12. Jahrhundert", y: 0.09, at: 0.2}
+      - {type: stamp, text: "Falsch übersetzt", y: 0.42, size: 100, at_word: falsch}
+
+  - text: "Das echte Pech ist knapp. Also nimmt man bald die ganze Mumie. Gemahlen zu Pulver."
+    transition: zoom
+    mood: danger
+    highlight: [Pulver]
+    slides:
+      - {src: assets/mumie_mit_portrait.jpg, from: [0.5, 0.45, 1.0], to: [0.5, 0.4, 1.2], ease: out}
+      - {src: assets/moerser_15jh.jpg, from: [0.5, 0.45, 1.1], to: [0.5, 0.4, 1.35]}
+    visual:
+      - {type: bars, size: 0.08}
+
+  - text: "Verschrieben gegen Brüche, Wunden und fast alles andere. Geschluckt oder aufgetragen."
+    mood: warm
+    visual:
+      - {type: photo, src: assets/steen_arztbesuch_1660.jpg, from: [0.55, 0.35, 1.5], to: [0.58, 0.32, 1.8]}
+      - {type: dialog, who: "Ein Apotheker", text: "Echte Mumie aus Ägypten. Hilft gegen alles.", src: assets/steen_arztbesuch_1660.jpg, crop: [0.67, 0.34, 7.0], emotion: sly, y: 0.52, at_word: Brüche, note: "nachgestellt"}
+
+  - text: "Ganz ehrlich: Würdest du das nehmen?"
+    transition: flash
+    hit: true
+    mood: danger
+    visual:
+      - {type: photo, src: assets/fayum_juengling.jpg, from: [0.5, 0.38, 2.4], to: [0.5, 0.36, 2.8]}
+
+  # ---------- RE-HOOK
+  - text: "Doch es wird noch schlimmer."
+    mood: night
+    heartbeat: true
+    visual:
+      - {type: photo, src: assets/mumie_mit_portrait.jpg, night: true, from: [0.5, 0.14, 2.4], to: [0.5, 0.13, 2.8]}
+      - {type: fog, strength: 0.25, color: [150, 160, 190]}
+
+  - text: "Im sechzehnten Jahrhundert verbietet Ägypten die Ausfuhr. Also fälschen Händler die Ware."
+    transition: whip
+    mood: cold
+    highlight: [fälschen]
+    visual:
+      - {type: photo, src: assets/dauzats_pyramide.jpg, from: [0.5, 0.6, 1.2], to: [0.5, 0.5, 1.4]}
+      - {type: date, text: "16. Jahrhundert", y: 0.09, at: 0.2}
+      - {type: stamp, text: "Ausfuhr verboten", y: 0.42, size: 100, at_word: verbietet}
+
+  - text: "Sie trocknen frische Leichen und verkaufen sie als echte Mumie."
+    heartbeat: true
+    mood: night
+    visual:
+      - {type: photo, src: assets/mumie_mit_portrait.jpg, night: true, from: [0.5, 0.6, 1.6], to: [0.5, 0.55, 2.0]}
+      - {type: bars, size: 0.08}
+      - {type: spotlight, x: 0.5, y: 0.5, r: 0.3, at: 0.2, dark: 0.55}
+      - {type: stamp, text: "Fälschung", y: 0.42, at_word: echte}
+
+  - text: "Erst im achtzehnten Jahrhundert zweifeln die Ärzte. Trotzdem gibt es Mumia noch Anfang des zwanzigsten Jahrhunderts zu kaufen."
+    transition: burn
+    mood: sad
+    slides:
+      - {src: assets/apothekergefaess_1431.jpg, from: [0.5, 0.5, 1.0], to: [0.5, 0.48, 1.2]}
+      - {src: assets/albarello_1545.jpg, from: [0.5, 0.35, 1.8], to: [0.5, 0.33, 2.1]}
+    visual:
+      - {type: date, text: "bis ins 20. Jahrhundert", y: 0.09, at_word: zwanzigsten}
+
+  # ---------- Teaser-Auflösung
+  - text: "Und wo Mumien sonst landeten? Auf der Leinwand. Maler mischten sie in eine Ölfarbe: Mumienbraun."
+    transition: zoom
+    mood: gold
+    highlight: [Mumienbraun]
+    visual:
+      - {type: photo, src: assets/bartz_maler_1636.jpg, from: [0.4, 0.45, 1.4], to: [0.35, 0.4, 1.8], reveal_word: Leinwand}
+      - {type: lower, text: "Mumienbraun", sub: "Ölfarbe · 17.–19. Jahrhundert", y: 0.62, at_word: Mumienbraun}
+      - {type: stamp, text: "Echt", y: 0.42, color: [196, 154, 62], angle: 7, size: 130, at_word: Mumienbraun}
+
+  # ---------- LOOP
+  - text: "Jahrhundertelang galt also wirklich:"
+    visual:
+      - {type: photo, src: assets/fayum_mann.jpg, from: [0.5, 0.45, 1.2], to: [0.5, 0.42, 2.0], ease: inout}
+      - {type: dust, n: 30}

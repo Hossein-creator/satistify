@@ -269,7 +269,7 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
         vd = len(audio) / SR
         sc["_start"] = t
         sc["_vdur"] = vd
-        sc["_end"] = t + vd + sc.get("pause", 0.22)
+        sc["_end"] = t + vd + sc.get("pause", spec.get("pause", 0.22))
         sc["_words"] = None
         if sc.get("_align") and os.path.exists(sc["_align"]) and sc.get("say", sc["text"]) == sc["text"]:
             import json as _json
@@ -280,7 +280,7 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
         if sc.get("slides") and not sc.get("_slides_done"):
             # B-Roll: mehrere Bilder pro Szene, gleichmäßig verteilt, Übergänge abwechselnd
             sl = sc["slides"]
-            span = vd + sc.get("pause", 0.22)
+            span = vd + sc.get("pause", spec.get("pause", 0.22))
             enters = sc.get("slide_enter", ["slide", "zoom", "fade"])
             ph = []
             for k, item in enumerate(sl):

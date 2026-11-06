@@ -1,0 +1,183 @@
+# Story-Doku: Die Tanzwut von Straßburg 1518
+# Hook: "Diese Menschen tanzten wochenlang. Niemand konnte sie stoppen." (hook_check 90/100)
+# Fakten: en.wikipedia.org/wiki/Dancing_plague_of_1518 (abgerufen 06.11.2026); Todeszahlen ausdrücklich als unbelegt markiert
+title: "Die Tanzwut von Straßburg 1518"
+style: doku
+format: short
+voice: "eleven:george"
+speed: 1.0
+era: renaissance
+music: {score: epoche, era: renaissance, key: A, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.10
+flicker: 0.03
+crossfade: 0.4
+pause: 0.12        # kürzere Pausen zwischen Szenen (Ziel 70–75 s)
+mood: cinematic
+bloom: 0.3
+
+meta:
+  titles:
+    - "Diese Menschen tanzten wochenlang und niemand konnte sie stoppen"
+    - "Die Tanzwut von 1518: Als Straßburg nicht aufhören konnte zu tanzen"
+    - "Die seltsamste Seuche der Geschichte: Tanzen"
+  description: |
+    Straßburg, Juli 1518: Eine Frau beginnt auf der Straße zu tanzen und hört fast eine Woche nicht auf. Bald tanzen Dutzende, vielleicht Hunderte.
+
+    Die Ärzte verordnen noch mehr Tanz. Erst ein Verbot und eine Wallfahrt zum heiligen Veit beenden die Tanzwut im September.
+
+    Ob wirklich Menschen starben, ist nicht belegt.
+  sources:
+    - "Dancing plague of 1518 – en.wikipedia.org/wiki/Dancing_plague_of_1518 (abgerufen 06.11.2026)"
+    - "John Waller: A Time to Dance, a Time to Die. The Extraordinary Story of the Dancing Plague of 1518, 2008"
+  pinned_comment: "Fünfzig oder vierhundert Tänzer, und keine einzige belegte Leiche. Was glaubst du: Hysterie oder Vergiftung?"
+  tags: [Geschichte, Tanzwut, Straßburg, 1518, Mittelalter, Doku, History]
+  keywords: "Tanzwut 1518,Straßburg,Tanzplage"
+  thumbnail_time: 0.5
+  notes: |
+    Alle Bilder: gemeinfrei (CC0), The Met Open Access. Die Hondius-Radierung (1642) zeigt eine spätere Tanzwut-Wallfahrt nach Bruegel, nicht Straßburg selbst.
+    Musik: eigene Komposition (Renaissance-Stil), kein Content-ID-Risiko.
+    Stimme: KI (ElevenLabs „George“) → KI-Kennzeichnung an.
+
+scenes:
+  # ---------- HOOK
+  - text: "Diese Menschen tanzten wochenlang. Niemand konnte sie stoppen."
+    hit: true
+    mood: danger
+    highlight: [wochenlang]
+    visual:
+      - {type: photo, src: assets/hondius_tanzwut_1642.jpg, from: [0.42, 0.55, 2.6], to: [0.45, 0.6, 1.7], ease: out, rot: [-1.5, 0.5]}
+      - {type: dust, n: 30}
+
+  - text: "Straßburg, Juli 1518. Eine Frau tritt vor ihr Haus und fängt an zu tanzen."
+    say: "Straßburg, Juli fünfzehnhundertachtzehn. Eine Frau tritt vor ihr Haus und fängt an zu tanzen."
+    transition: whip
+    mood: cinematic
+    slides:
+      - {src: assets/duerer_tanzpaar_1514.jpg, from: [0.5, 0.4, 1.1], to: [0.5, 0.35, 1.3], ease: out}
+      - {src: assets/beham_tanzpaar.jpg, from: [0.45, 0.4, 1.6], to: [0.5, 0.35, 1.9]}
+    visual:
+      - {type: date, text: "Straßburg · Juli 1518", y: 0.09, at: 0.2}
+      - {type: teaser, text: "Am Ende: wie viele wirklich starben", y: 0.17, at: 1.2, until: 5.0}
+
+  - text: "Ohne Musik. Ohne Pause. Fast eine Woche lang."
+    transition: zoom
+    mood: mystery
+    highlight: [Woche]
+    visual:
+      - {type: photo, src: assets/duerer_tanzpaar_1514.jpg, from: [0.5, 0.35, 1.5], to: [0.5, 0.33, 1.8]}
+      - {type: count, to: 7, label: "Tage", at_word: Woche, y: 0.27, dur: 1.4}
+      - {type: fog, strength: 0.22}
+
+  - text: "Die Chroniken nennen sie Frau Troffea."
+    mood: sad
+    visual:
+      - {type: photo, src: assets/beham_tanzpaar.jpg, from: [0.32, 0.26, 2.6], to: [0.3, 0.24, 3.0]}
+      - {type: lower, text: "Frau Troffea", sub: "die erste Tänzerin · Straßburg 1518", y: 0.6, at_word: Troffea}
+
+  - text: "Dann passiert das Unheimliche: Andere machen mit. Erst ihr Mann, dann Nachbarn, dann Fremde."
+    transition: burn
+    mood: danger
+    highlight: [Unheimliche]
+    slides:
+      - {src: assets/hondius_tanzwut_1642.jpg, from: [0.3, 0.55, 2.4], to: [0.32, 0.55, 2.7], ease: out}
+      - {src: assets/hondius_tanzwut_1642.jpg, from: [0.62, 0.58, 2.4], to: [0.6, 0.56, 2.8]}
+      - {src: assets/debry_tanzpaare.jpg, from: [0.15, 0.5, 1.0], to: [0.85, 0.5, 1.0], ease: linear}
+    visual:
+      - {type: bars, size: 0.08}
+
+  - text: "Am Ende sind es fünfzig, vielleicht vierhundert Menschen."
+    transition: zoom
+    mood: mystery
+    highlight: [vierhundert]
+    visual:
+      - {type: photo, src: assets/hondius_tanzwut_1642.jpg, from: [0.5, 0.58, 1.6], to: [0.5, 0.55, 1.15], ease: out}
+      - {type: count, to: 400, label: "Tänzer (Schätzung)", at_word: vierhundert, y: 0.27, dur: 1.6}
+
+  - text: "Ihre Füße schwellen an. Sie bluten in die Schuhe. Manche brechen einfach zusammen."
+    heartbeat: true
+    mood: night
+    slides:
+      - {src: assets/duerer_tanzpaar_1514.jpg, night: true, from: [0.42, 0.88, 3.0], to: [0.44, 0.86, 3.5]}
+      - {src: assets/hondius_tanzwut_1642.jpg, night: true, from: [0.45, 0.85, 3.0], to: [0.42, 0.82, 3.4], enter: fade}
+    visual:
+      - {type: bars, size: 0.08}
+      - {type: spotlight, x: 0.5, y: 0.55, r: 0.33, at: 0.3, dark: 0.5}
+
+  # ---------- RE-HOOK
+  - text: "Und jetzt kommt der Teil, den du kaum glauben wirst. Was tut die Stadt?"
+    transition: flash
+    hit: true
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/baldung_hexen_1510.jpg, from: [0.5, 0.45, 1.2], to: [0.5, 0.5, 1.4]}
+      - {type: fog, strength: 0.3}
+      - {type: title, text: "Die Medizin", y: 0.4, size: 110, at_word: Stadt}
+
+  - text: "Die Ärzte sagen: zu heißes Blut. Die Heilung? Noch mehr tanzen."
+    transition: whip
+    mood: warm
+    highlight: [tanzen]
+    visual:
+      - {type: photo, src: assets/holbein_koenig_tod.jpg, from: [0.5, 0.5, 1.3], to: [0.52, 0.45, 1.5]}
+      - {type: dialog, who: "Ein Stadtarzt", text: "Lasst sie tanzen, bis das Blut abkühlt.", src: assets/holbein_koenig_tod.jpg, crop: [0.48, 0.42, 4.0], emotion: proud, y: 0.52, at_word: Heilung, note: "nachgestellt"}
+
+  - text: "Es heißt, der Rat räumt Zunfthäuser frei, holt Musiker und starke Männer, die die Tänzer aufrecht halten."
+    mood: warm
+    slides:
+      - {src: assets/debry_tanzpaare.jpg, from: [0.1, 0.5, 1.0], to: [0.5, 0.5, 1.0], ease: linear}
+      - {src: assets/duerer_tanzpaar_1514.jpg, from: [0.5, 0.45, 1.25], to: [0.5, 0.42, 1.5]}
+      - {src: assets/beham_tanzpaar.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.45, 1.45]}
+    visual:
+      - {type: lower, text: "Zunfthäuser, Musiker, Helfer", sub: "Bericht · nicht sicher belegt", y: 0.62, at_word: Musiker}
+
+  - text: "Es wird nur schlimmer. Also kommt das Verbot: keine Musik, kein Tanz."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/wolgemut_totentanz_1493.jpg, from: [0.5, 0.52, 1.7], to: [0.5, 0.5, 2.0]}
+      - {type: stamp, text: "Verboten", y: 0.4, at_word: Verbot}
+
+  - text: "Die Tänzer bringt man zu einer Kapelle des heiligen Veit. Mit roten Schuhen und kleinen Kreuzen in der Hand."
+    transition: burn
+    mood: gold
+    highlight: [roten]
+    slides:
+      - {src: assets/hondius_tanzwut_1642.jpg, from: [0.75, 0.22, 2.6], to: [0.72, 0.2, 3.0]}
+      - {src: assets/hondius_tanzwut_1642.jpg, from: [0.5, 0.86, 2.6], to: [0.52, 0.84, 3.0]}
+    visual:
+      - {type: lower, text: "Heiliger Veit", sub: "Schutzpatron gegen die Tanzwut", y: 0.6, at_word: Veit}
+
+  - text: "Im September ist es vorbei. So plötzlich, wie es begann."
+    mood: sad
+    visual:
+      - {type: photo, src: assets/hondius_tanzwut_1642.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.5, 1.0], ease: inout}
+      - {type: date, text: "September 1518", y: 0.09, at_word: September}
+
+  # ---------- Teaser-Auflösung
+  - text: "Und die Toten? Manche schreiben von fünfzehn am Tag. Die Akten der Stadt nennen keinen einzigen."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/holbein_wappen_tod.jpg, from: [0.5, 0.72, 2.2], to: [0.5, 0.7, 2.6]}
+      - {type: count, to: 15, label: "Tote pro Tag?", at_word: fünfzehn, y: 0.27, dur: 1.2}
+      - {type: stamp, text: "Nicht belegt", y: 0.45, at_word: keinen}
+
+  - text: "Forscher vermuten heute eine Massenhysterie, aus Hunger, Krankheit und Angst."
+    transition: whip
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/baldung_hexen_1510.jpg, from: [0.5, 0.3, 1.8], to: [0.5, 0.34, 2.1]}
+      - {type: lower, text: "Massenhysterie", sub: "Theorie u. a. von John Waller", y: 0.62, at_word: Massenhysterie}
+      - {type: fog, strength: 0.25}
+
+  # ---------- LOOP
+  - text: "Sicher ist nur, was alle Chroniken erzählen:"
+    visual:
+      - {type: photo, src: assets/hondius_tanzwut_1642.jpg, from: [0.45, 0.6, 1.3], to: [0.42, 0.55, 2.4], ease: inout}
+      - {type: dust, n: 30}
