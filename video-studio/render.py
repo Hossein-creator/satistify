@@ -29,6 +29,7 @@ import doodle  # noqa: E402
 import cartoon  # noqa: E402
 import doku  # noqa: E402
 import music as score_music  # noqa: E402
+import beats  # noqa: E402
 
 DARK_BGS = {"night", "dramatic", "palace", "throne", "red"}
 ROLE_BY_PROP = [("crown", "king"), ("tricorn", "soldier"), ("farmer", "farmer"), ("wig", "noble"), ("helmet", "knight")]
@@ -304,6 +305,9 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
         pal = {"bg": (0, 0, 0), "ink": (245, 240, 230), "soft": (200, 200, 200)}
         img = Image.new("RGB", (W, H), (8, 8, 10))
         photos = [e for e in sc.get("visual", []) if e["type"] == "photo" and e["_at"] <= local]
+        for ph in photos:
+            ph["_t"] = t
+            ph["_handheld"] = ph.get("handheld", sc.get("handheld", spec.get("handheld", 0.7)))
         for idx, ph in enumerate(photos[-2:]):
             st = max(0.0, ph["_at"])
             dur_ph = sc["_end"] - sc["_start"] - st + 0.4
@@ -336,6 +340,7 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
         if el["type"] in ("figure", "person") and "role" not in el:
             el["role"] = next((r for p_, r in ROLE_BY_PROP if p_ in el.get("props", [])), "citizen")
         el["_talking"] = bool(el.get("talk")) and local < sc["_vdur"]
+        el["_since"] = local - max(0.0, at) if at >= 0 else local + 1.0
         fn = drawer(el)
         if el["type"] == "image":
             fn(pen, el, W, H, k, t, pal, base_dir=base_dir)
@@ -357,18 +362,35 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
                 fx, fy = tgt["x"], tgt.get("y", 0.5) - (0.12 if tgt["type"] in ("figure", "person") else 0)
                 z *= 1.16
     ox = oy = 0.0
+    shake_amp = 12 if doku_style else 22
     for st in shakes:
-        if 0 <= t - st < 0.45:
-            a = (1 - (t - st) / 0.45) * 22 * s
-            ox, oy = random.uniform(-a, a), random.uniform(-a, a)
-            z = max(z, 1.04)
+        if 0 <= t - st < 0.4:
+            a = (1 - (t - st) / 0.4) ** 2 * shake_amp * s
+            rr = random.Random(int(t * FPS))
+            ox, oy = rr.uniform(-a, a), rr.uniform(-a, a)
+            z = max(z, 1.03)
+    punch = 0.0
+    if doku_style and sc.get("hit", False) and local < 0.45:   # Punch-In: Bild knallt rein
+        punch = (1 - local / 0.45) ** 3 * (0.16 if sc_i == 0 else 0.10)
+        z *= 1 + punch
+    for kt in spec.get("_kicks", []):                           # Bild pulsiert mit dem Beat
+        if 0 <= t - kt < 0.25:
+            z *= 1 + spec.get("beat_bump", 0.012) * math.exp(-(t - kt) / 0.07)
+            break
     if z != 1.0 or ox or oy:
         cw, ch = W / z, H / z
         cx = min(max(fx * W + ox, cw / 2), W - cw / 2)
         cy = min(max(fy * H + oy, ch / 2), H - ch / 2)
         img = img.resize((W, H), Image.BILINEAR, box=(cx - cw / 2, cy - ch / 2, cx + cw / 2, cy + ch / 2))
     if doku_style:
-        img = doku.grade(img, t, spec.get("grade", 1.0))
+        img = doku.grade(img, t, spec.get("grade", 1.0), flicker=spec.get("flicker", 0.025))
+        if punch > 0.01:
+            img = doku.zoom_blur(img, punch * 0.6)
+            img = doku.chroma(img, punch * 70 * s)
+        leak = spec.get("leaks", 0.0) * max(0.0, 1 - local / 0.8) if sc_i > 0 else 0.0
+        if sc.get("transition") == "burn":
+            leak = max(leak, math.sin(math.pi * min(1, local / 0.9)) * 0.9)
+        img = doku.light_leak(img, leak, t)
         if sc.get("transition") == "flash" and local < 0.3:
             img = Image.blend(img, Image.new("RGB", (W, H), (255, 250, 240)), 1 - local / 0.3)
     draw_captions(img, sc, local, W, H, s, fmt, spec)
@@ -430,6 +452,137 @@ def write_docs(spec, scenes, out_dir, total):
         rec.append(f"**Szene {i + 1}** → `szene_{i + 1:02d}.wav` (ca. {sc['_vdur']:.1f} s)\n> {sc['text']}\n")
     open(os.path.join(out_dir, "aufnahme-skript.md"), "w", encoding="utf-8").write("\n".join(rec))
 
+def lufs(x):
+    """Integrierte Lautheit (EBU R128) eines Signals über ffmpeg."""
+    if not np.any(np.abs(x) > 1e-4):
+        return -70.0
+    raw = (np.clip(x, -1, 1) * 32767).astype(np.int16).tobytes()
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-f", "s16le", "-ar", str(SR), "-ac", "1", "-i", "-",
+                        "-af", "ebur128", "-f", "null", "-"], input=raw, capture_output=True)
+    txt = r.stderr.decode(errors="ignore")
+    try:
+        return float(txt.split("Summary:")[1].split("I:")[1].split("LUFS")[0])
+    except Exception:
+        return -70.0
+
+
+def type_ticks():
+    n = int(0.03 * SR)
+    t = np.arange(n) / SR
+    rng = np.random.default_rng(12)
+    return (np.sin(2 * np.pi * 1800 * t) * 0.4 + rng.standard_normal(n) * 0.5) * np.exp(-t * 160)
+
+
+def make_music(spec, scenes, total, build_dir, music):
+    """Gibt (Musik-Signal mit RMS ~1, Metadaten) zurück; nutzt Cache in .build/."""
+    key = score_music.cache_key(scenes, total, music)
+    mpath = os.path.join(build_dir, f"score_{music['score']}_{key}.wav")
+    meta = {}
+    if music["score"] in beats.SCORES:
+        if not os.path.exists(mpath):
+            print(f"  komponiere Trend-Musik ({music['score']}) …", flush=True)
+            beats.compose(scenes, total, music, mpath)
+        mj = os.path.splitext(mpath)[0] + ".json"
+        if os.path.exists(mj):
+            meta = json.load(open(mj))
+    else:
+        if not os.path.exists(mpath):
+            print("  komponiere Filmmusik …", flush=True)
+            score_music.compose(scenes, total, music, mpath)
+    return ffmpeg_to_mono(mpath), meta
+
+
+def mix_audio(spec, scenes, total, base_dir, build_dir, wav_path, music_override="__spec__"):
+    n = int(total * SR) + SR
+    voice = np.zeros(n)
+    fx = np.zeros(n)
+    doku_style = spec.get("style") == "doku"
+    for i, sc in enumerate(scenes):
+        add(voice, sc["_audio"], sc["_start"], 1.0)
+        tr = sc.get("transition")
+        if i > 0 and spec.get("sfx", True):
+            g = 0.22 if tr in ("whip", "zoom") else (0.06 if doku_style else 0.18)
+            add(fx, sfx("whoosh"), sc["_start"] - 0.12, g)
+        if sc.get("hit"):
+            add(fx, sfx("hit"), sc["_start"], 0.5)
+        if sc.get("heartbeat"):
+            for b in np.arange(0, sc["_end"] - sc["_start"], 1.0):
+                add(fx, sfx("heartbeat"), sc["_start"] + b, 0.35)
+        for el in sc.get("visual", []):
+            at = max(0.0, el["_at"])
+            if el["type"] == "stamp":
+                add(fx, sfx("boom"), sc["_start"] + at, 0.55)
+                continue
+            if el["type"] == "date" and el.get("typewriter", True) and el["_at"] >= 0:
+                for c in range(len(el["text"])):
+                    if el["text"][c] != " ":
+                        add(fx, type_ticks(), sc["_start"] + at + c * doku.TYPE_SPEED, 0.12)
+                continue
+            kind = el.get("sfx", None if doku_style else "pop")
+            if kind and el["_at"] > 0.05 and spec.get("sfx", True):
+                add(fx, sfx(kind), sc["_start"] + el["_at"], 0.22 if kind == "pop" else 0.45)
+    music = spec.get("music") if music_override == "__spec__" else music_override
+    mus = np.zeros(n)
+    if isinstance(music, dict) and music.get("score"):
+        m, meta = make_music(spec, scenes, total, build_dir, music)
+        spec["_kicks"] = meta.get("kicks", []) if music_override == "__spec__" else spec.get("_kicks", [])
+        mus[: min(n, len(m))] = m[:n]
+        # Lautstärke relativ zur Stimme (in LU): music_db = wie viele dB die Musik unter der Stimme liegt
+        v_l, m_l = lufs(voice), lufs(mus[: int(total * SR)])
+        gain_db = (v_l - spec.get("music_db", 17.5)) - m_l
+        mus *= 10 ** (gain_db / 20)
+        # Ducking: Musik wird leiser, wenn gesprochen wird
+        win = int(0.35 * SR)
+        env = np.convolve(np.abs(voice), np.ones(win) / win, mode="same")
+        act = np.clip(env / 0.03, 0, 1)
+        act = np.convolve(act, np.ones(int(0.5 * SR)) / int(0.5 * SR), mode="same")
+        mus *= 1 - spec.get("duck", 0.45) * act
+        fade = np.minimum(1, (total - np.arange(n) / SR) / 2.0).clip(0, 1)
+        mus *= fade
+        print(f"  Lautheit: Stimme {v_l:.1f} LUFS, Musik {m_l + gain_db:.1f} LUFS "
+              f"({spec.get('music_db', 21.0):.0f} dB darunter, beim Sprechen weitere "
+              f"{-20 * np.log10(1 - spec.get('duck', 0.45)):.1f} dB)", flush=True)
+    elif music:
+        if isinstance(music, str) and os.path.exists(os.path.join(base_dir, music)):
+            m = ffmpeg_to_mono(os.path.join(base_dir, music))
+            reps = int(np.ceil(n / len(m)))
+            mus = np.tile(m, reps)[:n] * spec.get("music_volume", 0.12)
+        else:
+            pad = ambient_pad(total, music if isinstance(music, str) else "mystery")
+            mus[: len(pad)] = pad * spec.get("music_volume", 0.06)
+    mix = voice + fx + mus
+    mix = mix / max(1.0, np.max(np.abs(mix)) / 0.95)
+    with wave.open(wav_path, "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(SR)
+        wf.writeframes((mix[: int(total * SR)] * 32767).astype(np.int16).tobytes())
+    return wav_path
+
+
+def remux(video_in, wav_path, out_path, build_dir):
+    tmp = os.path.join(build_dir, "remux.mp4")
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", video_in, "-i", wav_path, "-map", "0:v", "-map", "1:a",
+                    "-c:v", "copy", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "192k",
+                    "-ar", "48000", "-shortest", "-movflags", "+faststart", tmp], check=True)
+    os.replace(tmp, out_path)
+
+
+def make_variants(spec, scenes, total, base_dir, build_dir, out_dir):
+    out_mp4 = os.path.join(out_dir, "video.mp4")
+    w0 = os.path.join(build_dir, "mix_ohne_musik.wav")
+    mix_audio(spec, scenes, total, base_dir, build_dir, w0, music_override=None)
+    remux(out_mp4, w0, os.path.join(out_dir, "video_ohne_musik.mp4"), build_dir)
+    print("Variante:", os.path.join(out_dir, "video_ohne_musik.mp4"))
+    m = spec.get("music")
+    if isinstance(m, dict) and m.get("score") in beats.SCORES:
+        other = "trailer" if m["score"] == "phonk" else "phonk"
+        alt = {"score": other, "key": m.get("key", "D")}
+        w1 = os.path.join(build_dir, f"mix_{other}.wav")
+        mix_audio(spec, scenes, total, base_dir, build_dir, w1, music_override=alt)
+        remux(out_mp4, w1, os.path.join(out_dir, f"video_{other}.mp4"), build_dir)
+        print("Variante:", os.path.join(out_dir, f"video_{other}.mp4"))
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -437,6 +590,8 @@ def main():
     ap.add_argument("--stills", action="store_true", help="nur ein Vorschaubild pro Szene")
     ap.add_argument("--scale", type=float, default=1.0)
     ap.add_argument("--audio-only", action="store_true", help="nur Ton neu mischen, Bild aus output/video.mp4 übernehmen")
+    ap.add_argument("--variants", action="store_true",
+                    help="zusätzlich video_ohne_musik.mp4 (für Trend-Sounds in der App) und die zweite Trend-Musik")
     args = ap.parse_args()
 
     spec_path = os.path.abspath(args.spec)
@@ -453,7 +608,9 @@ def main():
 
     scenes = spec["scenes"]
     total = build_timeline(spec, base_dir, build_dir)
-    shakes = [sc["_start"] + el["_at"] for sc in scenes for el in sc.get("visual", []) if el.get("shake")]
+    shakes = [sc["_start"] + max(0, el["_at"]) for sc in scenes for el in sc.get("visual", [])
+              if el.get("shake") or el["type"] == "stamp"]
+    shakes += [sc["_start"] for sc in scenes if sc.get("hit")]
 
     if args.stills:
         frames = []
@@ -471,69 +628,17 @@ def main():
         print(p)
         return
 
-    # Audio mischen
-    n = int(total * SR) + SR
-    voice = np.zeros(n)
-    fx = np.zeros(n)
-    for i, sc in enumerate(scenes):
-        add(voice, sc["_audio"], sc["_start"], 1.0)
-        doku_style = spec.get("style") == "doku"
-        if i > 0 and spec.get("sfx", True):
-            add(fx, sfx("whoosh"), sc["_start"] - 0.12, 0.06 if doku_style else 0.18)
-        if sc.get("hit"):
-            add(fx, sfx("hit"), sc["_start"], 0.5)
-        if sc.get("heartbeat"):
-            for b in np.arange(0, sc["_end"] - sc["_start"], 1.0):
-                add(fx, sfx("heartbeat"), sc["_start"] + b, 0.35)
-        for el in sc.get("visual", []):
-            kind = el.get("sfx", None if doku_style else "pop")
-            if kind and el["_at"] > 0.05 and spec.get("sfx", True):
-                add(fx, sfx(kind), sc["_start"] + el["_at"], 0.22 if kind == "pop" else 0.45)
-    music = spec.get("music")
-    mus = np.zeros(n)
-    if isinstance(music, dict) and music.get("score"):
-        mpath = os.path.join(build_dir, f"score_{score_music.cache_key(scenes, total, music)}.wav")
-        if not os.path.exists(mpath):
-            print("  komponiere Filmmusik …", flush=True)
-            score_music.compose(scenes, total, music, mpath)
-        m = ffmpeg_to_mono(mpath)
-        m = m / max(1e-6, np.sqrt(np.mean(m[: int(min(len(m), total * SR))] ** 2)))  # auf RMS 1 normieren
-        mus[: min(n, len(m))] = m[:n] * spec.get("music_volume", 0.05)
-        # Ducking: Musik wird leiser, wenn gesprochen wird
-        win = int(0.35 * SR)
-        env = np.convolve(np.abs(voice), np.ones(win) / win, mode="same")
-        act = np.clip(env / 0.03, 0, 1)
-        act = np.convolve(act, np.ones(int(0.5 * SR)) / int(0.5 * SR), mode="same")
-        mus *= 1 - spec.get("duck", 0.5) * act
-        fade = np.minimum(1, (total - np.arange(n) / SR) / 2.0).clip(0, 1)
-        mus *= fade
-    elif music:
-        if isinstance(music, str) and os.path.exists(os.path.join(base_dir, music)):
-            m = ffmpeg_to_mono(os.path.join(base_dir, music))
-            reps = int(np.ceil(n / len(m)))
-            mus = np.tile(m, reps)[:n] * spec.get("music_volume", 0.12)
-        else:
-            pad = ambient_pad(total, music if isinstance(music, str) else "mystery")
-            mus[: len(pad)] = pad * spec.get("music_volume", 0.06)
-    mix = voice + fx + mus
-    mix = mix / max(1.0, np.max(np.abs(mix)) / 0.95)
     wav_path = os.path.join(build_dir, "mix.wav")
-    with wave.open(wav_path, "wb") as wf:
-        wf.setnchannels(1)
-        wf.setsampwidth(2)
-        wf.setframerate(SR)
-        wf.writeframes((mix[: int(total * SR)] * 32767).astype(np.int16).tobytes())
+    mix_audio(spec, scenes, total, base_dir, build_dir, wav_path)
 
     # Video
     out_mp4 = os.path.join(out_dir, "video.mp4")
     if args.audio_only and os.path.exists(out_mp4):
-        tmp = os.path.join(build_dir, "remux.mp4")
-        subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", out_mp4, "-i", wav_path, "-map", "0:v", "-map", "1:a",
-                        "-c:v", "copy", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "192k",
-                        "-ar", "48000", "-shortest", "-movflags", "+faststart", tmp], check=True)
-        os.replace(tmp, out_mp4)
+        remux(out_mp4, wav_path, out_mp4, build_dir)
         write_docs(spec, scenes, out_dir, total)
         print("Ton neu gemischt:", out_mp4)
+        if args.variants:
+            make_variants(spec, scenes, total, base_dir, build_dir, out_dir)
         return
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
            "-i", "-", "-i", wav_path, "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-maxrate", "8M",
@@ -550,9 +655,17 @@ def main():
         fr = render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes)
         si = next((i for i, sc in enumerate(scenes) if t < sc["_end"]), len(scenes) - 1)
         loc = t - scenes[si]["_start"]
-        if xfade and si > 0 and loc < xfade and (si - 1) in last_of and scenes[si].get("transition") != "cut" \
-                and scenes[si].get("transition") != "flash":
-            fr = Image.blend(last_of[si - 1], fr, loc / xfade)
+        trn = scenes[si].get("transition", "fade")
+        prev = last_of.get(si - 1)
+        if si > 0 and prev is not None and trn == "whip" and loc < 0.24:
+            fr = doku.whip(prev, fr, loc / 0.24)
+        elif si > 0 and prev is not None and trn == "zoom" and loc < 0.3:
+            p = loc / 0.3
+            pz = doku.zoom_blur(prev.resize((W, H), Image.BILINEAR, box=(W * p * 0.15, H * p * 0.15,
+                                                                         W * (1 - p * 0.15), H * (1 - p * 0.15))), 0.12)
+            fr = Image.blend(pz, doku.zoom_blur(fr, 0.12 * (1 - p)), doku.ease(p))
+        elif xfade and si > 0 and prev is not None and loc < xfade and trn in ("fade", "burn"):
+            fr = Image.blend(prev, fr, loc / xfade)
         else:
             last_of[si] = fr
         if abs(t - thumb_t) < 0.5 / FPS:
@@ -565,6 +678,8 @@ def main():
     write_srt(scenes, os.path.join(out_dir, "untertitel.srt"), spec)
     write_docs(spec, scenes, out_dir, total)
     print("fertig:", out_mp4, f"({total:.1f}s)")
+    if args.variants:
+        make_variants(spec, scenes, total, base_dir, build_dir, out_dir)
 
 
 if __name__ == "__main__":

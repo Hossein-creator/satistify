@@ -16,10 +16,11 @@ Stand: 06.11.2026. Pflichtlektüre vor jedem neuen Video. Quellen: Kanal-Analyse
 | 2 | **Thema und Formel wählen** aus der Swipe-File (Abschnitt „Deine Versionen“) | `recherche/swipe/` |
 | 3 | **Fakten prüfen** mit Wikipedia und Primärquellen; Legenden als Legenden kennzeichnen | Wikipedia-API (siehe §6) |
 | 4 | **Skript schreiben** (§3) in `videos/DATUM-titel/video.yaml` | Vorlage: `videos/2026-11-06-kartoffel-trick/video.yaml` |
+| 4b | **Hook:** 5 Varianten schreiben, bewerten, die beste nehmen (Regeln: `playbook/HOOKS.md`) | `python3 video-studio/tools/hook_check.py video.yaml --text "…"` |
 | 5 | **ig-human:** Skript, Beschreibung und angehefteten Kommentar prüfen; erst bei PASS weiter | `python3 video-studio/tools/human_check.py skript.txt` |
 | 6 | **Bilder holen:** nur gemeinfrei (PD/CC0) | `python3 video-studio/tools/commons.py search "…"` / `get "File:…" --dir videos/…/assets` |
 | 7 | **Vorschau** prüfen (Bildausschnitte, Texte, Untertitel) | `python3 video-studio/render.py videos/…/video.yaml --stills` |
-| 8 | **Rendern** | `python3 video-studio/render.py videos/…/video.yaml` |
+| 8 | **Rendern** (mit Varianten: ohne Musik und zweite Trend-Musik) | `python3 video-studio/render.py videos/…/video.yaml --variants` |
 | 9 | **ig-caption:** Beschreibung bzw. Caption mit 2–3 Suchbegriffen, ≤ 5 Hashtags, genau einer Bitte | `python3 video-studio/tools/caption_check.py caption.txt --keywords "…" --platform youtube` |
 | 10 | **Speichern:** committen und pushen; Erkenntnisse in `memory/` ergänzen | git |
 
@@ -32,13 +33,14 @@ Die Original-Skripte der Skills (`humanize.py`, `detect.py`, `caption.py`, `swip
 - Sprechtempo Deutsch: **130–150 Wörter/Min.**
 
 ## 3. Skript-Regeln (aus Kanal-Analyse und Recherche)
-1. **Der erste Satz ist der Hook** und sagt die Titelbehauptung. Keine Begrüßung, kein „In diesem Video“.
+1. **Der erste Satz ist der Hook** und sagt die Titelbehauptung. Keine Begrüßung, kein „In diesem Video“. **Alle Hook-Regeln: `playbook/HOOKS.md`.**
 2. **Ein Bogen pro Short:** Ausgangslage, Problem, Wendung, Pointe oder Twist.
 3. **Konkrete Zahlen, Namen und Daten** wie „15 Erlasse“, „24. März 1756“.
 4. **Ernster, ruhiger Erzählton** wie bei Terra X oder MrWissen2go. Spannung entsteht durch Fakten und Stakes, nicht durch Witze.
 5. **Re-Hook alle 20–30 s** bei Shorts und alle 45–90 s bei Langform (offene Frage, „Doch …“, „Und hier beginnt …“).
 6. **Legenden ehrlich als Legenden markieren.** Das ist selbst ein starker Twist („Nur: Belegt ist er nicht.“).
-7. **Ende:** genau eine Frage an die Zuschauer (bringt Kommentare). Ideal ist ein Loop zurück zum Anfang.
+7. **Ende = Loop:** Der letzte Satz führt in den ersten (endet z. B. mit „:“), das letzte Bild gleicht dem ersten. Die Frage an die Zuschauer steht dann als Titelkarte im Bild und im angehefteten Kommentar.
+9. **Sprech-Stil:** ab und zu „du“, eine echte Frage, Umgangssprache („gibt's“, „ja“, „mal“). Sonst fällt das Skript bei ig-human durch (VOICE).
 8. **Langform:** Sponsor bzw. Pause direkt nach einem Cliffhanger („Doch bevor wir dazu kommen …“). Am Ende auf das nächste passende Video verweisen statt um Abos zu bitten.
 
 ### Hook-Formeln, die bei seriösen History-Kanälen funktionieren (Swipe 06.11.2026)
@@ -67,8 +69,18 @@ Details: `dokumente/2026-11-06-analyse-kanaele-2.md`
 - **Bilder:** gemeinfreie Gemälde, Stiche, Karten und Porträts von Wikimedia Commons. Wechsel alle 3–6 s, dazu langsame Kamerafahrten auf Details (Gesichter, Hände, Gegenstände).
 - **Look:** leicht entsättigt, mehr Kontrast, warme Lichter und kühle Schatten, Vignette, Filmkorn, Staub. Macht `doku.grade` automatisch.
 - **Typografie:** Cinzel für Orte, Daten und Titelkarten; Bauchbinde für Personen (Name plus Funktion und Lebensdaten); Untertitel in Montserrat, weiß, aktives Wort gold.
-- **Übergänge:** Überblendung 0,45 s. Bei Twists `transition: flash` plus `hit: true` (tiefer Schlag). Für Spannung `heartbeat: true`.
-- **Musik:** dunkler, synthetischer Klangteppich (`music: dark`, lizenzfrei). Eigene Musik nur aus der YouTube Audio Library, oder Epidemic Sound mit verknüpftem Kanal.
+- **Bewegung (immer an):** Handkamera (`handheld: 0.7`), leichte Drehung (`rot: [a, b]` in Grad), Projektor-Flackern (`flicker`), Lichteinfall bei Szenenwechseln (`leaks: 0.1`). Beim Hook `ease: out` (schneller Start).
+- **Treffer (`hit: true`):** Punch-In-Zoom, Zoom-Unschärfe, RGB-Versatz, Kamerawackler, Impact-Schlag, und die Musik setzt einen Schlag vorher aus.
+- **Übergänge (`transition:`):** `fade` (Standard), `whip` (Wischschwenk mit Bewegungsunschärfe), `zoom` (Zoom-Durchflug), `burn` (Filmbrand/Lichteinfall), `flash` (weißer Blitz, für Twists), `cut`. Abwechseln, etwa alle 2–3 Szenen ein `whip` oder `zoom`.
+- **Effekt-Elemente (`visual:`):** `stamp` (Stempel knallt aufs Bild: NICHT BELEGT, ECHT, LEGENDE), `date` (Schreibmaschine mit Tippgeräusch), `title` (Buchstaben ziehen sich zusammen), `lower` (Bauchbinde), `spotlight` (Blick auf ein Detail lenken), `fog` (Nebel/Rauch), `embers` (Glut/Funken bei Krieg und Feuer), `dust`, `mark`. Foto mit `night: true` wirkt wie bei Nacht.
+- **Beat-Sync:** Bei Trend-Musik pulsiert das Bild leicht auf der Kick (`beat_bump: 0.01`).
+- **Musik = Trend-Sound, selbst komponiert** (`beats.py`, kein Content-ID-Risiko):
+  - `music: {score: phonk, tempo: 118, key: D, drop_scene: 1}`: **Dark Phonk**, 2025/26 der meistgenutzte Sound in Shorts-Edits (Cowbell-Riff, 808 mit Slides, Hi-Hat-Rolls). Standard für Hook-starke Shorts.
+  - `music: {score: trailer, tempo: 96}`: **Trailer/Doku-Spannung** (Ticken, Puls, Braams, Taikos). Für ernste Themen wie Krieg, Tod oder True Crime.
+  - `music: {score: dark|mystery|epic|sad|hope}`: alte Orchester-Variante (`music.py`).
+  - Die Musik folgt dem Video: Hook nur Riff → **Drop auf Szene 2** → Pause vor jedem `hit` → nur Kick bei `heartbeat` → Ausklang in der letzten Szene.
+  - **Lautstärke:** `music_db: 17.5` (Musik 17,5 dB unter der Stimme, gemessen in LUFS) plus `duck: 0.45` (beim Sprechen weitere 5 dB leiser). Nutzer-Feedback 06.11.: Die vorherige Musik (ca. 12 dB unter der Stimme) war zu laut.
+  - **Echte Trend-Songs** (z. B. ein aktueller Phonk-Hit) nur **in der App** hinzufügen: `output/video_ohne_musik.mp4` hochladen und in YouTube Shorts, TikTok oder Instagram den Sound dort wählen. Dann ist er lizenziert. Bei YouTube Shorts geht dafür ein Teil der Einnahmen an die Musikrechte. Nie einen fremden Song in die Datei mischen (Content ID).
 - **Ton:** um −14 LUFS, True Peak −1,5 dB. `render.py` normalisiert automatisch.
 - **Stimme:** Die eingebaute „Thorsten“-Stimme (CC0) ist nur ein **Entwurf**. Für den Upload besser die **eigene Stimme** über `aufnahme/szene_XX.wav`, siehe `output/aufnahme-skript.md` (menschlicher, sicherer bei der „inauthentic content“-Regel) oder eine hochwertige Sprecherstimme per API. Die englische Piper-Stimme „Ryan“ ist **nicht kommerziell** nutzbar (CC BY-NC-SA).
 
@@ -94,6 +106,7 @@ Details: `dokumente/2026-11-06-analyse-kanaele-2.md`
 - Umgebung „satistify“ (Cloud): erlaubt YouTube, Wikimedia, Wikipedia und support.google.com. Das Setup-Skript installiert yt-dlp, piper-tts, pyyaml und die Stimme.
 - Wikimedia drosselt schnelle Anfragen; `commons.py` wartet automatisch. Bilder kommen über upload.wikimedia.org.
 - Stile im Renderer: `style: doku` (Standard für diesen Kanal), Cartoon (abgelehnt, nur als Fallback).
+- Renderzeit: etwa 0,3–0,5 s pro Bild in 1080×1920, also 10–15 Min. für 60 s. `--stills` für eine schnelle Vorschau, `--audio-only` mischt nur den Ton neu (z. B. nach einer Änderung der Lautstärke).
 
 ## Quellen dieses Playbooks
 - Kanal-Analyse: `dokumente/2026-11-06-analyse-history-kanaele.md`

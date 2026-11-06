@@ -34,4 +34,5 @@ Wenn der Nutzer ein Video, eine Videoidee, ein Skript oder eine Caption will:
    Deren Prüf-Skripte fehlen in dieser Umgebung → Nachbauten in `video-studio/tools/` nutzen (`swipe.py`, `human_check.py`, `caption_check.py`).
 3. **Stil: realistisch & ernst (Doku)** – echte gemeinfreie Gemälde/Karten, `style: doku`. Kein Cartoon (vom Nutzer abgelehnt).
 4. Fakten mit Wikipedia/Primärquellen prüfen; Legenden als Legenden kennzeichnen.
+4b. **Hook** nach `playbook/HOOKS.md` (5 Varianten, `tools/hook_check.py`), **Trend-Musik** (`score: phonk` oder `trailer`, leise: `music_db: 17.5`), viele Effekte und Bewegung (Playbook §4). Immer mit `--variants` rendern.
 5. Videos liegen in `videos/JJJJ-MM-TT-titel/` (video.yaml, assets/, output/). Renderer: `video-studio/render.py`.

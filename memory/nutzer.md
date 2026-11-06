@@ -29,3 +29,4 @@
 - Erstes Video: `videos/2026-11-06-kartoffel-trick/` (Friedrich der Große & Kartoffelbefehl, Doku-Short).
 - Eigene Cloud-Umgebung "satistify" angelegt (Wikimedia/Wikipedia freigeschaltet, Setup-Skript installiert Tools + Stimme).
 - 2026-11-06: Weitere Vorbild-Kanäle vom Nutzer: Absolute History, Extra History (Shorts), InfiniteCracker → Analyse `dokumente/2026-11-06-analyse-kanaele-2.md`. Kern: feste Serien + makabre Themen; Serien-Ideen ins Playbook übernommen.
+- 2026-11-06 Feedback zum Kartoffel-Video: „sieht gut aus“, Stil behalten. Musik war **zu laut** → jetzt `music_db: 17.5` + `duck: 0.45` (≈6 dB leiser). Musik muss **Trend** sein → selbst komponierte Trend-Sounds (`video-studio/beats.py`: Dark Phonk / Trailer). **Mehr Effekte und Motion** (Punch-In, Whip, Stempel, Schreibmaschine, Nebel, Spotlight, Handkamera, Beat-Pulse). **Hook weiter verbessern** → `playbook/HOOKS.md` + `tools/hook_check.py`.

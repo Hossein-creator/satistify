@@ -1,10 +1,10 @@
 # Friedrich der Große und die bewachten Kartoffeln
 
-Länge: 62.7 s · Format: short
+Länge: 59.0 s · Format: short
 
 ## Titel-Optionen
-- Friedrich der Große: Der König, der seine Kartoffeln stehlen ließ
-- Kartoffelbefehl: Was an der Legende wirklich dran ist
+- Friedrich der Große wollte, dass man ihn bestiehlt
+- Der Kartoffel-Trick des Alten Fritz: Legende oder Wahrheit?
 - Warum Friedrich der Große Kartoffeln bewachen ließ
 
 ## Beschreibung (zum Kopieren)
@@ -26,6 +26,7 @@ Quellen:
 
 Bildnachweise (Wikimedia Commons):
 - Friedrich der Große (1781 or 1786) - Google Art Project.jpg – Anton Graff – Public domain – https://commons.wikimedia.org/wiki/File:Friedrich_der_Gro%C3%9Fe_(1781_or_1786)_-_Google_Art_Project.jpg
+- Jean-François Millet - Potato Planters - Google Art Project.jpg – Jean-François Millet – Public domain – https://commons.wikimedia.org/wiki/File:Jean-Fran%C3%A7ois_Millet_-_Potato_Planters_-_Google_Art_Project.jpg
 - Robert Warthmüller - Der König überall (1886).jpg – Robert Warthmüller – Public domain – https://commons.wikimedia.org/wiki/File:Robert_Warthm%C3%BCller_-_Der_K%C3%B6nig_%C3%BCberall_(1886).jpg
 - Van Gogh - Die Kartoffelesser.jpeg – Vincent van Gogh – Public domain – https://commons.wikimedia.org/wiki/File:Van_Gogh_-_Die_Kartoffelesser.jpeg
 ```
@@ -38,6 +39,8 @@ Geschichte, Preußen, Friedrich der Große, Kartoffelbefehl, Alter Fritz, Doku
 
 ## Hinweise
 Alle Bilder: gemeinfrei (Public Domain / CC0), Wikimedia Commons – Nachweise unten.
+Musik: eigene Komposition (Dark Phonk, synthetisch + FluidR3-Soundfont, MIT) – kein Content-ID-Risiko.
+Alternative: video_ohne_musik.mp4 hochladen und einen Trend-Sound direkt in der App wählen.
 KI-Kennzeichnung: nicht nötig (historische Gemälde, keine KI-Bilder).
 Stimme: Entwurfsstimme. Für Upload unbedingt eigene Stimme (aufnahme-skript.md) oder bessere Sprecherstimme.
 

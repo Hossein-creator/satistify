@@ -2,3 +2,6 @@ video-studio/voices/*.onnx
 video-studio/voices/*.json
 videos/*/.build/
 __pycache__/
+videos/*/output/video_ohne_musik.mp4
+videos/*/output/video_trailer.mp4
+videos/*/output/video_phonk.mp4

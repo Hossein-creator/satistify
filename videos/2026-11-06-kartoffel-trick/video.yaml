@@ -1,20 +1,26 @@
-# Short #1 – Doku-Stil (v3): echte Gemälde, ernster Ton
-# Formeln: Kontrast-/Paradox-Einstieg + Mythos-Bruch (#9) + Heute-Bezug (#15)
+# Short #1 – Doku-Stil v4: neuer Hook, Trend-Musik (Dark Phonk), mehr Effekte und Bewegung
+# Hook-Formel: Paradox-Wunsch ("wollte, dass man ihn bestiehlt") + Mythos-Bruch (#9) + Loop-Ende
+# Hook geprüft: video-studio/tools/hook_check.py
 # Fakten geprüft mit de.wikipedia.org/wiki/Kartoffelbefehl (06.11.2026)
-# Ältere Cartoon-Fassung: .build/video-cartoon-v2.yaml
+# Ältere Fassungen: .build/video-doku-v3.yaml, .build/video-cartoon-v2.yaml
 title: "Friedrich der Große und die bewachten Kartoffeln"
 style: doku
 format: short
 voice: de-thorsten-low   # Entwurfsstimme (CC0). Eigene Aufnahmen in aufnahme/ ersetzen sie automatisch.
 speed: 1.0
-music: {score: dark, motif: flute, tempo: 66}   # komponierte Filmmusik, Flöte = Friedrichs Instrument
-music_volume: 0.045
-crossfade: 0.45
+music: {score: phonk, tempo: 118, key: D, drop_scene: 1}   # Trend: Dark Phonk, Drop direkt nach dem Hook
+music_db: 17.5      # Musik liegt 17,5 dB unter der Stimme, beim Sprechen zusätzlich abgesenkt (duck)
+duck: 0.45
+beat_bump: 0.010    # Bild pulsiert leicht mit der Kick
+handheld: 0.7       # Handkamera-Bewegung auf allen Bildern
+leaks: 0.10         # leichter Lichteinfall bei Szenenwechseln
+flicker: 0.025      # Projektor-Flackern
+crossfade: 0.4
 
 meta:
   titles:
-    - "Friedrich der Große: Der König, der seine Kartoffeln stehlen ließ"
-    - "Kartoffelbefehl: Was an der Legende wirklich dran ist"
+    - "Friedrich der Große wollte, dass man ihn bestiehlt"
+    - "Der Kartoffel-Trick des Alten Fritz: Legende oder Wahrheit?"
     - "Warum Friedrich der Große Kartoffeln bewachen ließ"
   description: |
     Friedrich der Große soll ein Kartoffelfeld bewachen lassen haben, damit die Bauern es bestehlen. Was ist dran?
@@ -33,88 +39,109 @@ meta:
   pinned_comment: "Fünfzehn Befehle. Aber für die Geschichte mit den Wachen gibt es keinen einzigen Beleg. Glaubst du sie trotzdem?"
   tags: [Geschichte, Preußen, Friedrich der Große, Kartoffelbefehl, Alter Fritz, Doku]
   keywords: "Friedrich der Große,Kartoffelbefehl,Preußen"
-  thumbnail_time: 0.6
+  thumbnail_time: 0.5
   notes: |
     Alle Bilder: gemeinfrei (Public Domain / CC0), Wikimedia Commons – Nachweise unten.
+    Musik: eigene Komposition (Dark Phonk, synthetisch + FluidR3-Soundfont, MIT) – kein Content-ID-Risiko.
+    Alternative: video_ohne_musik.mp4 hochladen und einen Trend-Sound direkt in der App wählen.
     KI-Kennzeichnung: nicht nötig (historische Gemälde, keine KI-Bilder).
     Stimme: Entwurfsstimme. Für Upload unbedingt eigene Stimme (aufnahme-skript.md) oder bessere Sprecherstimme.
 
 scenes:
-  - text: "Dieser König ließ ein Kartoffelfeld von Soldaten bewachen."
+  # ---------- HOOK (0–3 s): Paradox, Gesicht in Großaufnahme, Punch-In + Impact
+  - text: "Dieser König wollte, dass man ihn bestiehlt."
     hit: true
-    highlight: [Soldaten]
+    highlight: [bestiehlt]
     visual:
-      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.355, 0.42, 1.55], to: [0.36, 0.40, 1.75]}
-      - {type: dust, n: 35}
+      - {type: photo, src: assets/Friedrich_der_Große_1781_or_1786_-_Google_Art_Project.jpg, from: [0.5, 0.27, 2.3], to: [0.5, 0.3, 1.75], ease: out, rot: [-1.2, 0.4]}
+      - {type: dust, n: 30}
 
-  - text: "Nicht, um Diebe fernzuhalten. Sondern um sie anzulocken."
+  # ---------- DROP: Beat setzt ein, Whip-Pan
+  - text: "Er stellte Soldaten an ein Kartoffelfeld. Mit dem Befehl, die Diebe durchzulassen."
+    transition: whip
+    highlight: [Diebe]
     visual:
-      - {type: photo, src: assets/Jean-François_Millet_-_Potato_Planters_-_Google_Art_Project.jpg, from: [0.35, 0.5, 1.0], to: [0.45, 0.48, 1.12], fallback: {src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.62, 0.62, 1.9], to: [0.6, 0.7, 2.1]}}
-      - {type: dust, n: 35}
+      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.36, 0.40, 1.85], to: [0.355, 0.42, 1.5], ease: out}
+      - {type: dust, n: 30}
 
-  - text: "Preußen im 18. Jahrhundert. Missernten und Hungersnöte treffen das Land immer wieder."
-    say: "Preußen im achtzehnten Jahrhundert. Missernten und Hungersnöte treffen das Land immer wieder."
+  - text: "Klingt verrückt? Aber Preußen hatte damals ein echtes Problem: Hunger."
+    transition: burn
+    highlight: [Hunger]
     visual:
-      - {type: photo, src: assets/Van_Gogh_-_Die_Kartoffelesser.jpg, from: [0.25, 0.5, 1.05], to: [0.4, 0.5, 1.15]}
+      - {type: photo, src: assets/Van_Gogh_-_Die_Kartoffelesser.jpg, from: [0.25, 0.5, 1.05], to: [0.4, 0.5, 1.18]}
       - {type: date, text: "Preußen · 18. Jahrhundert", y: 0.09, at: 0.2}
+      - {type: fog, strength: 0.28}
 
-  - text: "Dabei wächst die Lösung längst in Europa: die Kartoffel, ursprünglich aus den Anden."
+  - text: "Missernten trafen das Land immer wieder. Dabei wuchs die Rettung längst in Europa: die Kartoffel."
     highlight: [Kartoffel]
     visual:
-      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.6, 0.86, 2.4], to: [0.53, 0.66, 2.0]}
+      - {type: photo, src: assets/Jean-François_Millet_-_Potato_Planters_-_Google_Art_Project.jpg, from: [0.35, 0.5, 1.0], to: [0.6, 0.6, 1.45], rot: [0.6, -0.6]}
 
-  - text: "Doch die Bauern trauen ihr nicht. Sie gilt als Viehfutter, und kaum jemand weiß, wie man sie anbaut."
+  - text: "Nur: Die Bauern trauten ihr nicht. Für sie war das Viehfutter."
+    transition: whip
     visual:
-      - {type: photo, src: assets/Van_Gogh_-_Die_Kartoffelesser.jpg, from: [0.62, 0.45, 1.3], to: [0.7, 0.42, 1.45]}
+      - {type: photo, src: assets/Van_Gogh_-_Die_Kartoffelesser.jpg, from: [0.62, 0.45, 1.3], to: [0.7, 0.42, 1.5]}
 
-  - text: "Friedrich der Große greift durch. Fünfzehn solcher Erlasse sind bekannt. Der berühmteste stammt vom 24. März 1756."
-    say: "Friedrich der Große greift durch. Fünfzehn solcher Erlasse sind bekannt. Der berühmteste stammt vom vierundzwanzigsten März siebzehnhundertsechsundfünfzig."
+  - text: "Friedrich der Große erließ Befehl um Befehl. Fünfzehn sind bekannt, der berühmteste vom 24. März 1756."
+    say: "Friedrich der Große erließ Befehl um Befehl. Fünfzehn sind bekannt, der berühmteste vom vierundzwanzigsten März siebzehnhundertsechsundfünfzig."
+    transition: zoom
     highlight: [Fünfzehn]
     visual:
-      - {type: photo, src: assets/Friedrich_der_Große_1781_or_1786_-_Google_Art_Project.jpg, from: [0.5, 0.42, 1.0], to: [0.5, 0.36, 1.18]}
+      - {type: photo, src: assets/Friedrich_der_Große_1781_or_1786_-_Google_Art_Project.jpg, from: [0.5, 0.42, 1.0], to: [0.5, 0.36, 1.2]}
       - {type: lower, text: "Friedrich II.", sub: "König von Preußen · 1740–1786", y: 0.58, at: 0.4}
       - {type: date, text: "24. März 1756", y: 0.09, at_word: berühmteste}
 
-  - text: "Doch Befehle allein überzeugen keinen Bauern. Und hier beginnt die Legende."
+  # ---------- WENDE: die Legende
+  - text: "Doch Papier überzeugt keinen Bauern. Und hier beginnt die Legende."
+    transition: burn
     visual:
-      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.2, 0.45, 1.0], to: [0.75, 0.45, 1.0]}
+      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.2, 0.45, 1.0], to: [0.75, 0.45, 1.0], ease: linear}
+      - {type: fog, strength: 0.3}
       - {type: title, text: "Die Legende", y: 0.4, size: 110, at_word: Legende}
 
-  - text: "Der König lässt auf seinen Gütern Kartoffeln anbauen und von Soldaten bewachen."
+  - text: "Der König lässt ein Feld bepflanzen und streng bewachen."
     transition: flash
     hit: true
     visual:
-      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.4, 0.4, 1.6], to: [0.42, 0.36, 1.8]}
+      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.4, 0.4, 1.6], to: [0.42, 0.36, 1.85]}
 
-  - text: "Die Bauern werden neugierig. Was so streng bewacht wird, muss wertvoll sein."
+  - text: "Und die Bauern denken sich: Was so bewacht wird, muss ja was wert sein."
+    transition: whip
     visual:
-      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.78, 0.42, 1.5], to: [0.7, 0.45, 1.65]}
+      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.78, 0.42, 1.5], to: [0.7, 0.45, 1.7]}
 
-  - text: "Nachts schleichen sie auf die Felder und stehlen die Knollen. Die Wachen haben Befehl, wegzusehen."
+  - text: "Nachts stehlen sie die Knollen. Die Wachen sehen weg. Genau wie geplant."
     heartbeat: true
     visual:
-      - {type: photo, src: assets/Jean-François_Millet_-_Potato_Planters_-_Google_Art_Project.jpg, from: [0.6, 0.55, 1.35], to: [0.5, 0.6, 1.55], fallback: {src: assets/Van_Gogh_-_Die_Kartoffelesser.jpg, from: [0.5, 0.25, 1.7], to: [0.5, 0.3, 1.9]}}
+      - {type: photo, src: assets/Jean-François_Millet_-_Potato_Planters_-_Google_Art_Project.jpg, night: true, from: [0.6, 0.62, 1.4], to: [0.55, 0.66, 1.7]}
+      - {type: fog, strength: 0.15, color: [150, 160, 190]}
+      - {type: spotlight, x: 0.55, y: 0.5, r: 0.32, at: 0.3, dark: 0.55}
 
-  - text: "Ein genialer Plan. Nur: Belegt ist er nicht."
+  # ---------- AUFLÖSUNG: Stempel
+  - text: "Genial, oder? Nur gibt's dafür keinen einzigen Beleg."
     transition: flash
     hit: true
     visual:
-      - {type: photo, src: assets/Friedrich_der_Große_1781_or_1786_-_Google_Art_Project.jpg, from: [0.5, 0.3, 1.9], to: [0.5, 0.28, 2.1]}
-      - {type: title, text: "Nicht belegt", y: 0.4, size: 100, at_word: Belegt}
+      - {type: photo, src: assets/Friedrich_der_Große_1781_or_1786_-_Google_Art_Project.jpg, from: [0.5, 0.3, 1.9], to: [0.5, 0.28, 2.15]}
+      - {type: stamp, text: "Nicht belegt", y: 0.4, at_word: Beleg}
 
-  - text: "Fast dieselbe Geschichte erzählt man in Frankreich über den Apotheker Antoine Parmentier."
+  - text: "In Frankreich erzählt man fast dieselbe Geschichte, über den Apotheker Antoine Parmentier."
+    transition: whip
     visual:
-      - {type: photo, src: assets/Portret_van_Antoine-Augustin_Parmentier_RP-P-1910-5037.jpg, fit: contain, from: [0.5, 0.45, 1.0], to: [0.5, 0.4, 1.08], fallback: {src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.52, 0.42, 1.0], to: [0.56, 0.42, 1.1]}}
+      - {type: photo, src: "assets/François_Dumont_-_Portrait_d'Antoine_Parmentier_(1737-1813),_agronome_et_philanthrope_-_P1504_-_Musée_Carnavalet.jpg", from: [0.5, 0.33, 1.25], to: [0.5, 0.3, 1.45], fallback: {src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.52, 0.42, 1.0], to: [0.56, 0.42, 1.1]}}
       - {type: lower, text: "Antoine Parmentier", sub: "Apotheker · 1737–1813", y: 0.6, at_word: Apotheker}
 
-  - text: "Sicher ist nur eines: Bis heute legen Besucher Kartoffeln auf Friedrichs Grab in Sanssouci."
-    highlight: [Sanssouci]
+  - text: "Echt ist dagegen das hier: Bis heute legen Besucher Kartoffeln auf sein Grab. Schau mal hin, wenn du in Potsdam bist."
+    transition: burn
+    highlight: [Grab]
     visual:
-      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.66, 0.9, 2.6], to: [0.6, 0.88, 2.9]}
-      - {type: date, text: "Sanssouci · Potsdam", y: 0.09, at_word: Grab}
+      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.66, 0.9, 2.6], to: [0.6, 0.88, 2.95]}
+      - {type: date, text: "Sanssouci · Potsdam", y: 0.09, at_word: Besucher}
+      - {type: stamp, text: "Echt", y: 0.42, color: [196, 154, 62], angle: 7, size: 130, at_word: Grab}
 
-  - text: "Legende oder Wahrheit? Was glaubst du?"
+  # ---------- LOOP: letzter Satz führt direkt in den ersten zurück, Bild endet wie es beginnt
+  - text: "Ob wahr oder nicht, erzählt wird es bis heute:"
     visual:
-      - {type: photo, src: assets/Robert_Warthmüller_-_Der_König_überall_1886_.jpg, from: [0.36, 0.42, 1.75], to: [0.355, 0.42, 1.55]}
-      - {type: title, text: "Legende\noder Wahrheit?", y: 0.17, size: 96}
-      - {type: dust, n: 35}
+      - {type: photo, src: assets/Friedrich_der_Große_1781_or_1786_-_Google_Art_Project.jpg, from: [0.5, 0.36, 1.3], to: [0.5, 0.28, 2.25], ease: inout}
+      - {type: title, text: "Legende\noder Wahrheit?", y: 0.15, size: 92}
+      - {type: dust, n: 30}
