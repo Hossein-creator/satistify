@@ -95,9 +95,9 @@ def tts_eleven(text, voice_name, out_path, prev_text="", next_text="", model="el
     import base64
     import json as _json
     import urllib.request
-    key = os.environ.get("ELEVENLABS_API_KEY")
-    if not key:
-        sys.exit("ELEVENLABS_API_KEY fehlt (export ELEVENLABS_API_KEY=...). Key nie ins Repo schreiben.")
+    # Key liegt als Netzwerk-Secret in der Cloud-Umgebung; der Proxy setzt den Header ein.
+    # Lokal ohne Proxy: ELEVENLABS_API_KEY setzen. Key nie ins Repo schreiben.
+    key = os.environ.get("ELEVENLABS_API_KEY") or "proxy-injected"
     vid = ELEVEN_VOICES.get(voice_name, voice_name)
     body = {"text": text, "model_id": model,
             "voice_settings": {"stability": 0.5, "similarity_boost": 0.75, "style": 0.2, "speed": speed}}
