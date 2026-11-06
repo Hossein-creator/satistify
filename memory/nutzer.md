@@ -10,4 +10,4 @@
   Kernempfehlung: Deutsch als Hauptsprache, Nischen mit Kaufabsicht (1. Finanzen DACH,
   2. Software-/KI-Tool-Tutorials, 3. Bildungs-/Business-Dokus), Affiliate vor Werbung,
   Langform statt Shorts (YPP ab 01.02.2027: 8.000 Std.).
-  Offen: Hat der Nutzer Finanz-Fachwissen? Welche Nische wählt er? Zeit/Budget pro Woche?
+  Offen: Hat der Nutzer Finanz-Fachwissen? Welche Nische wird gewählt? Zeit/Budget pro Woche?
