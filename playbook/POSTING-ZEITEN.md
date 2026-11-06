@@ -21,3 +21,10 @@ Stärkste Tage: Mi, Do, Fr.
 | 3 | **16:00** | Spitze bei YouTube, gut bei TikTok |
 | 4 | **18:00** | Feierabend, Spitze bei TikTok, stark bei Instagram |
 Das stärkste Video des Tages kommt in Slot 1 (10:00) oder Slot 3 (16:00, YouTube-Spitze).
+
+## Plan ab 06.11.2026: 3 Videos pro Tag
+| Slot | Uhrzeit | Warum |
+|---|---|---|
+| 1 | **10:00** | Spitze bei Instagram und TikTok, stark bei YouTube |
+| 2 | **16:00** | Spitze bei YouTube |
+| 3 | **18:00** | Feierabend, Spitze bei TikTok, stark bei Instagram |

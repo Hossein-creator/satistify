@@ -41,3 +41,5 @@
   **REGEL (Nutzer, 06.11.2026): Stickman-Accounts NICHT anfassen** – nichts ändern, nichts posten, nicht bewerten.
   Für History hat der Nutzer einen **neuen Account** angelegt: **„Was wirklich geschah“** – Instagram `waswirklich.geschah`, TikTok „Was wirklich geschah | History“, YouTube `UCZdQXYT8J0nuppF8BjVrxbg`. Seit 06.11. in derselben Metricool-Brand 7558808 verbunden (Stickman ist dort nicht mehr verbunden).
 - 2026-11-06: Wunsch **Daily Task: 4 Videos pro Tag, je 1:10–1:15 Min., über Metricool auf YouTube, Instagram, TikTok posten.** Zeiten: `playbook/POSTING-ZEITEN.md` (10, 12, 16, 18 Uhr).
+- 2026-11-06 Klarstellung: Fakten = **nur historische Fakten** (keine allgemeinen Fakten).
+- 2026-11-06 Entscheidungen Daily Task: **3 Videos pro Tag** (nicht 4). **Stimme: ElevenLabs**, aber die Stimme lässt der Nutzer vorher **genehmigen** (Hörproben schicken). **Videos in eigenem GitHub-Repo** ablegen (öffentlicher Link für Metricool).
