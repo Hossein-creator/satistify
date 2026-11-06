@@ -42,7 +42,7 @@ Neue Shorts jede Woche.
 3. **Kanal-Keywords:** `Geschichte, History, History Fakten, Doku, Geschichte Deutsch, Legenden, Preußen, Mittelalter, wahre Geschichte`
 4. **Land:** Deutschland. **Standardsprache der Videos:** Deutsch.
 5. **Upload-Standard:** Sprache Deutsch, Kategorie „Bildung“, Kommentare an.
-6. **Offenlegung KI:** beim Upload „Veränderte oder synthetische Inhalte“ = Ja (KI-Stimme). Pflicht bei YouTube für realistisch wirkende KI-Inhalte.
+6. **Offenlegung KI:** beim Upload „Veränderte oder synthetische Inhalte“ prüfen. Ja wählen, sobald ein Video eine echte Person etwas sagen lässt, was sie nie gesagt hat, oder ein echtes Ereignis realistisch nachbaut. Im Zweifel Ja.
 7. **Playlists** anlegen: „History-Fakten“, „Mythos oder Wahrheit?“, „Die seltsamsten Tode der Geschichte“.
 8. **Banner** (2560×1440, wichtig nur die Mitte 1546×423): Gemälde dunkel, Schrift „Wahre Geschichte. Kurz erzählt.“
 
