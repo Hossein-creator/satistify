@@ -39,4 +39,5 @@
 - 2026-11-06: **Bestehende Accounts (über Metricool, Brand-ID 7558808):** Instagram `silent.stickman`, TikTok `the.silent.stickman`, YouTube-Kanal `UC4FOhemWxnUaBZMC9kNwOvA`.
   Inhalt dort: **englische Strichmännchen-Reels zu Liebe/Beziehung/Motivation** (nicht History!). Seit 23.10.2026: 1 → ca. 2.700 Follower; Top-Reel 7,7 Mio. Aufrufe (27.10.), mehrere 200–500 Tsd.
   **REGEL (Nutzer, 06.11.2026): Stickman-Accounts NICHT anfassen** – nichts ändern, nichts posten, nicht bewerten.
-  Für History hat der Nutzer einen **neuen Account** angelegt (Handle noch unbekannt, nicht in Metricool).
+  Für History hat der Nutzer einen **neuen Account** angelegt: **„Was wirklich geschah“** – Instagram `waswirklich.geschah`, TikTok „Was wirklich geschah | History“, YouTube `UCZdQXYT8J0nuppF8BjVrxbg`. Seit 06.11. in derselben Metricool-Brand 7558808 verbunden (Stickman ist dort nicht mehr verbunden).
+- 2026-11-06: Wunsch **Daily Task: 4 Videos pro Tag, je 1:10–1:15 Min., über Metricool auf YouTube, Instagram, TikTok posten.** Zeiten: `playbook/POSTING-ZEITEN.md` (10, 12, 16, 18 Uhr).
