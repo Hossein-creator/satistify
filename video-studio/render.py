@@ -11,6 +11,7 @@ Vorhandene Aufnahmen ersetzen automatisch die Computerstimme der jeweiligen Szen
 """
 import argparse
 import hashlib
+import json
 import math
 import os
 import random
@@ -25,6 +26,24 @@ from PIL import Image, ImageDraw, ImageFilter
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import doodle  # noqa: E402
+import cartoon  # noqa: E402
+import doku  # noqa: E402
+
+DARK_BGS = {"night", "dramatic", "palace", "throne", "red"}
+ROLE_BY_PROP = [("crown", "king"), ("tricorn", "soldier"), ("farmer", "farmer"), ("wig", "noble"), ("helmet", "knight")]
+
+
+def drawer(el):
+    if el["type"] == "stick":
+        return doodle.draw_figure
+    return doku.DRAWERS.get(el["type"]) or cartoon.DRAWERS.get(el["type"]) or doodle.DRAWERS[el["type"]]
+
+
+def palette(name):
+    if name in ("paper",):
+        return doodle.PALETTES["paper"]
+    ink = (245, 240, 230) if name in DARK_BGS else (28, 24, 30)
+    return {"bg": (0, 0, 0), "ink": ink, "soft": ink}
 
 FPS = 30
 SR = 44100
@@ -81,6 +100,17 @@ def sfx(kind):
         rng = np.random.default_rng(2)
         noise = np.convolve(rng.standard_normal(n), np.ones(60) / 60, mode="same")
         return (0.9 * np.sin(2 * np.pi * (55 - 20 * t) * t) + 1.5 * noise) * np.exp(-t * 3)
+    if kind == "hit":
+        n = int(2.2 * SR)
+        t = np.arange(n) / SR
+        rng = np.random.default_rng(4)
+        noise = np.convolve(rng.standard_normal(n), np.ones(200) / 200, mode="same")
+        return (np.sin(2 * np.pi * (48 - 12 * t) * t) + 3 * noise) * np.exp(-t * 2.2) * 0.9
+    if kind == "heartbeat":
+        n = int(1.0 * SR)
+        t = np.arange(n) / SR
+        beat = lambda t0: np.sin(2 * np.pi * 50 * (t - t0)) * np.exp(-np.clip(t - t0, 0, None) * 18) * (t >= t0)
+        return 0.9 * (beat(0.0) + 0.7 * beat(0.28))
     if kind == "ding":
         n = int(0.8 * SR)
         t = np.arange(n) / SR
@@ -96,7 +126,7 @@ def ambient_pad(total, mood="mystery"):
     """Leiser, lizenzfreier Klangteppich (synthetisch)."""
     n = int(total * SR)
     t = np.arange(n) / SR
-    chords = {"mystery": [110.0, 130.81, 164.81], "epic": [98.0, 146.83, 196.0], "light": [130.81, 164.81, 196.0]}
+    chords = {"dark": [73.42, 87.31, 110.0, 146.83], "mystery": [110.0, 130.81, 164.81], "epic": [98.0, 146.83, 196.0], "light": [130.81, 164.81, 196.0]}
     freqs = chords.get(mood, chords["mystery"])
     x = np.zeros(n)
     for i, f in enumerate(freqs):
@@ -214,6 +244,15 @@ def background(pal_name, W, H):
     return _bg_cache[key]
 
 
+def background_any(name, W, H):
+    if name == "paper":
+        return background("paper", W, H)
+    key = ("c", name, W, H)
+    if key not in _bg_cache:
+        _bg_cache[key] = cartoon.make_background(name, W, H)
+    return _bg_cache[key]
+
+
 def draw_captions(img, sc, local, W, H, s, fmt, spec):
     if spec.get("captions", True) is False:
         return
@@ -225,6 +264,10 @@ def draw_captions(img, sc, local, W, H, s, fmt, spec):
             cur = ch
             break
     if cur is None:
+        return
+    if spec.get("style") == "doku":
+        doku.captions(img, cur, local, W, H, s, spec.get("caption_y", 0.76 if fmt == "short" else 0.85),
+                      [h.lower() for h in sc.get("highlight", [])])
         return
     d = ImageDraw.Draw(img)
     size = (100 if fmt == "short" else 74) * s
@@ -241,7 +284,7 @@ def draw_captions(img, sc, local, W, H, s, fmt, spec):
         space = d.textlength(" ", font=f) * 1.7
         widths = [d.textlength(p_, font=f) for p_ in parts]
         total = sum(widths) + space * (len(parts) - 1)
-    y = H * (spec.get("caption_y", 0.68 if fmt == "short" else 0.84))
+    y = H * (spec.get("caption_y", 0.745 if fmt == "short" else 0.84))
     x = W / 2 - total / 2
     for (w, ws, we), txt, tw in zip(cur, parts, widths):
         active = ws <= local < we + 0.02
@@ -255,31 +298,63 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
     sc_i = next((i for i, sc in enumerate(scenes) if t < sc["_end"]), len(scenes) - 1)
     sc = scenes[sc_i]
     local = t - sc["_start"]
-    pal_name = sc.get("bg", spec.get("bg", "paper"))
-    pal = doodle.PALETTES[pal_name]
-    img = background(pal_name, W, H).copy()
+    doku_style = spec.get("style") == "doku"
+    if doku_style:
+        pal = {"bg": (0, 0, 0), "ink": (245, 240, 230), "soft": (200, 200, 200)}
+        img = Image.new("RGB", (W, H), (8, 8, 10))
+        photos = [e for e in sc.get("visual", []) if e["type"] == "photo" and e["_at"] <= local]
+        for idx, ph in enumerate(photos[-2:]):
+            st = max(0.0, ph["_at"])
+            dur_ph = sc["_end"] - sc["_start"] - st + 0.4
+            if idx == 1 or len(photos) == 1:
+                fade = 1.0 if ph["_at"] < 0 or len(photos) == 1 else min(1, (local - ph["_at"]) / 0.35)
+                if fade < 1:
+                    lay = Image.new("RGB", (W, H))
+                    doku.draw_photo(lay, ph, W, H, local - st, dur_ph, base_dir)
+                    img = Image.blend(img, lay, fade)
+                else:
+                    doku.draw_photo(img, ph, W, H, local - st, dur_ph, base_dir)
+            else:
+                doku.draw_photo(img, ph, W, H, local - st, dur_ph, base_dir)
+    else:
+        pal_name = sc.get("bg", spec.get("bg", "sky"))
+        pal = palette(pal_name)
+        img = background_any(pal_name, W, H).copy()
+        cartoon.draw_clouds(img, pal_name, W, H, t)
     d = ImageDraw.Draw(img)
     boil = int(t * FPS) // 3
     for j, el in enumerate(sc.get("visual", [])):
         at = el["_at"]
-        if local < at or ("until" in el and local > float(el["until"])):
+        if el["type"] == "photo" or local < at or ("until" in el and local > float(el["until"])):
             continue
         p = 1.0 if at < 0 else min(1.0, (local - at) / 0.28)
-        k = ease_out_back(p) if p < 1 else 1.0
+        k = (ease_out_back(p) if not doku_style else p) if p < 1 else 1.0
         rng = random.Random(sc_i * 100003 + boil * 131 + j)
         pen = doodle.Pen(d, rng, s, pal["ink"])
         pen.img = img
-        fn = doodle.DRAWERS[el["type"]]
+        if el["type"] in ("figure", "person") and "role" not in el:
+            el["role"] = next((r for p_, r in ROLE_BY_PROP if p_ in el.get("props", [])), "citizen")
+        el["_talking"] = bool(el.get("talk")) and local < sc["_vdur"]
+        fn = drawer(el)
         if el["type"] == "image":
             fn(pen, el, W, H, k, t, pal, base_dir=base_dir)
         else:
             fn(pen, el, W, H, k, t, pal)
     # Kamera
-    cam = sc.get("camera", "in")
+    cam = sc.get("camera", "none" if doku_style else "in")
     dur = sc["_end"] - sc["_start"]
     prog = min(1, max(0, local / max(0.1, dur)))
     z = {"in": 1 + 0.07 * prog, "out": 1.07 - 0.07 * prog, "none": 1.0}.get(cam, 1.0)
     fx, fy = sc.get("focus", [0.5, 0.5])
+    # Mini-Schnitte: alle ~1.8 s abwechselnd Totale und Nahaufnahme des zuletzt erschienenen Elements
+    if sc.get("cuts", spec.get("cuts", fmt == "short" and not doku_style)) and cam != "none":
+        seg = int(local / 1.8)
+        if seg % 2 == 1:
+            shown = [e for e in sc.get("visual", []) if e["_at"] <= local and "x" in e and e["type"] not in ("sticker", "text")]
+            if shown:
+                tgt = max(shown, key=lambda e: e["_at"])
+                fx, fy = tgt["x"], tgt.get("y", 0.5) - (0.12 if tgt["type"] in ("figure", "person") else 0)
+                z *= 1.16
     ox = oy = 0.0
     for st in shakes:
         if 0 <= t - st < 0.45:
@@ -291,6 +366,10 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
         cx = min(max(fx * W + ox, cw / 2), W - cw / 2)
         cy = min(max(fy * H + oy, ch / 2), H - ch / 2)
         img = img.resize((W, H), Image.BILINEAR, box=(cx - cw / 2, cy - ch / 2, cx + cw / 2, cy + ch / 2))
+    if doku_style:
+        img = doku.grade(img, t, spec.get("grade", 1.0))
+        if sc.get("transition") == "flash" and local < 0.3:
+            img = Image.blend(img, Image.new("RGB", (W, H), (255, 250, 240)), 1 - local / 0.3)
     draw_captions(img, sc, local, W, H, s, fmt, spec)
     return img
 
@@ -322,6 +401,15 @@ def write_docs(spec, scenes, out_dir, total):
         lines.append("## Beschreibung (zum Kopieren)\n```\n" + meta["description"].strip())
         if meta.get("sources"):
             lines.append("\nQuellen:\n" + "\n".join(f"- {q}" for q in meta["sources"]))
+        credits = []
+        used = {el.get("src") for sc in scenes for el in sc.get("visual", []) if el.get("type") == "photo"}
+        for src in sorted(x for x in used if x):
+            mp = os.path.join(os.path.dirname(out_dir), src + ".json")
+            if os.path.exists(mp):
+                m = json.load(open(mp, encoding="utf-8"))
+                credits.append(f"- {m['title'][5:]} – {m['artist'] or 'unbekannt'} – {m['license']} – {m['page']}")
+        if credits:
+            lines.append("\nBildnachweise (Wikimedia Commons):\n" + "\n".join(credits))
         lines.append("```\n")
     if meta.get("pinned_comment"):
         lines.append("## Angehefteter Kommentar\n" + meta["pinned_comment"] + "\n")
@@ -387,10 +475,16 @@ def main():
     fx = np.zeros(n)
     for i, sc in enumerate(scenes):
         add(voice, sc["_audio"], sc["_start"], 1.0)
+        doku_style = spec.get("style") == "doku"
         if i > 0 and spec.get("sfx", True):
-            add(fx, sfx("whoosh"), sc["_start"] - 0.12, 0.18)
+            add(fx, sfx("whoosh"), sc["_start"] - 0.12, 0.06 if doku_style else 0.18)
+        if sc.get("hit"):
+            add(fx, sfx("hit"), sc["_start"], 0.5)
+        if sc.get("heartbeat"):
+            for b in np.arange(0, sc["_end"] - sc["_start"], 1.0):
+                add(fx, sfx("heartbeat"), sc["_start"] + b, 0.35)
         for el in sc.get("visual", []):
-            kind = el.get("sfx", "pop")
+            kind = el.get("sfx", None if doku_style else "pop")
             if kind and el["_at"] > 0.05 and spec.get("sfx", True):
                 add(fx, sfx(kind), sc["_start"] + el["_at"], 0.22 if kind == "pop" else 0.45)
     music = spec.get("music")
@@ -415,15 +509,25 @@ def main():
     # Video
     out_mp4 = os.path.join(out_dir, "video.mp4")
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
-           "-i", "-", "-i", wav_path, "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
+           "-i", "-", "-i", wav_path, "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-maxrate", "8M",
+           "-bufsize", "16M", "-pix_fmt", "yuv420p",
            "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
            "-shortest", "-movflags", "+faststart", out_mp4]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     nframes = int(total * FPS)
     thumb_t = spec.get("meta", {}).get("thumbnail_time", 0.0)
+    last_of = {}
+    xfade = spec.get("crossfade", 0.4 if spec.get("style") == "doku" else 0.0)
     for fi in range(nframes):
         t = fi / FPS
         fr = render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes)
+        si = next((i for i, sc in enumerate(scenes) if t < sc["_end"]), len(scenes) - 1)
+        loc = t - scenes[si]["_start"]
+        if xfade and si > 0 and loc < xfade and (si - 1) in last_of and scenes[si].get("transition") != "cut" \
+                and scenes[si].get("transition") != "flash":
+            fr = Image.blend(last_of[si - 1], fr, loc / xfade)
+        else:
+            last_of[si] = fr
         if abs(t - thumb_t) < 0.5 / FPS:
             fr.save(os.path.join(out_dir, "thumbnail.jpg"), quality=92)
         proc.stdin.write(fr.tobytes())

@@ -17,7 +17,14 @@
 - Vorbild-Kanäle: Extra History, Historically (@HeyHistorically), Build A Better You, Mapfusion.
 - Analyse: `dokumente/2026-11-06-analyse-history-kanaele.md` (Rohdaten in `dokumente/daten/2026-11-06-history-kanaele/`).
 - Kern: Story statt Liste, Humor, Serien, Shorts für Abos + lange „Die GANZE Geschichte von …“-Videos fürs Geld, „[Ohne KI]“ als Markenversprechen.
-- Offen: Sprache (Deutsch?), Visueller Stil, Zeit/Budget pro Woche.
+- Offen: Zeit/Budget pro Woche, eigene Stimme ja/nein.
 
 ## Technik-Notiz
 - `yt-dlp` funktioniert hier für Metadaten und Untertitel; Videostreams sind gesperrt.
+
+## Video-Produktion (Stand 2026-11-06)
+- Nutzer will, dass Claude die Videos **selbst generiert**. Ablauf und Regeln: `playbook/VIDEO-PLAYBOOK.md` (in CLAUDE.md verankert).
+- **Stil-Entscheidung:** realistisch, ernst, Doku-Vibe (echte gemeinfreie Gemälde, filmischer Look). Abgelehnt: Strichmännchen ("langweilig") und bunter Cartoon.
+- **Skills immer nutzen:** ig-viral, ig-human, ig-caption (letzte Nachricht endete mit "und …" – evtl. ein vierter Skill gemeint, nachfragen).
+- Erstes Video: `videos/2026-11-06-kartoffel-trick/` (Friedrich der Große & Kartoffelbefehl, Doku-Short).
+- Eigene Cloud-Umgebung "satistify" angelegt (Wikimedia/Wikipedia freigeschaltet, Setup-Skript installiert Tools + Stimme).

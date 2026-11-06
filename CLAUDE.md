@@ -23,3 +23,15 @@ Dateinamen: `JJJJ-MM-TT-kurzer-titel.md` (z. B. `2026-11-06-projektidee.md`).
 
 ## Sprache
 Der Nutzer schreibt Deutsch – Antworten und Dateien standardmäßig auf Deutsch.
+
+## Videos generieren (YouTube-Kanal: History / Doku / True History)
+Wenn der Nutzer ein Video, eine Videoidee, ein Skript oder eine Caption will:
+1. **Zuerst `playbook/VIDEO-PLAYBOOK.md` lesen** – dort stehen Stil, Ablauf, Regeln und Werkzeuge.
+2. **Immer diese Skills verwenden** (Wunsch des Nutzers):
+   - `/anthropic-skills:ig-viral` – virale Shorts/Reels der Nische finden & nach Ausreißer-Faktor ranken (monatlich / vor Ideen-Runden)
+   - `/anthropic-skills:ig-human` – jedes Skript, jede Beschreibung, jeden Kommentar prüfen, bevor der Nutzer ihn sieht
+   - `/anthropic-skills:ig-caption` – Beschreibung/Caption, Suchbegriffe, Hashtags
+   Deren Prüf-Skripte fehlen in dieser Umgebung → Nachbauten in `video-studio/tools/` nutzen (`swipe.py`, `human_check.py`, `caption_check.py`).
+3. **Stil: realistisch & ernst (Doku)** – echte gemeinfreie Gemälde/Karten, `style: doku`. Kein Cartoon (vom Nutzer abgelehnt).
+4. Fakten mit Wikipedia/Primärquellen prüfen; Legenden als Legenden kennzeichnen.
+5. Videos liegen in `videos/JJJJ-MM-TT-titel/` (video.yaml, assets/, output/). Renderer: `video-studio/render.py`.
