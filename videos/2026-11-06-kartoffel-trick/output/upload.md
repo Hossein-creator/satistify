@@ -1,6 +1,6 @@
 # Friedrich der Große und die bewachten Kartoffeln
 
-Länge: 59.0 s · Format: short
+Länge: 69.2 s · Format: short
 
 ## Titel-Optionen
 - Friedrich der Große wollte, dass man ihn bestiehlt
@@ -47,17 +47,17 @@ KI-Kennzeichnung: nicht nötig (historische Gemälde, keine KI-Bilder).
 Stimme: Entwurfsstimme. Für Upload unbedingt eigene Stimme (aufnahme-skript.md) oder bessere Sprecherstimme.
 
 ## Stimme je Szene
-- Szene 1: Computerstimme (de-thorsten-low)
-- Szene 2: Computerstimme (de-thorsten-low)
-- Szene 3: Computerstimme (de-thorsten-low)
-- Szene 4: Computerstimme (de-thorsten-low)
-- Szene 5: Computerstimme (de-thorsten-low)
-- Szene 6: Computerstimme (de-thorsten-low)
-- Szene 7: Computerstimme (de-thorsten-low)
-- Szene 8: Computerstimme (de-thorsten-low)
-- Szene 9: Computerstimme (de-thorsten-low)
-- Szene 10: Computerstimme (de-thorsten-low)
-- Szene 11: Computerstimme (de-thorsten-low)
-- Szene 12: Computerstimme (de-thorsten-low)
-- Szene 13: Computerstimme (de-thorsten-low)
-- Szene 14: Computerstimme (de-thorsten-low)
+- Szene 1: KI-Stimme ElevenLabs (george)
+- Szene 2: KI-Stimme ElevenLabs (george)
+- Szene 3: KI-Stimme ElevenLabs (george)
+- Szene 4: KI-Stimme ElevenLabs (george)
+- Szene 5: KI-Stimme ElevenLabs (george)
+- Szene 6: KI-Stimme ElevenLabs (george)
+- Szene 7: KI-Stimme ElevenLabs (george)
+- Szene 8: KI-Stimme ElevenLabs (george)
+- Szene 9: KI-Stimme ElevenLabs (george)
+- Szene 10: KI-Stimme ElevenLabs (george)
+- Szene 11: KI-Stimme ElevenLabs (george)
+- Szene 12: KI-Stimme ElevenLabs (george)
+- Szene 13: KI-Stimme ElevenLabs (george)
+- Szene 14: KI-Stimme ElevenLabs (george)

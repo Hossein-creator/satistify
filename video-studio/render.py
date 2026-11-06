@@ -128,7 +128,7 @@ def eleven_word_timings(text, align, offset):
         j = min(len(chars), i + len(w)) - 1
         if i >= len(chars):
             break
-        out.append((w, max(0.0, st[i] - offset), max(0.0, en[max(i, j)] - offset)))
+        out.append((w, float(max(0.0, st[i] - offset)), float(max(0.0, en[max(i, j)] - offset))))
         i = j + 1
     return out if len(out) == len(text.split()) else None
 
@@ -261,7 +261,7 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
         if src:
             raw = ffmpeg_to_mono(src)
             nz = np.where(np.abs(raw) > 0.012)[0]
-            lead = max(0, nz[0] - int(0.04 * SR)) / SR if len(nz) else 0.0
+            lead = float(max(0, int(nz[0]) - int(0.04 * SR)) / SR) if len(nz) else 0.0
             audio = trim_silence(raw)
         else:
             audio = np.zeros(int(max(1.5, len(sc["text"]) / 14) * SR))

@@ -751,7 +751,7 @@ def blur_fast(img, radius):
         return img
     W, H = img.size
     f = 4
-    sm = img.resize((W // f, H // f), Image.BILINEAR).filter(ImageFilter.GaussianBlur(radius / f))
+    sm = img.resize((W // f, H // f), Image.BILINEAR).filter(ImageFilter.GaussianBlur(float(radius) / f))
     return sm.resize((W, H), Image.BILINEAR)
 
 
