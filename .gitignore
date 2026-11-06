@@ -1,0 +1,4 @@
+video-studio/voices/*.onnx
+video-studio/voices/*.json
+videos/*/.build/
+__pycache__/

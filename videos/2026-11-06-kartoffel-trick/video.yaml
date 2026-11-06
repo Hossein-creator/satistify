@@ -1,0 +1,134 @@
+# Short #1 – Formel: Paradoxe Behauptung + Wendung + Twist ("ist das nur eine Legende?") + Loop-Ende
+title: "Der Kartoffel-Trick von Friedrich dem Großen"
+format: short          # short = 1080x1920, long = 1920x1080
+voice: de-thorsten-low # Entwurfsstimme (CC0). Eigene Aufnahmen in aufnahme/ ersetzen sie automatisch.
+speed: 0.95            # <1 = schneller sprechen
+music: mystery         # synthetischer, lizenzfreier Klangteppich
+music_volume: 0.05
+
+meta:
+  titles:
+    - "Warum Friedrich der Große Kartoffeln bewachen ließ 🥔"
+    - "Der genialste Trick von Friedrich dem Großen"
+    - "Der König, der seine Kartoffeln klauen ließ"
+  description: |
+    Friedrich der Große ließ seine Kartoffeln bewachen – damit sie geklaut werden?
+    Die berühmte Geschichte vom Kartoffelbefehl, und warum sie wahrscheinlich eine Legende ist.
+
+    Legende oder Wahrheit? Schreib's in die Kommentare! 👇
+    #geschichte #preußen #friedrichdergroße
+  sources:
+    - "Kartoffelbefehl (Circular-Ordre vom 24. März 1756) – z. B. de.wikipedia.org/wiki/Kartoffelbefehl"
+    - "Antoine Parmentier und die 'bewachten Felder' – z. B. de.wikipedia.org/wiki/Antoine_Parmentier"
+    - "Grab Friedrichs II. auf der Terrasse von Schloss Sanssouci – Stiftung Preußische Schlösser und Gärten (spsg.de)"
+  pinned_comment: "Legende oder Wahrheit – was glaubst du? 🥔 Und welchen König soll ich als Nächstes zerlegen?"
+  tags: [Geschichte, Preußen, Friedrich der Große, Kartoffelbefehl, Alter Fritz, History deutsch]
+  thumbnail_time: 1.2
+  notes: |
+    Quellen vor dem Upload kurz gegenprüfen (Wikipedia-Links waren aus der Arbeitsumgebung nicht abrufbar).
+    KI-Kennzeichnung: nicht nötig (gezeichnete Figuren, keine realistische Darstellung echter Personen).
+    Empfehlung: Mit eigener Stimme neu vertonen (siehe aufnahme-skript.md) – wirkt menschlicher und schützt vor der "inauthentic content"-Regel.
+
+scenes:
+  - text: "Friedrich der Große ließ seine Kartoffeln von Soldaten bewachen."
+    highlight: [Kartoffeln, Soldaten]
+    visual:
+      - {type: text, text: "DER KARTOFFEL-TRICK", bold: true, size: 100, y: 0.12, width: 0.95, color: red, stroke: 6}
+      - {type: figure, x: 0.28, y: 0.56, size: 1.15, props: [crown], mood: smug, label: "Friedrich II."}
+      - {type: potato, x: 0.52, y: 0.36, size: 1.1, glow: true, at_word: Kartoffeln}
+      - {type: figure, x: 0.76, y: 0.56, size: 1.05, props: [tricorn, spear], mood: angry, face: left, label: "Wache", at_word: Soldaten}
+
+  - text: "Aber nicht, damit sie keiner klaut. Sondern damit sie geklaut werden."
+    camera: out
+    visual:
+      - {type: figure, x: 0.7, y: 0.56, props: [tricorn, spear], mood: sleep, face: left}
+      - {type: figure, x: 0.3, y: 0.56, pose: run, props: [farmer, potato], mood: happy, at_word: Sondern}
+      - {type: question, x: 0.5, y: 0.2, at_word: geklaut}
+
+  - text: "Preußen, Mitte des 18. Jahrhunderts. Missernten und Hunger sind ein ständiges Problem."
+    say: "Preußen, Mitte des achtzehnten Jahrhunderts. Missernten und Hunger sind ein ständiges Problem."
+    visual:
+      - {type: text, text: "PREUSSEN, ~1750", y: 0.12, size: 100, box: true}
+      - {type: flag, x: 0.66, y: 0.5, colors: [black, white, black], at: 0.3}
+      - {type: figure, x: 0.34, y: 0.58, props: [farmer], mood: sad, label: "Bauer", at_word: Hunger}
+
+  - text: "Dabei liegt die Lösung schon da: die Kartoffel aus Südamerika."
+    visual:
+      - {type: potato, x: 0.5, y: 0.34, size: 1.6, glow: true, face: happy, sfx: ding, at_word: Kartoffel}
+      - {type: text, text: "aus den Anden", y: 0.55, size: 80, at_word: Südamerika}
+
+  - text: "Nur: Keiner will sie. Viele Bauern halten sie für Schweinefutter, manche sogar für giftig."
+    highlight: [giftig]
+    visual:
+      - {type: figure, x: 0.25, y: 0.58, props: [farmer], mood: angry, label: "Bäh!"}
+      - {type: figure, x: 0.75, y: 0.58, props: [farmer], mood: sick, face: left, at_word: giftig}
+      - {type: potato, x: 0.5, y: 0.3, size: 0.9, face: sad, at: 0.2}
+      - {type: cross, x: 0.5, y: 0.3, size: 1.0, at_word: giftig}
+
+  - text: "Also macht Friedrich, was Könige eben machen: Er befiehlt es. Der Kartoffelbefehl, 24. März 1756."
+    say: "Also macht Friedrich, was Könige eben machen: Er befiehlt es. Der Kartoffelbefehl, vierundzwanzigster März siebzehnhundertsechsundfünfzig."
+    highlight: [Kartoffelbefehl]
+    visual:
+      - {type: figure, x: 0.3, y: 0.58, size: 1.15, pose: point, props: [crown], mood: angry, bubble: "Pflanzt Kartoffeln!", at_word: befiehlt}
+      - {type: text, text: "KARTOFFELBEFEHL 24.03.1756", y: 0.14, size: 78, box: "#fff3c4", sfx: ding, at_word: Kartoffelbefehl}
+
+  - text: "Doch Befehle allein überzeugen niemanden. Und jetzt kommt der Trick."
+    camera: none
+    visual:
+      - {type: figure, x: 0.5, y: 0.58, size: 1.2, pose: think, props: [crown], mood: smug}
+      - {type: exclaim, x: 0.75, y: 0.22, at_word: Trick, shake: true, sfx: boom}
+
+  - text: "Der König lässt ein eigenes Kartoffelfeld anlegen. Mit Wachen. Aber die haben einen geheimen Befehl: Schaut ruhig mal weg."
+    visual:
+      - {type: field, y: 0.5, rows: 2, fence: true}
+      - {type: figure, x: 0.5, y: 0.58, size: 0.95, props: [tricorn, spear], mood: neutral, at_word: Wachen}
+      - {type: figure, x: 0.2, y: 0.4, size: 0.8, props: [crown], mood: smug, bubble: "Psst… schaut weg!", at_word: geheimen}
+
+  - text: "Die Bauern denken: Was der König bewachen lässt, muss wertvoll sein."
+    bg: night
+    visual:
+      - {type: moon, x: 0.8, y: 0.1}
+      - {type: figure, x: 0.35, y: 0.58, props: [farmer], pose: think, mood: smug, bubble: "Das muss wertvoll sein…", at: 0.4}
+      - {type: potato, x: 0.72, y: 0.45, size: 1.0, glow: true, at_word: wertvoll}
+
+  - text: "Also klauen sie nachts die Kartoffeln und pflanzen sie zu Hause an."
+    bg: night
+    visual:
+      - {type: moon, x: 0.8, y: 0.1}
+      - {type: field, y: 0.5, rows: 1, x0: 0.05, x1: 0.45}
+      - {type: figure, x: 0.4, y: 0.58, pose: run, props: [farmer, potato], mood: happy, at_word: klauen}
+      - {type: house, x: 0.78, y: 0.58, at_word: Hause}
+      - {type: arrow, from: [0.5, 0.3], to: [0.75, 0.3], at_word: pflanzen}
+
+  - text: "Klingt genial. Der Haken: Wahrscheinlich ist das nur eine Legende."
+    highlight: [Legende]
+    visual:
+      - {type: figure, x: 0.5, y: 0.58, size: 1.1, pose: shrug, mood: surprised}
+      - {type: text, text: "LEGENDE?", bold: true, y: 0.18, size: 170, color: red, stroke: 8, at_word: Legende, shake: true, sfx: boom}
+
+  - text: "Denn in Frankreich erzählt man genau dieselbe Geschichte, nur über einen Apotheker namens Parmentier."
+    visual:
+      - {type: flag, x: 0.12, y: 0.45, colors: [blue, white, red], vertical: true, at_word: Frankreich}
+      - {type: figure, x: 0.62, y: 0.58, props: [wig, potato], pose: hold, mood: smug, face: left, label: "Parmentier", at_word: Apotheker}
+
+  - text: "Echt ist dagegen das hier: Bis heute legen Besucher Kartoffeln auf Friedrichs Grab in Sanssouci."
+    highlight: [Sanssouci]
+    visual:
+      - {type: grave, x: 0.5, y: 0.56, text: "FRIEDRICH II.", size: 1.1}
+      - {type: potato, x: 0.3, y: 0.57, size: 0.45, at_word: Kartoffeln}
+      - {type: potato, x: 0.42, y: 0.59, size: 0.4, at_word: Kartoffeln}
+      - {type: potato, x: 0.65, y: 0.58, size: 0.45, at_word: Grab}
+      - {type: text, text: "Sanssouci, Potsdam", y: 0.12, size: 80, box: true, at_word: Sanssouci}
+
+  - text: "Legende oder Wahrheit? Schreib es in die Kommentare."
+    visual:
+      - {type: text, text: "LEGENDE ODER WAHRHEIT?", bold: true, y: 0.16, size: 110, color: yellow, stroke: 8}
+      - {type: check, x: 0.3, y: 0.42, at_word: Wahrheit}
+      - {type: cross, x: 0.7, y: 0.42, size: 0.8, at_word: Wahrheit}
+
+  - text: "Und jetzt weißt du, warum ein König Soldaten für Kartoffeln brauchte."
+    camera: in
+    visual:
+      - {type: figure, x: 0.28, y: 0.56, size: 1.15, props: [crown], mood: smug}
+      - {type: potato, x: 0.52, y: 0.36, size: 1.1, glow: true}
+      - {type: figure, x: 0.76, y: 0.56, size: 1.05, props: [tricorn, spear], mood: angry, face: left}

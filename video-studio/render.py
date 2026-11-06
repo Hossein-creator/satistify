@@ -1,0 +1,440 @@
+#!/usr/bin/env python3
+"""Rendert ein Doodle-History-Video aus einer video.yaml.
+
+Aufruf:
+  python3 video-studio/render.py videos/<ordner>/video.yaml            # volles Video
+  python3 video-studio/render.py videos/<ordner>/video.yaml --stills   # nur Vorschaubilder je Szene
+  python3 video-studio/render.py videos/<ordner>/video.yaml --scale 0.5  # schneller Test in halber Größe
+
+Eigene Stimme: Lege Aufnahmen als videos/<ordner>/aufnahme/szene_01.wav, szene_02.wav ... ab.
+Vorhandene Aufnahmen ersetzen automatisch die Computerstimme der jeweiligen Szene.
+"""
+import argparse
+import hashlib
+import math
+import os
+import random
+import subprocess
+import sys
+import wave
+
+import numpy as np
+import yaml
+from PIL import Image, ImageDraw, ImageFilter
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import doodle  # noqa: E402
+
+FPS = 30
+SR = 44100
+SIZES = {"short": (1080, 1920), "long": (1920, 1080)}
+
+
+# ------------------------------------------------------------------ Audio
+
+def ffmpeg_to_mono(path):
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"],
+                         check=True, capture_output=True).stdout
+    return np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768.0
+
+
+def trim_silence(x, thr=0.012, margin=0.04):
+    idx = np.where(np.abs(x) > thr)[0]
+    if len(idx) == 0:
+        return x
+    m = int(margin * SR)
+    return x[max(0, idx[0] - m): min(len(x), idx[-1] + m)]
+
+
+_voices = {}
+
+
+def tts(text, voice_name, length_scale, out_path):
+    from piper import PiperVoice, SynthesisConfig
+    if voice_name not in _voices:
+        p = os.path.join(HERE, "voices", voice_name + ".onnx")
+        if not os.path.exists(p):
+            sys.exit(f"Stimme fehlt: {p} – bitte zuerst video-studio/setup.sh ausführen.")
+        _voices[voice_name] = PiperVoice.load(p)
+    with wave.open(out_path, "wb") as wf:
+        _voices[voice_name].synthesize_wav(text, wf, syn_config=SynthesisConfig(length_scale=length_scale))
+
+
+def sfx(kind):
+    """Synthetische, lizenzfreie Soundeffekte."""
+    if kind == "pop":
+        n = int(0.07 * SR)
+        t = np.arange(n) / SR
+        f = 520 + 900 * t / t[-1]
+        return 0.5 * np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 45)
+    if kind == "whoosh":
+        n = int(0.32 * SR)
+        rng = np.random.default_rng(1)
+        x = rng.standard_normal(n)
+        x = np.convolve(x, np.ones(25) / 25, mode="same")
+        env = np.sin(np.linspace(0, np.pi, n)) ** 2
+        return 0.9 * x * env
+    if kind == "boom":
+        n = int(1.4 * SR)
+        t = np.arange(n) / SR
+        rng = np.random.default_rng(2)
+        noise = np.convolve(rng.standard_normal(n), np.ones(60) / 60, mode="same")
+        return (0.9 * np.sin(2 * np.pi * (55 - 20 * t) * t) + 1.5 * noise) * np.exp(-t * 3)
+    if kind == "ding":
+        n = int(0.8 * SR)
+        t = np.arange(n) / SR
+        return 0.35 * (np.sin(2 * np.pi * 1318 * t) + 0.5 * np.sin(2 * np.pi * 1975 * t)) * np.exp(-t * 6)
+    if kind == "tick":
+        n = int(0.04 * SR)
+        t = np.arange(n) / SR
+        return 0.6 * np.sin(2 * np.pi * 2200 * t) * np.exp(-t * 120)
+    return np.zeros(1)
+
+
+def ambient_pad(total, mood="mystery"):
+    """Leiser, lizenzfreier Klangteppich (synthetisch)."""
+    n = int(total * SR)
+    t = np.arange(n) / SR
+    chords = {"mystery": [110.0, 130.81, 164.81], "epic": [98.0, 146.83, 196.0], "light": [130.81, 164.81, 196.0]}
+    freqs = chords.get(mood, chords["mystery"])
+    x = np.zeros(n)
+    for i, f in enumerate(freqs):
+        lfo = 0.6 + 0.4 * np.sin(2 * np.pi * (0.05 + 0.02 * i) * t)
+        x += lfo * (np.sin(2 * np.pi * f * t) + 0.3 * np.sin(2 * np.pi * f * 2.003 * t))
+    fade = np.minimum(1, np.minimum(t / 2.0, (total - t) / 2.0))
+    return x / len(freqs) * fade
+
+
+def add(track, clip, at, gain):
+    i = int(at * SR)
+    if i >= len(track) or i < 0:
+        return
+    j = min(len(track), i + len(clip))
+    track[i:j] += clip[: j - i] * gain
+
+
+# ------------------------------------------------------------------ Timeline
+
+PUNCT = ",.;:!?…"
+
+
+def word_timings(text, dur):
+    words = text.split()
+    weights = [len(w) + 2 + (4 if w[-1] in PUNCT else 0) for w in words]
+    total = sum(weights) or 1
+    out, t = [], 0.0
+    for w, wt in zip(words, weights):
+        d = dur * wt / total
+        out.append((w, t, t + d))
+        t += d
+    return out
+
+
+def chunk_words(timed, max_words=3, max_chars=18):
+    chunks, cur = [], []
+    for w in timed:
+        cur.append(w)
+        chars = sum(len(x[0]) for x in cur)
+        if len(cur) >= max_words or chars >= max_chars or w[0][-1] in PUNCT:
+            chunks.append(cur)
+            cur = []
+    if cur:
+        chunks.append(cur)
+    return chunks
+
+
+def build_timeline(spec, base_dir, build_dir, use_tts=True):
+    voice = spec.get("voice", "de-thorsten-low")
+    ls = spec.get("speed", 1.0)
+    t = spec.get("lead_in", 0.0)
+    scenes = spec["scenes"]
+    for i, sc in enumerate(scenes):
+        rec = os.path.join(base_dir, "aufnahme", f"szene_{i + 1:02d}.wav")
+        if os.path.exists(rec):
+            src, sc["_voice_src"] = rec, "eigene Aufnahme"
+        elif use_tts:
+            say = sc.get("say", sc["text"])
+            h = hashlib.md5(f"{voice}|{ls}|{say}".encode()).hexdigest()[:10]
+            src = os.path.join(build_dir, f"tts_{i + 1:02d}_{h}.wav")
+            if not os.path.exists(src):
+                tts(say, voice, ls, src)
+            sc["_voice_src"] = f"Computerstimme ({voice})"
+        else:
+            src = None
+        if src:
+            audio = trim_silence(ffmpeg_to_mono(src))
+        else:
+            audio = np.zeros(int(max(1.5, len(sc["text"]) / 14) * SR))
+        sc["_audio"] = audio
+        vd = len(audio) / SR
+        sc["_start"] = t
+        sc["_vdur"] = vd
+        sc["_end"] = t + vd + sc.get("pause", 0.22)
+        sc["_words"] = word_timings(sc["text"], vd)
+        t = sc["_end"]
+        for j, el in enumerate(sc.get("visual", [])):
+            if "at_word" in el:
+                key = el["at_word"].lower()
+                hit = next((w for w in sc["_words"] if key in w[0].lower()), None)
+                el["_at"] = hit[1] if hit else 0.0
+            elif "at" in el:
+                el["_at"] = float(el["at"])
+            else:
+                el["_at"] = 0.0 if j == 0 else min(vd * 0.8, 0.35 * j)
+            if i == 0 and el["_at"] <= 0.0:
+                el["_at"] = -1.0  # sofort sichtbar: erster Frame ist nie leer
+    total = t + spec.get("tail", 0.5)
+    return total
+
+
+# ------------------------------------------------------------------ Bild
+
+def ease_out_back(p):
+    c1, c3 = 1.70158, 2.70158
+    return 1 + c3 * (p - 1) ** 3 + c1 * (p - 1) ** 2
+
+
+_bg_cache = {}
+
+
+def background(pal_name, W, H):
+    key = (pal_name, W, H)
+    if key not in _bg_cache:
+        pal = doodle.PALETTES[pal_name]
+        img = Image.new("RGB", (W, H), pal["bg"])
+        rng = np.random.default_rng(7)
+        noise = (rng.standard_normal((H // 4, W // 4)) * 6).astype(np.int16)
+        noise = np.kron(noise, np.ones((4, 4), dtype=np.int16))[:H, :W]
+        arr = np.asarray(img).astype(np.int16) + noise[..., None]
+        yy, xx = np.mgrid[0:H, 0:W]
+        vign = 1 - 0.18 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2)
+        arr = (arr * vign[..., None]).clip(0, 255).astype(np.uint8)
+        _bg_cache[key] = Image.fromarray(arr)
+    return _bg_cache[key]
+
+
+def draw_captions(img, sc, local, W, H, s, fmt, spec):
+    if spec.get("captions", True) is False:
+        return
+    words = sc["_words"]
+    chunks = chunk_words(words, spec.get("caption_words", 3))
+    cur = None
+    for ch in chunks:
+        if ch[0][1] <= local < ch[-1][2] + 0.05:
+            cur = ch
+            break
+    if cur is None:
+        return
+    d = ImageDraw.Draw(img)
+    size = (100 if fmt == "short" else 74) * s
+    p = min(1, (local - cur[0][1]) / 0.12)
+    size *= 0.85 + 0.15 * p
+    f = doodle.font(doodle.FONT_BOLD, size)
+    hl = [h.lower() for h in sc.get("highlight", [])]
+    parts = [w[0].upper() for w in cur]
+    space = d.textlength(" ", font=f) * 1.7
+    widths = [d.textlength(p_, font=f) for p_ in parts]
+    total = sum(widths) + space * (len(parts) - 1)
+    if total > W * 0.9:  # zu breit -> verkleinern
+        f = doodle.font(doodle.FONT_BOLD, size * W * 0.9 / total)
+        space = d.textlength(" ", font=f) * 1.7
+        widths = [d.textlength(p_, font=f) for p_ in parts]
+        total = sum(widths) + space * (len(parts) - 1)
+    y = H * (spec.get("caption_y", 0.68 if fmt == "short" else 0.84))
+    x = W / 2 - total / 2
+    for (w, ws, we), txt, tw in zip(cur, parts, widths):
+        active = ws <= local < we + 0.02
+        key = w.lower().strip(PUNCT)
+        colr = (255, 212, 0) if active else ((120, 230, 255) if key in hl else (255, 255, 255))
+        d.text((x, y), txt, font=f, fill=colr, stroke_width=int(10 * s), stroke_fill=(15, 15, 15))
+        x += tw + space
+
+
+def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
+    sc_i = next((i for i, sc in enumerate(scenes) if t < sc["_end"]), len(scenes) - 1)
+    sc = scenes[sc_i]
+    local = t - sc["_start"]
+    pal_name = sc.get("bg", spec.get("bg", "paper"))
+    pal = doodle.PALETTES[pal_name]
+    img = background(pal_name, W, H).copy()
+    d = ImageDraw.Draw(img)
+    boil = int(t * FPS) // 3
+    for j, el in enumerate(sc.get("visual", [])):
+        at = el["_at"]
+        if local < at or ("until" in el and local > float(el["until"])):
+            continue
+        p = 1.0 if at < 0 else min(1.0, (local - at) / 0.28)
+        k = ease_out_back(p) if p < 1 else 1.0
+        rng = random.Random(sc_i * 100003 + boil * 131 + j)
+        pen = doodle.Pen(d, rng, s, pal["ink"])
+        pen.img = img
+        fn = doodle.DRAWERS[el["type"]]
+        if el["type"] == "image":
+            fn(pen, el, W, H, k, t, pal, base_dir=base_dir)
+        else:
+            fn(pen, el, W, H, k, t, pal)
+    # Kamera
+    cam = sc.get("camera", "in")
+    dur = sc["_end"] - sc["_start"]
+    prog = min(1, max(0, local / max(0.1, dur)))
+    z = {"in": 1 + 0.07 * prog, "out": 1.07 - 0.07 * prog, "none": 1.0}.get(cam, 1.0)
+    fx, fy = sc.get("focus", [0.5, 0.5])
+    ox = oy = 0.0
+    for st in shakes:
+        if 0 <= t - st < 0.45:
+            a = (1 - (t - st) / 0.45) * 22 * s
+            ox, oy = random.uniform(-a, a), random.uniform(-a, a)
+            z = max(z, 1.04)
+    if z != 1.0 or ox or oy:
+        cw, ch = W / z, H / z
+        cx = min(max(fx * W + ox, cw / 2), W - cw / 2)
+        cy = min(max(fy * H + oy, ch / 2), H - ch / 2)
+        img = img.resize((W, H), Image.BILINEAR, box=(cx - cw / 2, cy - ch / 2, cx + cw / 2, cy + ch / 2))
+    draw_captions(img, sc, local, W, H, s, fmt, spec)
+    return img
+
+
+# ------------------------------------------------------------------ Ausgaben
+
+def fmt_ts(x):
+    h, m = int(x // 3600), int(x % 3600 // 60)
+    sec = x % 60
+    return f"{h:02d}:{m:02d}:{int(sec):02d},{int((sec % 1) * 1000):03d}"
+
+
+def write_srt(scenes, path, spec):
+    n, out = 1, []
+    for sc in scenes:
+        for ch in chunk_words(sc["_words"], spec.get("caption_words", 3) + 3, 40):
+            a, b = sc["_start"] + ch[0][1], sc["_start"] + ch[-1][2]
+            out.append(f"{n}\n{fmt_ts(a)} --> {fmt_ts(b)}\n{' '.join(w[0] for w in ch)}\n")
+            n += 1
+    open(path, "w", encoding="utf-8").write("\n".join(out))
+
+
+def write_docs(spec, scenes, out_dir, total):
+    meta = spec.get("meta", {})
+    lines = [f"# {spec.get('title', 'Video')}\n", f"Länge: {total:.1f} s · Format: {spec.get('format', 'short')}\n"]
+    if meta.get("titles"):
+        lines.append("## Titel-Optionen\n" + "\n".join(f"- {t}" for t in meta["titles"]) + "\n")
+    if meta.get("description"):
+        lines.append("## Beschreibung (zum Kopieren)\n```\n" + meta["description"].strip())
+        if meta.get("sources"):
+            lines.append("\nQuellen:\n" + "\n".join(f"- {q}" for q in meta["sources"]))
+        lines.append("```\n")
+    if meta.get("pinned_comment"):
+        lines.append("## Angehefteter Kommentar\n" + meta["pinned_comment"] + "\n")
+    if meta.get("tags"):
+        lines.append("## Tags\n" + ", ".join(meta["tags"]) + "\n")
+    if meta.get("notes"):
+        lines.append("## Hinweise\n" + meta["notes"].strip() + "\n")
+    lines.append("## Stimme je Szene\n" + "\n".join(
+        f"- Szene {i + 1}: {sc.get('_voice_src', '-')}" for i, sc in enumerate(scenes)) + "\n")
+    open(os.path.join(out_dir, "upload.md"), "w", encoding="utf-8").write("\n".join(lines))
+
+    rec = ["# Aufnahme-Skript\n",
+           "Sprich jede Szene einzeln ein und speichere sie als `aufnahme/szene_XX.wav` im Videoordner.",
+           "Danach `render.py` erneut ausführen – deine Stimme ersetzt automatisch die Computerstimme.\n",
+           "Tipps: ruhiger Raum, Handy/Mikro 15–20 cm vom Mund, lebendig erzählen wie einem Freund.\n"]
+    for i, sc in enumerate(scenes):
+        rec.append(f"**Szene {i + 1}** → `szene_{i + 1:02d}.wav` (ca. {sc['_vdur']:.1f} s)\n> {sc['text']}\n")
+    open(os.path.join(out_dir, "aufnahme-skript.md"), "w", encoding="utf-8").write("\n".join(rec))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("spec")
+    ap.add_argument("--stills", action="store_true", help="nur ein Vorschaubild pro Szene")
+    ap.add_argument("--scale", type=float, default=1.0)
+    args = ap.parse_args()
+
+    spec_path = os.path.abspath(args.spec)
+    base_dir = os.path.dirname(spec_path)
+    spec = yaml.safe_load(open(spec_path, encoding="utf-8"))
+    fmt = spec.get("format", "short")
+    W, H = SIZES[fmt]
+    W, H = int(W * args.scale) // 2 * 2, int(H * args.scale) // 2 * 2
+    s = min(W, H) / 1080
+    out_dir = os.path.join(base_dir, "output")
+    build_dir = os.path.join(base_dir, ".build")
+    os.makedirs(out_dir, exist_ok=True)
+    os.makedirs(build_dir, exist_ok=True)
+
+    scenes = spec["scenes"]
+    total = build_timeline(spec, base_dir, build_dir)
+    shakes = [sc["_start"] + el["_at"] for sc in scenes for el in sc.get("visual", []) if el.get("shake")]
+
+    if args.stills:
+        frames = []
+        for sc in scenes:
+            t = sc["_start"] + min(sc["_vdur"] * 0.85, max(el["_at"] for el in sc.get("visual", [{"_at": 0}])) + 0.5)
+            frames.append(render_frame(spec, scenes, t, W, H, s, fmt, base_dir, []))
+        cols = min(5, len(frames))
+        rows = math.ceil(len(frames) / cols)
+        tw, th = W // 3, H // 3
+        sheet = Image.new("RGB", (cols * tw, rows * th), (255, 255, 255))
+        for i, fr in enumerate(frames):
+            sheet.paste(fr.resize((tw, th)), ((i % cols) * tw, (i // cols) * th))
+        p = os.path.join(out_dir, "vorschau.jpg")
+        sheet.save(p, quality=85)
+        print(p)
+        return
+
+    # Audio mischen
+    n = int(total * SR) + SR
+    voice = np.zeros(n)
+    fx = np.zeros(n)
+    for i, sc in enumerate(scenes):
+        add(voice, sc["_audio"], sc["_start"], 1.0)
+        if i > 0 and spec.get("sfx", True):
+            add(fx, sfx("whoosh"), sc["_start"] - 0.12, 0.18)
+        for el in sc.get("visual", []):
+            kind = el.get("sfx", "pop")
+            if kind and el["_at"] > 0.05 and spec.get("sfx", True):
+                add(fx, sfx(kind), sc["_start"] + el["_at"], 0.22 if kind == "pop" else 0.45)
+    music = spec.get("music")
+    mus = np.zeros(n)
+    if music:
+        if isinstance(music, str) and os.path.exists(os.path.join(base_dir, music)):
+            m = ffmpeg_to_mono(os.path.join(base_dir, music))
+            reps = int(np.ceil(n / len(m)))
+            mus = np.tile(m, reps)[:n] * spec.get("music_volume", 0.12)
+        else:
+            pad = ambient_pad(total, music if isinstance(music, str) else "mystery")
+            mus[: len(pad)] = pad * spec.get("music_volume", 0.06)
+    mix = voice + fx + mus
+    mix = mix / max(1.0, np.max(np.abs(mix)) / 0.95)
+    wav_path = os.path.join(build_dir, "mix.wav")
+    with wave.open(wav_path, "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(SR)
+        wf.writeframes((mix[: int(total * SR)] * 32767).astype(np.int16).tobytes())
+
+    # Video
+    out_mp4 = os.path.join(out_dir, "video.mp4")
+    cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
+           "-i", "-", "-i", wav_path, "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
+           "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
+           "-shortest", "-movflags", "+faststart", out_mp4]
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    nframes = int(total * FPS)
+    thumb_t = spec.get("meta", {}).get("thumbnail_time", 0.0)
+    for fi in range(nframes):
+        t = fi / FPS
+        fr = render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes)
+        if abs(t - thumb_t) < 0.5 / FPS:
+            fr.save(os.path.join(out_dir, "thumbnail.jpg"), quality=92)
+        proc.stdin.write(fr.tobytes())
+        if fi % (FPS * 10) == 0:
+            print(f"  {t:5.1f}s / {total:.1f}s", flush=True)
+    proc.stdin.close()
+    proc.wait()
+    write_srt(scenes, os.path.join(out_dir, "untertitel.srt"), spec)
+    write_docs(spec, scenes, out_dir, total)
+    print("fertig:", out_mp4, f"({total:.1f}s)")
+
+
+if __name__ == "__main__":
+    main()
