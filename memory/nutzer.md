@@ -28,3 +28,4 @@
 - **Skills immer nutzen:** ig-viral, ig-human, ig-caption (letzte Nachricht endete mit "und …" – evtl. ein vierter Skill gemeint, nachfragen).
 - Erstes Video: `videos/2026-11-06-kartoffel-trick/` (Friedrich der Große & Kartoffelbefehl, Doku-Short).
 - Eigene Cloud-Umgebung "satistify" angelegt (Wikimedia/Wikipedia freigeschaltet, Setup-Skript installiert Tools + Stimme).
+- 2026-11-06: Weitere Vorbild-Kanäle vom Nutzer: Absolute History, Extra History (Shorts), InfiniteCracker → Analyse `dokumente/2026-11-06-analyse-kanaele-2.md`. Kern: feste Serien + makabre Themen; Serien-Ideen ins Playbook übernommen.

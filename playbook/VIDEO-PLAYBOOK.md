@@ -51,6 +51,16 @@ Die Original-Skripte der Skills (`humanize.py`, `detect.py`, `caption.py`, `swip
 | Heute-Bezug | „Was hat die Schweiz gegen Liechtenstein?“ (Terra X, 7,9x) | „Warum Kaliningrad einmal Königsberg hieß“ |
 | Was-wäre-wenn / Countdown | „What if Germany won WW2“, „60s before NUKE“ (Historically, je 28 Mio.) | „60 Sekunden vor dem Ausbruch des Vesuvs“ |
 
+### Serien sind der stärkste Hebel (Analyse 2: Absolute History, Extra History, InfiniteCracker)
+Details: `dokumente/2026-11-06-analyse-kanaele-2.md`
+- **Feste Serien mit Namen und Teilnummer** bringen bei allen drei Kanälen 7x bis 16x des Kanal-Medians. Beispiele: „Worst ways to die (part N)“ mit bis zu 36 Mio. Aufrufen, „One bizarre fact about every US president“, „Worst Dads in History“, „Countries Now vs Then“.
+- **Dunkel, makaber und eklig schlägt positiv und romantisch:** „Best Days in History“ liegt bei 0,4x, Romantik bei 0,4x.
+- **Werbe-Shorts und Kooperationen** liegen bei 0,2x. Sponsoren gehören in die Beschreibung oder ins lange Video.
+- **Aufbau Serien-Short:** Serienname plus Versprechen im 1. Satz, dann 3 Fälle mit konkreten Fakten und einer trockenen Pointe je Fall. Nach jedem Fall eine **wiederkehrende Steckbrief-Karte** („ERFURT · 1184 · TOD IN DER LATRINE“). Am Ende Pointe oder Meinungsfrage.
+- **Titel-Schema:** `Kurzer provokanter Titel | Serienname`. In der Beschreibung immer auf Teil 2 bzw. die lange Folge verweisen.
+- **Unsere Serien:** „Die seltsamsten Tode der Geschichte“, „Die grausamsten Strafen der Geschichte“ (ohne grafische Bilder), „Ein kurioser Fakt über jeden preußischen König“, „Die schlimmsten Väter der Geschichte“, „Das ist …“ (Objekt mit Museumsfoto), „Damals vs. heute“ (Karte), „Ekel-Geschichte“.
+- **Nicht übernehmen:** parteiische Tagespolitik (Extra History „Recently Deleted“), Like-Köder („Like if your country is here“) und Countryballs (0,3x).
+
 **Deutsches Titel-Muster:** `Thema: provokante Frage?`, z. B. „Kartoffelbefehl: Was an der Legende wirklich dran ist“. Titel kurz halten; oben in der Swipe-File haben Hooks im Median 6 Wörter.
 
 ## 4. Bild und Ton (Doku-Stil, `style: doku`)
