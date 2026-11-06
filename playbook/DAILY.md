@@ -31,3 +31,13 @@ Stand: 06.11.2026. Wunsch des Nutzers. Läuft als geplante Aufgabe, jeden Tag fr
 - GitHub-Push (403) muss gehen.
 - Video-Repo anlegen (Name, öffentlich).
 - ElevenLabs-Key und Stimmwahl.
+
+## Erfahrungen Tag 1 (06./07.11.2026)
+- **Länge:** George spricht ca. 15,5 Zeichen/s. Für 70–75 s: **1.050–1.150 Zeichen Sprechtext** (ca. 155–185 Wörter), 14–16 Szenen. Zu lang → `pause: 0.12` im yaml (statt 0,22) spart 1–2 s ohne neue Stimme.
+- **ElevenLabs-Kontingent** vor dem Start prüfen: `curl -sS https://api.elevenlabs.io/v1/user/subscription -H "xi-api-key: proxy-injected"` (Proxy setzt den echten Key). Rest < 3.600 Zeichen → nur so viele Videos wie möglich, Rest im Bericht melden.
+- **Bilder:** Wikimedia-API drosselt oft (429). Erste Wahl: **The Met Open Access** mit `python3 video-studio/tools/met.py search "…"` und `met.py get <IDs> --dir videos/<ordner>/assets` (CC0, Lizenz-JSON automatisch). Danach Dateien kurz umbenennen.
+- **Fakten:** `https://en.wikipedia.org/w/index.php?title=<Artikel>&action=raw` funktioniert (Text lesen, Belege prüfen). Unbelegtes im Video als „nicht belegt“ stempeln.
+- **Vorschau** mit `--stills` ansehen und Bildausschnitte korrigieren (Gesichter, keine leeren Ränder), dann `--variants` rendern.
+- **Caption:** `caption.txt` im Videoordner, Job A (Reel trägt den Hook): Frage + Bitte in Zeile 1, Suchbegriffe im Text, 3 Hashtags, keine typografischen Anführungszeichen (ig-human-Fingerprint). Prüfen mit `caption_check.py` und `human_check.py`.
+- **Upload:** Video komprimieren (`ffmpeg -crf 24 -maxrate 3M -bufsize 6M -c:a aac -b:a 160k -movflags +faststart`), nach `Hossein-creator/waswirklich-videos` unter `JJJJ-MM/<name>.mp4` pushen, Raw-Link: `https://raw.githubusercontent.com/Hossein-creator/waswirklich-videos/main/JJJJ-MM/<name>.mp4`. Metricool kopiert die Datei; nach dem Einplanen Dateien älter als 7 Tage löschen.
+- **Metricool-Post:** blogId 7558808, providers instagram+youtube+tiktok, `autoPublish: true`, instagramData {type: REEL, isAiGenerated: true}, youtubeData {title, type: short, privacy: public, category: EDUCATION, madeForKids: false, isAiGeneratedContent: true}, tiktokData {privacyOption: PUBLIC_TO_EVERYONE, isAigc: true, title}. Zeitzone Europe/Berlin.
