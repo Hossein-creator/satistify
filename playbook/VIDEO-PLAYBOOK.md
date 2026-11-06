@@ -3,7 +3,7 @@
 Stand: 06.11.2026. Pflichtlektüre vor jedem neuen Video. Quellen: Kanal-Analyse, drei Recherchen und die Swipe-File (Links unten).
 
 ## 0. Entscheidungen des Nutzers (nicht neu verhandeln)
-- **Nische:** History, Doku, True (Crime) History, Fakten-History.
+- **Nische:** History, Doku, True (Crime) History und **History-Fakten** (eigene Säule seit 06.11.2026, siehe §2a).
 - **Stil:** **realistisch und ernst, im Doku-Look.** Echte historische Gemälde, Karten und Stiche, filmische Farbe, ruhige Kamerafahrten. Die Zuschauer sollen sofort neugierig werden. **Kein Cartoon, keine Strichmännchen.** Der Nutzer hat beides abgelehnt.
 - **Skills immer verwenden:** `ig-viral` (Recherche), `ig-human` (jeder Text), `ig-caption` (Beschreibung/Caption).
 - **Sprache:** Deutsch (DACH). Englisch nur auf Wunsch.
@@ -63,6 +63,17 @@ Details: `dokumente/2026-11-06-analyse-kanaele-2.md`
 - **Titel-Schema:** `Kurzer provokanter Titel | Serienname`. In der Beschreibung immer auf Teil 2 bzw. die lange Folge verweisen.
 - **Unsere Serien:** „Die seltsamsten Tode der Geschichte“, „Die grausamsten Strafen der Geschichte“ (ohne grafische Bilder), „Ein kurioser Fakt über jeden preußischen König“, „Die schlimmsten Väter der Geschichte“, „Das ist …“ (Objekt mit Museumsfoto), „Damals vs. heute“ (Karte), „Ekel-Geschichte“.
 - **Nicht übernehmen:** parteiische Tagespolitik (Extra History „Recently Deleted“), Like-Köder („Like if your country is here“) und Countryballs (0,3x).
+
+### §2a History-Fakten (zweite Säule, Wunsch vom 06.11.2026)
+Kurze Fakten-Shorts neben den Story-Dokus. Gleicher Stil: echt, ernst, Doku-Look, keine Emojis.
+- **Format A, ein Fakt (20–35 s):** Behauptung als Hook, dann Beweis mit Bild oder Objekt, Datum und Ort. Am Ende ein Twist oder Loop. Beispiel: „Napoleon war nicht klein.“ → Maße in Zoll und cm → Grund der Legende.
+- **Format B, drei Fakten (35–55 s):** „3 Fakten über …, die dir keiner erzählt“. Jeder Fakt hat eine eigene Steckbrief-Karte und einen Zähler (`counter` „Fakt 1/3“). Der stärkste Fakt kommt zuletzt.
+- **Format C, Mythos oder Wahrheit:** Mythos nennen, Stempel `Falsch` / `Wahr` / `Nicht belegt`, dann die echte Geschichte.
+- **Pflicht:** Jeder Fakt hat eine Quelle in `quellen.md` (Museum, Wikipedia mit Beleg, Fachbuch). Was nicht belegt ist, wird nicht als Fakt gezeigt.
+- **Serien:** „History-Fakten (Teil N)“, „Mythos oder Wahrheit?“, „Ein Fakt über jeden preußischen König“, „Das ist …“ (Objekt).
+- **Titel-Schema:** `Behauptung | History-Fakten`.
+- **Mischung pro Woche:** etwa 1 Fakten-Short auf 1 Story-Doku, danach nach den Zahlen in YouTube Studio anpassen.
+
 
 **Deutsches Titel-Muster:** `Thema: provokante Frage?`, z. B. „Kartoffelbefehl: Was an der Legende wirklich dran ist“. Titel kurz halten; oben in der Swipe-File haben Hooks im Median 6 Wörter.
 

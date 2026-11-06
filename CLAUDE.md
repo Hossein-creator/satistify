@@ -24,7 +24,7 @@ Dateinamen: `JJJJ-MM-TT-kurzer-titel.md` (z. B. `2026-11-06-projektidee.md`).
 ## Sprache
 Der Nutzer schreibt Deutsch – Antworten und Dateien standardmäßig auf Deutsch.
 
-## Videos generieren (YouTube-Kanal: History / Doku / True History)
+## Videos generieren (YouTube-Kanal: History / Doku / True History / History-Fakten)
 Wenn der Nutzer ein Video, eine Videoidee, ein Skript oder eine Caption will:
 1. **Zuerst `playbook/VIDEO-PLAYBOOK.md` lesen** – dort stehen Stil, Ablauf, Regeln und Werkzeuge.
 2. **Immer diese Skills verwenden** (Wunsch des Nutzers):

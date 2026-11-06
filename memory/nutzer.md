@@ -34,3 +34,4 @@
 - 2026-11-06 Wunsch: mehr Spannung bis zum Ende → B-Roll-Slides, Dialogfenster mit Emotion, Farbstimmung pro Szene, Neugier-Leiste, Blur-Reveal, Kino-Balken (Playbook §4b). Bildquelle zusätzlich: The Met Open Access.
 - 2026-11-06 Wunsch: auf Kleinigkeiten achten – jedes genannte Detail bekommt Effekt/Emoji/Szene, „richtig unterhaltsam“ → emoji/count-Elemente + auto_emoji (Playbook §4b).
 - 2026-11-06 Korrektur: **KEINE Emojis** im Video. Details stattdessen mit ernsten Effekten (count, Bildwechsel beim Wort, dialog, stamp, mark).
+- 2026-11-06: **History-Fakten** als zweite Nischen-Säule hinzugefügt (Fakten-Shorts neben Story-Dokus). Formate A/B/C im Playbook §2a.
