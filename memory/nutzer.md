@@ -36,3 +36,6 @@
 - 2026-11-06 Korrektur: **KEINE Emojis** im Video. Details stattdessen mit ernsten Effekten (count, Bildwechsel beim Wort, dialog, stamp, mark).
 - 2026-11-06: **History-Fakten** als zweite Nischen-Säule hinzugefügt (Fakten-Shorts neben Story-Dokus). Formate A/B/C im Playbook §2a.
 - 2026-11-06: Ablauf bei „generiere“ als Schrittliste gespeichert: `playbook/GENERIERE.md`.
+- 2026-11-06: **Bestehende Accounts (über Metricool, Brand-ID 7558808):** Instagram `silent.stickman`, TikTok `the.silent.stickman`, YouTube-Kanal `UC4FOhemWxnUaBZMC9kNwOvA`.
+  Inhalt dort: **englische Strichmännchen-Reels zu Liebe/Beziehung/Motivation** (nicht History!). Seit 23.10.2026: 1 → ca. 2.700 Follower; Top-Reel 7,7 Mio. Aufrufe (27.10.), mehrere 200–500 Tsd.
+  Offen: History-Nische auf neuem Account oder diesen umbauen? Empfehlung Claude: neuer Account, silent.stickman weiterlaufen lassen.
