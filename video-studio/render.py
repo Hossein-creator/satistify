@@ -263,6 +263,9 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
             nz = np.where(np.abs(raw) > 0.012)[0]
             lead = float(max(0, int(nz[0]) - int(0.04 * SR)) / SR) if len(nz) else 0.0
             audio = trim_silence(raw)
+        sil = float(sc.get("silence", 0) or 0)   # Stille vor dem Satz (Schwarzbild-Pause, Referenz-Regel)
+        if sil > 0 and src:
+            audio = np.concatenate([np.zeros(int(sil * SR)), audio])
         else:
             audio = np.zeros(int(max(1.5, len(sc["text"]) / 14) * SR))
         sc["_audio"] = audio
@@ -273,9 +276,9 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
         sc["_words"] = None
         if sc.get("_align") and os.path.exists(sc["_align"]) and sc.get("say", sc["text"]) == sc["text"]:
             import json as _json
-            sc["_words"] = eleven_word_timings(sc["text"], _json.load(open(sc["_align"])), lead)
+            sc["_words"] = eleven_word_timings(sc["text"], _json.load(open(sc["_align"])), lead - sil)
         if not sc["_words"]:
-            sc["_words"] = word_timings(sc["text"], vd)
+            sc["_words"] = [(w, a + sil, b + sil) for w, a, b in word_timings(sc["text"], max(0.3, vd - sil))]
         t = sc["_end"]
         if sc.get("slides") and not sc.get("_slides_done"):
             # B-Roll: mehrere Bilder pro Szene, gleichmäßig verteilt, Übergänge abwechselnd
@@ -301,8 +304,11 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
                     sc.setdefault("visual", []).append(e)
             sc["_emoji_done"] = True
         for el in sc.get("visual", []):
-            if el.get("src") and el["type"] == "dialog":
+            if el.get("src") and el["type"] in ("dialog", "ghost"):
                 el["src_abs"] = os.path.join(base_dir, el["src"])
+            if el["type"] == "triptych":
+                srcs = el["src"] if isinstance(el["src"], list) else [el["src"]]
+                el["_srcs_abs"] = [os.path.join(base_dir, x) for x in srcs]
             if "reveal_word" in el:
                 key = el["reveal_word"].lower()
                 w = next((w for w in sc["_words"] if key in w[0].lower()), None)
@@ -358,7 +364,7 @@ def background_any(name, W, H):
 
 
 def draw_captions(img, sc, local, W, H, s, fmt, spec):
-    if spec.get("captions", True) is False:
+    if spec.get("captions", True) is False or sc.get("blackcard"):
         return
     words = sc["_words"]
     chunks = chunk_words(words, spec.get("caption_words", 3))
@@ -445,7 +451,7 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
     boil = int(t * FPS) // 3
     for j, el in enumerate(sc.get("visual", [])):
         at = el["_at"]
-        if el["type"] in ("photo", "emoji", "count") or local < at or ("until" in el and local > float(el["until"])):
+        if el["type"] == "photo" or el["type"] in doku.POST_GRADE or local < at or ("until" in el and local > float(el["until"])):
             continue
         p = 1.0 if at < 0 else min(1.0, (local - at) / 0.28)
         k = (ease_out_back(p) if not doku_style else p) if p < 1 else 1.0
@@ -461,6 +467,9 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
             fn(pen, el, W, H, k, t, pal, base_dir=base_dir)
         else:
             fn(pen, el, W, H, k, t, pal)
+    if doku_style and sc.get("blackcard"):   # Schwarzbild mit Punchline (Referenz-Regel)
+        first = sc["_words"][0][1] if sc["_words"] else 0.0
+        doku.draw_blackcard(img, sc.get("card", sc["text"]), local - first, W, H, s, sc.get("card_size", 96))
     # Kamera
     cam = sc.get("camera", "none" if doku_style else "in")
     dur = sc["_end"] - sc["_start"]
@@ -510,7 +519,8 @@ def render_frame(spec, scenes, t, W, H, s, fmt, base_dir, shakes):
         if sc.get("transition") == "flash" and local < 0.3:
             img = Image.blend(img, Image.new("RGB", (W, H), (255, 250, 240)), 1 - local / 0.3)
     # Emojis und Zähler NACH der Farbkorrektur: sie sollen knallen, nicht im Look untergehen
-    pops = [e for e in sc.get("visual", []) if e["type"] in ("emoji", "count") and local >= e["_at"]]
+    pops = [e for e in sc.get("visual", []) if e["type"] in doku.POST_GRADE and local >= e["_at"]
+            and not ("until" in e and local > float(e["until"]))]
     if pops:
         pen = doodle.Pen(ImageDraw.Draw(img), random.Random(0), s, (255, 255, 255))
         pen.img = img
@@ -554,9 +564,10 @@ def write_docs(spec, scenes, out_dir, total):
             mp = os.path.join(os.path.dirname(out_dir), src + ".json")
             if os.path.exists(mp):
                 m = json.load(open(mp, encoding="utf-8"))
-                credits.append(f"- {m['title'][5:]} – {m['artist'] or 'unbekannt'} – {m['license']} – {m['page']}")
+                ttl = m["title"][5:] if m["title"].startswith("File:") else m["title"]
+                credits.append(f"- {ttl} – {m['artist'] or 'unbekannt'} – {m['license']} – {m['page']}")
         if credits:
-            lines.append("\nBildnachweise (Wikimedia Commons):\n" + "\n".join(credits))
+            lines.append("\nBildnachweise:\n" + "\n".join(credits))
         lines.append("```\n")
     if meta.get("pinned_comment"):
         lines.append("## Angehefteter Kommentar\n" + meta["pinned_comment"] + "\n")
@@ -634,6 +645,8 @@ def mix_audio(spec, scenes, total, base_dir, build_dir, wav_path, music_override
             add(fx, sfx("whoosh"), sc["_start"] - 0.12, g)
         if sc.get("hit"):
             add(fx, sfx("hit"), sc["_start"], 0.5)
+        if sc.get("blackcard"):
+            add(fx, sfx("boom"), sc["_start"] + float(sc.get("silence", 0) or 0), 0.6)
         if sc.get("heartbeat"):
             for b in np.arange(0, sc["_end"] - sc["_start"], 1.0):
                 add(fx, sfx("heartbeat"), sc["_start"] + b, 0.35)
@@ -686,6 +699,15 @@ def mix_audio(spec, scenes, total, base_dir, build_dir, wav_path, music_override
         mus *= 1 - spec.get("duck", 0.5) * act
         fade = np.minimum(1, (total - np.arange(n) / SR) / 2.0).clip(0, 1)
         mus *= fade
+        for sc in scenes:   # Musik setzt in der Schwarzbild-Stille aus (Spannung durch Stille)
+            sil = float(sc.get("silence", 0) or 0)
+            if sil > 0:
+                a0, a1 = int((sc["_start"] - 0.05) * SR), int((sc["_start"] + sil) * SR)
+                env = np.ones(n)
+                env[max(0, a0):a1] = 0.0
+                k = int(0.12 * SR)
+                env = np.convolve(env, np.ones(k) / k, mode="same")
+                mus *= env
         print(f"  Lautheit: Stimme {v_l:.1f} LUFS, Musik {m_l + gain_db:.1f} LUFS "
               f"({spec.get('music_db', 21.0):.0f} dB darunter, beim Sprechen weitere "
               f"{-20 * np.log10(1 - spec.get('duck', 0.45)):.1f} dB)", flush=True)

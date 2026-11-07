@@ -19,6 +19,7 @@ Details zu jedem Schritt: `VIDEO-PLAYBOOK.md`, `HOOKS.md`.
     - Gefühl → Dialogfenster mit Emotion
     - Wichtig → Stempel, Spotlight, Kino-Balken
     - Fakten-Format → Zähler „Fakt 1/3“ und Steckbrief-Karte
+    - Punchline → Schwarzbild mit Stille davor (`blackcard`, max. 2×), Aufzählung in drei → `triptych`, Ausbreitung → `spread` auf Karte, Tote/Opfer → `ghost`, Gewalt → `mood: blood` (Referenz-Regeln, `REFERENZ-DSCHINGIS.md`)
 12. **Farbe pro Szene:** `mood` (gold, kalt, Nacht, Gefahr, traurig, Rätsel).
 13. **Musik:** passend zur Epoche (`score: epoche`), leise (`music_db: 21`, `duck: 0.5`).
 14. **Rendern:** `render.py --variants` → `video.mp4` und `video_ohne_musik.mp4` (für Trend-Sound in der App).

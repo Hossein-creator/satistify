@@ -163,3 +163,10 @@ Vor dem Skript wird `era:` in der video.yaml festgelegt. Danach richten sich Mus
 - Recherche Nischen und Geld: `dokumente/reports/Profitabelste faceless YouTube Nischen.md`
 - Recherche Erfolgskriterien: `dokumente/research_notes/Erfolgskriterien für History Videos/` (Skript/Retention, Packaging/Algorithmus, Produktion/Recht)
 - Swipe-File: `recherche/swipe/2026-11-06-swipe.md`
+
+### §4c Referenz-Regeln (Dschingis-Khan-Video, 07.11.2026) – Details: `playbook/REFERENZ-DSCHINGIS.md`
+- **Story-Dokus nach dem Bogen Aufstieg → Trauma → Schwur → Aufstieg/Grauen → Wende → ironisches Ende → Rätsel → Vermächtnis/Loop.**
+- **Schwarzbild-Punchline** (`blackcard: true`, `silence: 0.8`) höchstens 2× pro Video: direkt nach dem Hook (Sekunde 4–7) und am Wendepunkt. Danach `hit: true`.
+- **Satzfetzen-Paare:** „Kein Stamm. Kein Schutz.“ – mindestens einmal pro Video.
+- **2–3 s pro Einstellung**: lieber mehr `slides` als lange Standbilder.
+- Neue Effekte: `triptych` (Dreier-Aufzählung), `spread` (Ausbreitung auf Karte), `ghost` (Opfer/Erinnerung), `glow` (Glut, Kerzen), `mood: blood` (Zweiton-Look für Gewalt/Krieg/Seuche).

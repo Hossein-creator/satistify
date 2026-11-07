@@ -1,0 +1,32 @@
+# Test der neuen Effekte aus der Referenz-Analyse (wird nicht gepostet)
+title: "Demo Referenz-Effekte"
+style: doku
+format: short
+voice: de-thorsten-low
+mood: cinematic
+music: {score: epoche, era: renaissance, key: A, drop_scene: 1}
+scenes:
+  - text: "Dieser Mann sah Dinge, die keiner sah."
+    hit: true
+    mood: blood
+    visual:
+      - {type: photo, src: assets/napoleon_portrait.jpg, from: [0.5, 0.36, 2.0], to: [0.5, 0.38, 1.6], ease: out}
+      - {type: glow, points: [[0.36, 0.43], [0.62, 0.43]], r: 0.02, at: 0.5}
+  - text: "Und keiner überlebte."
+    blackcard: true
+    silence: 0.8
+  - text: "Drei Städte. Drei Feuer. Eine Nacht."
+    hit: true
+    visual:
+      - {type: triptych, src: [assets/hondius_tanzwut_1642.jpg, assets/duerer_tanzpaar_1514.jpg, assets/holbein_wappen_tod.jpg], crops: [[0.45, 0.55, 1.3], [0.5, 0.35, 1.2], [0.5, 0.72, 1.5]]}
+  - text: "Die Seuche breitet sich aus, von Stadt zu Stadt."
+    mood: blood
+    visual:
+      - {type: photo, src: assets/karte_aegypten.jpg, from: [0.5, 0.5, 1.1], to: [0.5, 0.5, 1.25]}
+      - {type: spread, points: [[0.45, 0.35, 0.0], [0.55, 0.55, 0.6], [0.4, 0.7, 1.2]], dur: 2.0, r_max: 0.3}
+  - text: "Zurück blieben nur Gesichter."
+    mood: blood
+    visual:
+      - {type: photo, src: assets/holbein_wappen_tod.jpg, from: [0.5, 0.6, 1.4], to: [0.5, 0.6, 1.6]}
+      - {type: ghost, src: assets/fayum_mann.jpg, crop: [0.5, 0.42, 1.6], x: 0.28, y: 0.32, size: 0.32, alpha: 0.4}
+      - {type: ghost, src: assets/fayum_juengling.jpg, crop: [0.5, 0.38, 1.6], x: 0.72, y: 0.28, size: 0.3, alpha: 0.35, at: 0.5}

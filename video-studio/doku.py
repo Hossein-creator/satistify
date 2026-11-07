@@ -605,6 +605,172 @@ def auto_emojis(words, existing_words, max_n=1):
 
 DRAWERS_FX = {"emoji": draw_emoji, "count": draw_count, "dialog": draw_dialog, "teaser": draw_teaser, "bars": draw_bars, "counter": draw_counter,
               "stamp": draw_stamp, "embers": draw_embers, "fog": draw_fog, "spotlight": draw_spotlight}
+POST_GRADE = ("emoji", "count", "glow", "spread")   # werden NACH der Farbkorrektur gezeichnet
+
+
+# ------------------------------------------------------------------ Effekte nach Referenz-Analyse (07.11.2026, playbook/REFERENZ-dschingis.md)
+
+@lru_cache(maxsize=32)
+def load_cached(path):
+    return load(path)
+
+
+def _cover_crop(im, A, cx, cy, z):
+    """Ausschnitt mit Seitenverhältnis A (Breite/Höhe), Zoom z, Mittelpunkt (cx, cy) relativ."""
+    w, h = im.size
+    if w / h > A:
+        ch, cw = h, h * A
+    else:
+        cw, ch = w, w / A
+    cw, ch = cw / z, ch / z
+    x0 = min(max(cx * w - cw / 2, 0), w - cw)
+    y0 = min(max(cy * h - ch / 2, 0), h - ch)
+    return (x0, y0, x0 + cw, y0 + ch)
+
+
+def draw_triptych(pen, el, W, H, k, t, pal):
+    """Split-Screen: 3 waagrechte Streifen übereinander, gleiten versetzt herein und fahren langsam.
+    {type: triptych, src: [a.jpg, b.jpg, c.jpg] oder ein Bild, crops: [[x, y, zoom], …], gap: 0.012}"""
+    srcs = el["_srcs_abs"]
+    crops = el.get("crops") or [[0.5, 0.5, 1.0]] * len(srcs)
+    n = len(crops)
+    gap = int(el.get("gap", 0.012) * H)
+    ph = (H - gap * (n - 1)) // n
+    since = el.get("_since", 9)
+    canvas = pen.img
+    ImageDraw.Draw(canvas).rectangle((0, 0, W, H), fill=(6, 6, 8))
+    for i, (cx, cy, z) in enumerate(crops):
+        im = load_cached(srcs[i % len(srcs)])
+        q = (since - i * el.get("stagger", 0.22)) / 0.35
+        if q <= 0:
+            continue
+        drift = 1 + 0.025 * max(0.0, since - i * 0.22)
+        box = _cover_crop(im, W / ph, cx, cy, z * drift)
+        tile = im.resize((W, ph), Image.BILINEAR, box=box)
+        off = int((1 - ease_out(min(1, q))) * W * (1 if i % 2 == 0 else -1))
+        canvas.paste(tile, (off, i * (ph + gap)))
+
+
+def draw_ghost(pen, el, W, H, k, t, pal):
+    """Geister-Gesicht: Ausschnitt eines Gemäldes halbtransparent, entsättigt, schwebend (Opfer, Erinnerung).
+    {type: ghost, src: x.jpg, crop: [x, y, zoom], x: 0.3, y: 0.35, size: 0.3, alpha: 0.35}"""
+    since = el.get("_since", 9)
+    im = load_cached(el["src_abs"])
+    sz = int(el.get("size", 0.3) * W)
+    cx, cy, z = el.get("crop", [0.5, 0.4, 3.0])
+    face = im.resize((sz, int(sz * 1.25)), Image.BILINEAR, box=_cover_crop(im, 0.8, cx, cy, z))
+    g = np.asarray(face, np.float32).mean(axis=2, keepdims=True)
+    tint = np.array(el.get("tint", [200, 215, 220]), np.float32) / 255
+    a = np.clip(g * tint * 1.15 + 20, 0, 255).astype(np.uint8)
+    face = Image.fromarray(np.repeat(a, 3, axis=2) if a.shape[2] == 1 else a).filter(ImageFilter.GaussianBlur(1.5 * pen.s))
+    mask = Image.new("L", face.size, 0)
+    ImageDraw.Draw(mask).ellipse((face.width * 0.22, face.height * 0.16, face.width * 0.78, face.height * 0.84), fill=255)
+    mask = mask.filter(ImageFilter.GaussianBlur(face.width * 0.08))
+    fade = min(1, since / el.get("fade", 0.9))
+    wob = math.sin(t * 1.3 + el.get("x", 0.5) * 9) * 0.5 + 0.5
+    alpha = el.get("alpha", 0.55) * fade * (0.8 + 0.2 * wob)
+    mask = mask.point(lambda v: int(v * alpha))
+    x = int(el.get("x", 0.5) * W - face.width / 2 + math.sin(t * 0.9) * 6 * pen.s)
+    y = int(el.get("y", 0.35) * H - face.height / 2 - since * el.get("rise", 14) * pen.s)
+    # dunkler Hof hinter dem Geist, damit er auch auf hellen Stichen sichtbar ist
+    halo = mask.point(lambda v: int(min(255, v * 1.2)))
+    pen.img.paste(Image.new("RGB", face.size, (8, 10, 12)), (x, y), halo)
+    pen.img.paste(face, (x, y), mask)
+
+
+def _blob(r):
+    yy, xx = np.mgrid[-r:r + 1, -r:r + 1].astype(np.float32)
+    return np.exp(-(xx ** 2 + yy ** 2) / (2 * (r / 2.6) ** 2))
+
+
+def draw_glow(pen, el, W, H, k, t, pal):
+    """Leuchtende Punkte (Augen, Kerzen, Glut), nach der Farbkorrektur. Sparsam einsetzen.
+    {type: glow, points: [[x, y], …], color: [255, 50, 30], r: 0.018, pulse: true}"""
+    since = el.get("_since", 9)
+    a = np.asarray(pen.img).astype(np.float32)
+    r = max(3, int(el.get("r", 0.018) * W))
+    b = _blob(r)[..., None]
+    col = np.array(el.get("color", [255, 50, 30]), np.float32)
+    inten = min(1, since / 0.5) * (0.85 + 0.15 * math.sin(t * 7) if el.get("pulse", True) else 1.0) * el.get("strength", 1.0)
+    for (px, py) in el["points"]:
+        cx, cy = int(px * W), int(py * H)
+        x0, y0, x1, y1 = cx - r, cy - r, cx + r + 1, cy + r + 1
+        sx0, sy0 = max(0, -x0), max(0, -y0)
+        X0, Y0, X1, Y1 = max(0, x0), max(0, y0), min(W, x1), min(H, y1)
+        if X1 <= X0 or Y1 <= Y0:
+            continue
+        bb = b[sy0:sy0 + (Y1 - Y0), sx0:sx0 + (X1 - X0)]
+        a[Y0:Y1, X0:X1] += bb * col * inten + bb ** 4 * 255 * 0.6 * inten
+    pen.img.paste(Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)))
+
+
+_noise_cache = {}
+
+
+def _fire_noise(w, h):
+    key = (w, h)
+    if key not in _noise_cache:
+        rng = np.random.default_rng(11)
+        layers = []
+        for f in (4, 8, 16):
+            n = rng.random((h // f + 2, w // f + 2)).astype(np.float32)
+            layers.append(np.asarray(Image.fromarray((n * 255).astype(np.uint8)).resize((w, h), Image.BICUBIC), np.float32) / 255)
+        _noise_cache[key] = (layers[0] * 0.5 + layers[1] * 0.3 + layers[2] * 0.2)
+    return _noise_cache[key]
+
+
+def draw_spread(pen, el, W, H, k, t, pal):
+    """Ausbreitung (Feuer/Seuche/Reich) auf einer Karte: rote Glut wächst von Punkten aus und flackert.
+    {type: spread, points: [[x, y, delay], …], dur: 3.0, r_max: 0.35, color: [255, 70, 20]}"""
+    since = el.get("_since", 9)
+    f = 4
+    w, h = W // f, H // f
+    nz = _fire_noise(w, h)
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    acc = np.zeros((h, w), np.float32)
+    for pt in el["points"]:
+        px, py = pt[0], pt[1]
+        dl = pt[2] if len(pt) > 2 else 0.0
+        p = max(0.0, min(1.0, (since - dl) / el.get("dur", 3.0)))
+        if p <= 0:
+            continue
+        r = ease_out(p) * el.get("r_max", 0.35) * W / f
+        d = np.sqrt((xx - px * w) ** 2 + (yy - py * h) ** 2) / max(1, r)
+        acc = np.maximum(acc, np.clip(1 - d + (nz - 0.5) * 0.9, 0, 1))
+    fl = 0.75 + 0.25 * np.roll(nz, int(t * 30) % h, axis=0)
+    m = (acc ** 1.4) * fl * el.get("strength", 0.85)
+    edge = np.clip(1 - np.abs(acc - 0.35) / 0.12, 0, 1) * 0.6
+    col = np.array(el.get("color", [255, 70, 20]), np.float32)
+    lay = (m[..., None] * col + edge[..., None] * np.array([255, 200, 120], np.float32))
+    lay = np.asarray(Image.fromarray(np.clip(lay, 0, 255).astype(np.uint8)).resize((W, H), Image.BILINEAR), np.float32)
+    a = np.asarray(pen.img).astype(np.float32)
+    a = a * (1 - 0.35 * np.asarray(Image.fromarray((m * 255).clip(0, 255).astype(np.uint8)).resize((W, H)), np.float32)[..., None] / 255) + lay
+    pen.img.paste(Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)))
+
+
+def draw_blackcard(img, text, since, W, H, s, size=96):
+    """Schwarzbild mit großem Satz (Punchline). Text erscheint mit leichtem Zoom."""
+    d = ImageDraw.Draw(img)
+    d.rectangle((0, 0, W, H), fill=(0, 0, 0))
+    if since < 0:
+        return
+    p = min(1, since / 0.25)
+    f = vfont(F_SANS, size * s * (1.06 - 0.06 * ease_out(p)), "ExtraBold")
+    words, lines, cur = text.upper().split(), [], ""
+    for w_ in words:
+        tst = (cur + " " + w_).strip()
+        if d.textlength(tst, font=f) > W * 0.8 and cur:
+            lines.append(cur)
+            cur = w_
+        else:
+            cur = tst
+    lines.append(cur)
+    lh = f.size * 1.12
+    y = H * 0.46 - lh * len(lines) / 2
+    for ln in lines:
+        tw = d.textlength(ln, font=f)
+        d.text((W / 2 - tw / 2, y), ln, font=f, fill=(int(245 * p), int(240 * p), int(232 * p)))
+        y += lh
 
 
 # ------------------------------------------------------------------ Nachbearbeitung pro Bild
@@ -688,6 +854,7 @@ def light_leak(img, strength, t):
     return Image.fromarray(((1 - (1 - a) * (1 - b)) * 255).astype(np.uint8))
 
 
+DRAWERS_FX.update({"triptych": draw_triptych, "ghost": draw_ghost, "glow": draw_glow, "spread": draw_spread})
 DRAWERS = {"title": draw_title, "date": draw_date, "lower": draw_lower, "mark": draw_mark, "dust": draw_dust, **DRAWERS_FX}
 
 
@@ -706,6 +873,7 @@ MOODS = {
     "danger":    dict(sat=0.9, con=1.26, bri=-8, hi=(26, -4, -12), lo=(18, -8, -6), vig=0.7),      # Gefahr, Wut
     "sad":       dict(sat=0.45, con=1.06, bri=-6, hi=(0, 2, 6), lo=(-4, 0, 10), vig=0.6),          # Trauer, Not
     "mystery":   dict(sat=0.7, con=1.18, bri=-10, hi=(-4, 10, 4), lo=(-10, 6, 12), vig=0.68),      # Rätsel
+    "blood":     dict(sat=0.18, con=1.24, bri=-12, hi=(-4, 8, 6), lo=(-12, 6, 10), vig=0.74, keep_red=1.0),  # Zweiton: Grau-Grün + Blutrot
 }
 
 
@@ -723,7 +891,12 @@ def grade(img, t, strength=1.0, warm=True, flicker=0.0, mood="cinematic", bloom=
     m = MOODS.get(mood, MOODS["cinematic"])
     a = np.asarray(img).astype(np.float32)
     gray = a.mean(axis=2, keepdims=True)
+    orig = a
     a = gray + (a - gray) * (1 - (1 - m["sat"]) * strength)
+    if m.get("keep_red"):   # Rot bleibt kräftig, alles andere fast grau (Referenz: Zweiton-Look)
+        red = np.clip((orig[..., :1] - np.maximum(orig[..., 1:2], orig[..., 2:3]) - 18) / 55, 0, 1) * m["keep_red"]
+        boost = orig * np.array([1.12, 0.82, 0.78], np.float32)
+        a = a * (1 - red) + boost * red
     # S-Kurve: tiefe Schatten, leuchtende Lichter
     x = np.clip(a / 255.0, 0, 1)
     sc = x * x * (3 - 2 * x)
