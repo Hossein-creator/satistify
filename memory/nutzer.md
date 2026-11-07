@@ -48,3 +48,5 @@
 - 2026-11-06: George-Test: Kartoffel-Video mit George = 69,2 s (George spricht langsamer als Thorsten).
 - **2026-11-07 FREIGABE: Claude postet ab jetzt selbstständig und regelmäßig, OHNE Rückfrage** („ab jetzt brauchst du meine ja nicht mehr und frage mich auch nicht mehr“). Gilt für die tägliche Aufgabe (3 Videos/Tag über Metricool).
 - 2026-11-07: Erste 3 Videos eingeplant (Metricool-IDs 419830990 Napoleon 12:30, 419831054 Mumia 16:00, 419831126 Tanzwut 18:00). ElevenLabs danach: 4.437 / 10.000 Zeichen verbraucht.
+- 2026-11-07: **Tägliche Aufgabe** angelegt: „Taegliche History-Videos“ (trig_0115RRkWZGXF2QRWx1NJ62P2), jeden Tag 04:37 Uhr Berlin, läuft in der Sitzung session_01CRoryTSAfZb5YsHu1gsecv (nur dort ist der Metricool-Connector verfügbar; Trigger mit neuer Sitzung pro Lauf bekommen in dieser Organisation keine Connectoren). Anweisung: nur nach Repo arbeiten (playbook/DAILY.md).
+- 2026-11-07: ElevenLabs-Gratis-Kontingent reicht noch für ca. 4–5 Videos (Reset erst 07.12.2026). Danach braucht es Bezahl-Plan oder neuen Key (Hinweis an Nutzer: mehrere Gratis-Konten verstoßen gegen ElevenLabs-Regeln).
