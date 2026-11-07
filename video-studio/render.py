@@ -375,6 +375,14 @@ def draw_captions(img, sc, local, W, H, s, fmt, spec):
             break
     if cur is None:
         return
+    if spec.get("style") == "doku" and spec.get("caption_style") == "pop":
+        # CapCut-Stil (Referenz Countdown-Video): 1–2 Wörter, GROSS, weiß mit dicker Kontur, Wort gelb, springt rein
+        pc = chunk_words(words, spec.get("caption_words", 2), 16)
+        cur = next((ch for ch in pc if ch[0][1] <= local < ch[-1][2] + 0.05), None)
+        if cur is None:
+            return
+        doku.captions_pop(img, cur, local, W, H, s, spec.get("caption_y", 0.6), [h.lower() for h in sc.get("highlight", [])])
+        return
     if spec.get("style") == "doku":
         doku.captions(img, cur, local, W, H, s, spec.get("caption_y", 0.76 if fmt == "short" else 0.85),
                       [h.lower() for h in sc.get("highlight", [])])

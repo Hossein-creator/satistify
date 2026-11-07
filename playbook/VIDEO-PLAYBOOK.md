@@ -67,6 +67,7 @@ Details: `dokumente/2026-11-06-analyse-kanaele-2.md`
 ### §2a History-Fakten (zweite Säule, Wunsch vom 06.11.2026)
 Kurze Shorts mit **historischen Fakten** neben den Story-Dokus. **Nur Geschichte:** keine Wissenschafts-, Tier-, Psycho- oder Allgemein-Fakten. Jeder Fakt hat ein Datum oder eine Epoche, einen Ort oder eine historische Person. Gleicher Stil: echt, ernst, Doku-Look, keine Emojis.
 - **Format A, ein Fakt (20–35 s):** Behauptung als Hook, dann Beweis mit Bild oder Objekt, Datum und Ort. Am Ende ein Twist oder Loop. Beispiel: „Napoleon war nicht klein.“ → Maße in Zoll und cm → Grund der Legende.
+- **Format D, Top-3-Countdown (70–75 s):** Rangliste „3 … , die …“ mit Platz 3 → 2 → 1, Kapitel-Bild vor jedem Platz, Untertitel `caption_style: pop`. Details: `playbook/FORMAT-TOP3.md`.
 - **Format B, drei Fakten (35–55 s):** „3 historische Fakten über …, die dir keiner erzählt“. Jeder Fakt hat eine eigene Steckbrief-Karte und einen Zähler (`counter` „Fakt 1/3“). Der stärkste Fakt kommt zuletzt.
 - **Format C, Mythos oder Wahrheit:** Mythos nennen, Stempel `Falsch` / `Wahr` / `Nicht belegt`, dann die echte Geschichte.
 - **Pflicht:** Jeder Fakt hat eine Quelle in `quellen.md` (Museum, Wikipedia mit Beleg, Fachbuch). Was nicht belegt ist, wird nicht als Fakt gezeigt.

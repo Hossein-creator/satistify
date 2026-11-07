@@ -16,7 +16,7 @@ Stand: 06.11.2026. Wunsch des Nutzers. Läuft als geplante Aufgabe, jeden Tag fr
 1. Repo holen, `memory/`, `VIDEO-PLAYBOOK.md`, `HOOKS.md`, `GENERIERE.md` lesen.
 2. Prüfen: Brand 7558808 zeigt noch „Was wirklich geschah“? Sonst abbrechen und melden.
 3. Zahlen von gestern aus Metricool holen (Aufrufe, Retention, Follower). Was lief gut → mehr davon.
-4. **3 Themen** wählen: abwechselnd 2 Story-Dokus + 1 historische Fakten oder umgekehrt. Kein Thema doppelt (`videos/` prüfen). Verschiedene Epochen.
+4. **3 Themen, 3 Formate pro Tag:** 1 Story-Doku (Bogen nach `REFERENZ-DSCHINGIS.md`), 1 historischer Fakt / Mythos oder Wahrheit, 1 **Top-3-Countdown** (`FORMAT-TOP3.md`, `caption_style: pop`). Kein Thema doppelt (`videos/` prüfen). Verschiedene Epochen.
 5. Pro Video **Schritte 3–15 aus `GENERIERE.md`**: Fakten + Quellen, Epoche, Bilder, 5 Hooks + `hook_check`, Skript für 70–75 s (ca. 170–190 Wörter), `ig-human`, Szenen mit Detail-Effekten, Farbe, Epochen-Musik, Rendern, Selbstprüfung.
 6. Länge prüfen: 70–75 s. Sonst Text kürzen oder ergänzen und neu rendern.
 7. Pro Video: Titel (YouTube), Caption + 3 Hashtags (`ig-caption`), Cover-Bild.

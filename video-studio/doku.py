@@ -952,3 +952,31 @@ def captions(img, words_chunk, local, W, H, s, y_rel, hl):
         jump = -7 * s * max(0, 1 - (local - ws) / 0.12) if active else 0
         d.text((x, y + jump), txt, font=f, fill=colr)
         x += tw + space
+
+
+def captions_pop(img, words_chunk, local, W, H, s, y_rel, hl):
+    """Untertitel im CapCut-Stil: GROSSBUCHSTABEN, weiß mit schwarzer Kontur, aktives Wort/Schlüsselwort gelb, Pop-Zoom."""
+    d = ImageDraw.Draw(img)
+    p = min(1, (local - words_chunk[0][1]) / 0.1)
+    base = 78 * s * (0.86 + 0.14 * ease_out(p))
+    parts = [w[0].upper() for w in words_chunk]
+    f = vfont(F_SANS, base, "Black") if os.path.exists(F_SANS) else vfont(F_SANS, base)
+    lines = [parts] if len(parts) == 1 or sum(d.textlength(x, font=f) for x in parts) < W * 0.8 else [parts[:1], parts[1:]]
+    y = H * y_rel - (len(lines) - 1) * f.size * 0.6
+    for ln in lines:
+        space = d.textlength(" ", font=f)
+        widths = [d.textlength(x, font=f) for x in ln]
+        total = sum(widths) + space * (len(ln) - 1)
+        if total > W * 0.9:
+            f = vfont(F_SANS, base * W * 0.9 / total, "Black")
+            widths = [d.textlength(x, font=f) for x in ln]
+            total = sum(widths) + space * (len(ln) - 1)
+        x = W / 2 - total / 2
+        for txt, tw in zip(ln, widths):
+            wobj = next((w for w in words_chunk if w[0].upper() == txt), None)
+            active = wobj is not None and wobj[1] <= local < wobj[2] + 0.02
+            key = txt.lower().strip(",.;:!?…")
+            colr = (255, 226, 40) if (active or key in hl) else (255, 255, 255)
+            d.text((x, y), txt, font=f, fill=colr, stroke_width=int(9 * s), stroke_fill=(10, 10, 10))
+            x += tw + space
+        y += f.size * 1.15
