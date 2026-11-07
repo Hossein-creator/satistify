@@ -9,6 +9,9 @@ Stand: 06.11.2026. Wunsch des Nutzers. Läuft als geplante Aufgabe, jeden Tag fr
 - Brand 7558808 = „Was wirklich geschah“. **Stickman-Accounts nie anfassen.**
 - Uhrzeiten: **10:00, 16:00, 18:00** (`POSTING-ZEITEN.md`).
 
+## Freigabe
+**Seit 07.11.2026: selbstständig posten, NICHT nachfragen** (Nutzer-Anweisung). Nur bei echten Blockern melden (Kontingent leer, Metricool-Brand falsch, Login/Push kaputt).
+
 ## Ablauf jeden Tag
 1. Repo holen, `memory/`, `VIDEO-PLAYBOOK.md`, `HOOKS.md`, `GENERIERE.md` lesen.
 2. Prüfen: Brand 7558808 zeigt noch „Was wirklich geschah“? Sonst abbrechen und melden.
@@ -18,7 +21,7 @@ Stand: 06.11.2026. Wunsch des Nutzers. Läuft als geplante Aufgabe, jeden Tag fr
 6. Länge prüfen: 70–75 s. Sonst Text kürzen oder ergänzen und neu rendern.
 7. Pro Video: Titel (YouTube), Caption + 3 Hashtags (`ig-caption`), Cover-Bild.
 8. Videos online ablegen (öffentlicher Link, Ort noch offen) und alles committen + pushen.
-9. In Metricool einplanen: Video 1 → 10:00, 2 → 16:00, 3 → 18:00. Je ein Post mit allen 3 Netzwerken. YouTube Typ „short“, Kategorie EDUCATION, nicht für Kinder. KI-Kennzeichnung an.
+9. In Metricool einplanen (autoPublish: true): Video 1 → 10:00, 2 → 16:00, 3 → 18:00 am selben Tag. Liegt eine Uhrzeit schon in der Vergangenheit, nächsten freien Slot nehmen (z. B. 12:30). Je ein Post mit allen 3 Netzwerken. YouTube Typ „short“, Kategorie EDUCATION, nicht für Kinder. KI-Kennzeichnung an.
 10. Prüfen: `getScheduledPosts` zeigt alle 3 Posts mit Video.
 11. Tagesbericht an den Nutzer: 3 Themen, Hooks, Uhrzeiten, Links, Probleme.
 12. Fehler (Bild fehlt, Fakt unsicher, Render kaputt) → Video ersetzen statt schlecht posten. Lieber 2 gute als 3 schlechte, und das im Bericht sagen.
