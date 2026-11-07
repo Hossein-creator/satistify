@@ -41,8 +41,8 @@ Analyse: Einzelbilder alle 0,5 s, Schnittzeitpunkte, Lautstärkeverlauf und Freq
 | **Split-Screen (Triptychon)** | `{type: triptych, src: [a.jpg, b.jpg, c.jpg], crops: [[x, y, zoom], …]}` | Aufzählungen in drei Teilen: „Drei Städte. Drei Feuer.“ Oder dasselbe Bild in 3 Details. |
 | **Zweiton-Look** | `mood: blood` | Gewalt, Krieg, Seuche, Blut. Sparsam, nicht im ganzen Video. |
 | **Ausbreitung auf Karte** | `{type: spread, points: [[x, y, verzögerung], …], dur: 3, r_max: 0.35}` auf einem Kartenbild | Reich, Seuche, Feuer, Krieg breitet sich aus. |
-| **Geister** | `{type: ghost, src: gesicht.jpg, crop: [x, y, zoom], x: 0.3, y: 0.3, size: 0.3}` | Opfer, Tote, Erinnerung. Am besten auf dunklen Bildern (`mood: night`/`blood`). |
-| **Glut / Leuchtpunkte** | `{type: glow, points: [[x, y], …], r: 0.02, color: [255, 60, 30]}` | Kerzen, Glut, Fackeln. Leuchtende Augen nur bei Dämonen/Bösewicht-Karikaturen, nie auf echten Porträts (wirkt billig). |
+| **Geister** (Nutzer fand Demo schlecht – nur sehr sparsam) | `{type: ghost, src: gesicht.jpg, crop: [x, y, zoom], x: 0.3, y: 0.3, size: 0.3}` | Opfer, Tote, Erinnerung. Am besten auf dunklen Bildern (`mood: night`/`blood`). |
+| **Glut / Leuchtpunkte** (nie auf Porträts – Nutzer fand Demo schlecht) | `{type: glow, points: [[x, y], …], r: 0.02, color: [255, 60, 30]}` | Kerzen, Glut, Fackeln. Leuchtende Augen nur bei Dämonen/Bösewicht-Karikaturen, nie auf echten Porträts (wirkt billig). |
 
 Test-Video mit allen Effekten: `videos/_demo-referenz/video.yaml` (wird nicht gepostet).
 
