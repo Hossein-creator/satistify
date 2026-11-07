@@ -561,7 +561,7 @@ def write_docs(spec, scenes, out_dir, total):
     if meta.get("pinned_comment"):
         lines.append("## Angehefteter Kommentar\n" + meta["pinned_comment"] + "\n")
     if meta.get("tags"):
-        lines.append("## Tags\n" + ", ".join(meta["tags"]) + "\n")
+        lines.append("## Tags\n" + ", ".join(str(x) for x in meta["tags"]) + "\n")
     if meta.get("notes"):
         lines.append("## Hinweise\n" + meta["notes"].strip() + "\n")
     lines.append("## Stimme je Szene\n" + "\n".join(
