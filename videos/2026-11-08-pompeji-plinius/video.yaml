@@ -1,0 +1,161 @@
+# Story-Doku (Bogen nach REFERENZ-DSCHINGIS.md): Plinius der Ältere segelt in den Ausbruch des Vesuv
+# Hook: "Dieser Admiral segelte in den Vulkan, statt zu fliehen." (hook_check 90/100)
+# Fakten: en.wikipedia.org/wiki/Eruption_of_Mount_Vesuvius_in_79_AD, en.wikipedia.org/wiki/Pliny_the_Elder (abgerufen 08.11.2026)
+title: "Der Admiral, der in den Vulkan segelte"
+style: doku
+format: short
+voice: "eleven:george"
+speed: 1.0
+era: antike
+music: {score: epoche, era: antike, key: D, drop_scene: 2}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.10
+flicker: 0.025
+crossfade: 0.35
+pause: 0.12
+mood: cinematic
+bloom: 0.35
+
+meta:
+  titles:
+    - "Dieser Admiral segelte in den Vulkan, statt zu fliehen"
+    - "Pompeji 79: Der Mann, der nicht weglief"
+    - "Plinius der Ältere und der Ausbruch des Vesuv"
+  description: |
+    Im Jahr 79 bricht der Vesuv aus. Während alle fliehen, lässt Plinius der Ältere, Admiral der römischen Flotte, die Schiffe auslaufen, um eine Freundin zu retten. Am nächsten Tag findet man ihn tot, ohne Verletzungen.
+
+    Sein Neffe Plinius der Jüngere sieht alles vom anderen Ufer. Seine Briefe an Tacitus sind bis heute der wichtigste Augenzeugenbericht.
+  sources:
+    - "Eruption of Mount Vesuvius in 79 AD – en.wikipedia.org/wiki/Eruption_of_Mount_Vesuvius_in_79_AD (abgerufen 08.11.2026)"
+    - "Pliny the Elder – en.wikipedia.org/wiki/Pliny_the_Elder (abgerufen 08.11.2026)"
+    - "Plinius der Jüngere, Briefe 6,16 und 6,20 an Tacitus"
+  pinned_comment: "Weglaufen oder hinsegeln: Was hättest du gemacht?"
+  tags: [Geschichte, Pompeji, Vesuv, Plinius, Römer, Antike, Doku]
+  keywords: "Pompeji,Vesuv 79,Plinius der Ältere"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (CC0), The Met Open Access. Gipsabgüsse: historisches Foto um 1875.
+    Musik: eigene Komposition (Antike), kein Content-ID-Risiko. Stimme: KI (ElevenLabs „George“) → KI-Kennzeichnung an.
+
+scenes:
+  # ---------- HOOK
+  - text: "Dieser Admiral segelte in den Vulkan, statt zu fliehen."
+    hit: true
+    mood: danger
+    highlight: [Vulkan]
+    visual:
+      - {type: photo, src: assets/dahl_vesuv_1824.jpg, from: [0.3, 0.42, 2.4], to: [0.32, 0.45, 1.7], ease: out, rot: [-1.0, 0.4]}
+      - {type: embers, n: 40}
+
+  # ---------- SCHWARZBILD (Referenz-Regel)
+  - text: "Und er kam nie zurück."
+    blackcard: true
+    silence: 0.8
+
+  - text: "Pompeji, im Jahr 79. Eine reiche Stadt am Golf von Neapel."
+    say: "Pompeji, im Jahr neunundsiebzig. Eine reiche Stadt am Golf von Neapel."
+    hit: true
+    mood: warm
+    slides:
+      - {src: assets/boscoreale_schlafzimmer.jpg, from: [0.5, 0.5, 1.3], to: [0.5, 0.48, 1.5], ease: out}
+      - {src: assets/ancelet_ruinen_1853.jpg, from: [0.4, 0.5, 1.2], to: [0.45, 0.5, 1.35]}
+    visual:
+      - {type: date, text: "Pompeji · 79 n. Chr.", y: 0.09, at: 0.2}
+      - {type: teaser, text: "Am Ende: wer das alles aufschrieb", y: 0.17, at: 1.0, until: 4.5}
+
+  - text: "Seit Tagen bebt die Erde. Aber das kennt man hier. Niemand flieht."
+    mood: mystery
+    highlight: [Niemand]
+    visual:
+      - {type: photo, src: assets/boscoreale_schlafzimmer.jpg, from: [0.3, 0.45, 2.0], to: [0.32, 0.45, 2.3], shake: true}
+      - {type: fog, strength: 0.2}
+
+  - text: "Dabei hatte ein Beben die Stadt 17 Jahre vorher schwer beschädigt. Manches war noch gar nicht repariert."
+    say: "Dabei hatte ein Beben die Stadt siebzehn Jahre vorher schwer beschädigt. Manches war noch gar nicht repariert."
+    mood: sad
+    highlight: [beschädigt]
+    visual:
+      - {type: photo, src: assets/ancelet_ruinen_1853.jpg, from: [0.25, 0.45, 1.6], to: [0.3, 0.45, 1.8]}
+      - {type: date, text: "Erdbeben · 62 n. Chr.", y: 0.09, at_word: Beben}
+
+  - text: "Dann reißt der Vesuv auf. Eine riesige Wolke steigt in den Himmel."
+    transition: flash
+    hit: true
+    mood: danger
+    highlight: [Vesuv]
+    slides:
+      - {src: assets/boily_vesuv_1779.jpg, from: [0.5, 0.35, 1.3], to: [0.5, 0.3, 1.6], ease: out}
+      - {src: assets/dahl_vesuv_1824.jpg, from: [0.25, 0.3, 1.6], to: [0.22, 0.25, 1.9]}
+    visual:
+      - {type: embers, n: 50}
+
+  - text: "Ein Siebzehnjähriger sieht alles vom anderen Ufer der Bucht."
+    transition: whip
+    mood: cold
+    visual:
+      - {type: photo, src: assets/koebke_golf_1843.jpg, from: [0.55, 0.5, 1.5], to: [0.6, 0.5, 1.7]}
+      - {type: lower, text: "Plinius der Jüngere", sub: "17 Jahre · Misenum", y: 0.62, at_word: Siebzehnjähriger}
+
+  - text: "Sein Onkel ist Plinius der Ältere. Admiral der römischen Flotte und berühmter Naturforscher."
+    mood: gold
+    highlight: [Admiral]
+    slides:
+      - {src: assets/roemische_galeere.jpg, from: [0.35, 0.5, 1.2], to: [0.45, 0.5, 1.3]}
+      - {src: assets/roemische_galeere.jpg, from: [0.7, 0.45, 1.8], to: [0.68, 0.45, 2.0]}
+    visual:
+      - {type: lower, text: "Plinius der Ältere", sub: "Admiral · Autor der Naturalis Historia", y: 0.62, at_word: Plinius}
+
+  - text: "Eine Freundin bittet um Hilfe. Plinius lässt die Schiffe auslaufen."
+    transition: whip
+    mood: warm
+    visual:
+      - {type: photo, src: assets/roemische_galeere.jpg, from: [0.4, 0.45, 2.0], to: [0.42, 0.45, 2.3]}
+      - {type: dialog, who: "Plinius der Ältere", text: "Schiffe ins Wasser. Kurs auf den Berg.", src: assets/roemische_galeere.jpg, crop: [0.42, 0.3, 5.0], emotion: proud, y: 0.5, at_word: Plinius, note: "nachgestellt"}
+
+  - text: "Alle fliehen weg vom Berg. Er segelt direkt drauf zu. Würdest du das machen?"
+    mood: danger
+    highlight: [drauf]
+    visual:
+      - {type: triptych, src: [assets/koebke_golf_1843.jpg, assets/roemische_galeere.jpg, assets/dahl_vesuv_1824.jpg], crops: [[0.45, 0.6, 1.6], [0.5, 0.5, 1.4], [0.25, 0.35, 1.6]]}
+
+  - text: "Asche. Steine. Giftige Luft."
+    heartbeat: true
+    mood: night
+    visual:
+      - {type: photo, src: assets/dahl_vesuv_1824.jpg, night: true, from: [0.4, 0.6, 2.0], to: [0.42, 0.6, 2.3]}
+      - {type: bars, size: 0.08}
+      - {type: fog, strength: 0.4, color: [140, 130, 120]}
+      - {type: embers, n: 30}
+
+  - text: "Am nächsten Tag finden sie ihn. Ohne eine einzige Wunde."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/koebke_golf_1843.jpg, from: [0.75, 0.75, 2.2], to: [0.75, 0.75, 2.5]}
+      - {type: stamp, text: "Tot", y: 0.42, at_word: Wunde}
+
+  - text: "In Pompeji und Herculaneum fand man später die Reste von über 1500 Menschen. Wie viele wirklich starben, weiß niemand."
+    say: "In Pompeji und Herculaneum fand man später die Reste von über tausendfünfhundert Menschen. Wie viele wirklich starben, weiß niemand."
+    mood: sad
+    highlight: [niemand]
+    visual:
+      - {type: photo, src: assets/sommer_gipsabguesse_1875.jpg, from: [0.5, 0.45, 1.3], to: [0.5, 0.45, 1.5]}
+      - {type: count, to: 1500, label: "Tote gefunden", at_word: "1500", y: 0.25, dur: 1.6}
+      - {type: lower, text: "Gipsabgüsse der Opfer", sub: "Pompeji · Foto um 1875", y: 0.66, at: 3.0}
+
+  - text: "Und der Neffe? Er schrieb alles auf. Seine Briefe sind bis heute der wichtigste Augenzeugenbericht."
+    transition: burn
+    mood: gold
+    visual:
+      - {type: photo, src: assets/koebke_golf_1843.jpg, from: [0.5, 0.4, 1.1], to: [0.5, 0.4, 1.25]}
+      - {type: stamp, text: "Augenzeuge", y: 0.42, color: [196, 154, 62], angle: 6, size: 120, at_word: Augenzeugenbericht}
+
+  # ---------- LOOP
+  - text: "Alles begann mit einem Admiral, der nicht weglief:"
+    visual:
+      - {type: photo, src: assets/dahl_vesuv_1824.jpg, from: [0.4, 0.45, 1.3], to: [0.32, 0.45, 2.2], ease: inout}
+      - {type: embers, n: 30}

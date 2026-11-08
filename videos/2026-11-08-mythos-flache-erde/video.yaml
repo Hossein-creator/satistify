@@ -1,0 +1,138 @@
+# Historischer Fakt (Format C, Mythos oder Wahrheit): Glaubte man im Mittelalter an eine flache Erde?
+# Hook: "Kolumbus musste niemandem beweisen, dass die Erde rund ist." (hook_check 90/100)
+# Fakten: en.wikipedia.org/wiki/Myth_of_the_flat_Earth (abgerufen 08.11.2026)
+title: "Die Erde war im Mittelalter eine Scheibe? Mythos!"
+style: doku
+format: short
+voice: "eleven:george"
+speed: 1.0
+era: renaissance
+music: {score: epoche, era: renaissance, key: G, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.10
+flicker: 0.025
+crossfade: 0.35
+pause: 0.12
+mood: cinematic
+bloom: 0.35
+
+meta:
+  titles:
+    - "Kolumbus musste niemandem beweisen, dass die Erde rund ist"
+    - "Flache Erde im Mittelalter? Ein Mythos"
+    - "Mythos oder Wahrheit: Die Erde als Scheibe"
+  description: |
+    Im Mittelalter glaubten alle, die Erde sei eine Scheibe? Falsch. Schon die Griechen wussten, dass sie eine Kugel ist, Eratosthenes berechnete um 240 v. Chr. ihren Umfang, und die Gelehrten des Mittelalters zweifelten kaum daran.
+
+    Bei Kolumbus ging es um die Größe der Erde, nicht um ihre Form. Den Mythos verbreitete unter anderem Washington Irving mit seiner Kolumbus-Biografie von 1828.
+  sources:
+    - "Myth of the flat Earth – en.wikipedia.org/wiki/Myth_of_the_flat_Earth (abgerufen 08.11.2026)"
+    - "Jeffrey Burton Russell: Inventing the Flat Earth. Columbus and Modern Historians, 1991"
+  pinned_comment: "Welchen Geschichtsmythos hast du in der Schule gelernt?"
+  tags: [Geschichte, Mythos, Mittelalter, Kolumbus, flache Erde, History Fakten]
+  keywords: "flache Erde Mittelalter,Mythos Geschichte,Kolumbus"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (CC0), The Met Open Access.
+    Musik: eigene Komposition (Renaissance), kein Content-ID-Risiko. Stimme: KI (ElevenLabs „George“) → KI-Kennzeichnung an.
+
+scenes:
+  - text: "Kolumbus musste niemandem beweisen, dass die Erde rund ist."
+    hit: true
+    mood: gold
+    highlight: [rund]
+    visual:
+      - {type: photo, src: assets/kolumbus_piombo_1519.jpg, from: [0.5, 0.3, 2.4], to: [0.5, 0.32, 1.7], ease: out, rot: [-1.0, 0.4]}
+      - {type: dust, n: 30}
+
+  - text: "Du hast es bestimmt in der Schule gehört: Im Mittelalter glaubten alle, die Erde sei eine Scheibe."
+    transition: whip
+    mood: mystery
+    highlight: [Scheibe]
+    visual:
+      - {type: photo, src: assets/darley_irving_1848.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.48, 1.35]}
+      - {type: teaser, text: "Am Ende: wer den Mythos erfunden hat", y: 0.17, at: 0.6, until: 4.5}
+
+  - text: "Das ist ein Mythos."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/blaeu_globus_1621.jpg, from: [0.5, 0.4, 1.5], to: [0.5, 0.4, 1.7]}
+      - {type: stamp, text: "Mythos", y: 0.42, at_word: Mythos}
+
+  - text: "Schon die alten Griechen wussten, dass die Erde eine Kugel ist. Um 240 vor Christus berechnete Eratosthenes sogar ihren Umfang."
+    say: "Schon die alten Griechen wussten, dass die Erde eine Kugel ist. Um zweihundertvierzig vor Christus berechnete Eratosthenes sogar ihren Umfang."
+    transition: zoom
+    mood: warm
+    highlight: [Kugel]
+    slides:
+      - {src: assets/himmelsglobus_1579.jpg, from: [0.5, 0.35, 1.4], to: [0.5, 0.33, 1.6], ease: out}
+      - {src: assets/blaeu_globus_1621.jpg, from: [0.5, 0.35, 2.0], to: [0.5, 0.35, 2.4]}
+    visual:
+      - {type: lower, text: "Eratosthenes", sub: "berechnete den Erdumfang · um 240 v. Chr.", y: 0.66, at_word: Eratosthenes}
+
+  - text: "Und im Mittelalter? Schau mal, was Christus hier in der Hand hält. Eine Kugel. Die Welt."
+    transition: whip
+    mood: gold
+    highlight: [Kugel]
+    slides:
+      - {src: assets/duerer_salvator.jpg, from: [0.5, 0.35, 1.3], to: [0.5, 0.4, 1.5]}
+      - {src: assets/duerer_salvator.jpg, from: [0.66, 0.8, 2.2], to: [0.66, 0.8, 2.5], reveal_word: Kugel}
+      - {src: assets/memling_salvator.jpg, from: [0.72, 0.68, 3.2], to: [0.72, 0.68, 3.6]}
+
+  - text: "Und Kolumbus? Der Streit ging nie um die Form der Erde. Sondern um ihre Größe."
+    mood: cinematic
+    highlight: [Größe]
+    visual:
+      - {type: photo, src: assets/kolumbus_piombo_1519.jpg, from: [0.5, 0.35, 1.3], to: [0.5, 0.33, 1.5]}
+      - {type: lower, text: "Christoph Kolumbus", sub: "Porträt von Sebastiano del Piombo · 1519", y: 0.66, at_word: Kolumbus}
+
+  - text: "Kolumbus rechnete sie viel zu klein. Seine Kritiker lagen richtig. Er hatte Glück, dass Amerika im Weg lag."
+    transition: flash
+    hit: true
+    mood: danger
+    highlight: [Glück]
+    visual:
+      - {type: photo, src: assets/erdglobus_1828.jpg, from: [0.5, 0.25, 2.0], to: [0.5, 0.25, 2.4]}
+      - {type: stamp, text: "Verrechnet", y: 0.45, at_word: klein}
+
+  - text: "Woher kommt dann der Mythos? Unter anderem von diesem Mann: Washington Irving."
+    transition: burn
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/irving_karte_1888.jpg, from: [0.5, 0.55, 1.6], to: [0.5, 0.55, 1.9], reveal_word: Irving}
+      - {type: bars, size: 0.08}
+      - {type: lower, text: "Washington Irving", sub: "Schriftsteller · 1783–1859", y: 0.62, at_word: Irving}
+
+  - text: "1828 schreibt er eine Biografie über Kolumbus. Sehr romantisch, vieles ausgeschmückt."
+    say: "Achtzehnhundertachtundzwanzig schreibt er eine Biografie über Kolumbus. Sehr romantisch, vieles ausgeschmückt."
+    mood: warm
+    slides:
+      - {src: assets/darley_irving_1848.jpg, from: [0.6, 0.45, 1.8], to: [0.62, 0.45, 2.1]}
+      - {src: assets/erdglobus_1828.jpg, from: [0.5, 0.3, 1.4], to: [0.5, 0.3, 1.6]}
+    visual:
+      - {type: date, text: "1828", y: 0.09, at: 0.1}
+
+  - text: "Darin streiten Gelehrte mit Kolumbus, ob die Erde rund ist. Diese Szene ist so gut wie sicher erfunden."
+    mood: cold
+    visual:
+      - {type: photo, src: assets/kolumbus_piombo_1519.jpg, from: [0.5, 0.3, 2.0], to: [0.5, 0.3, 2.3]}
+      - {type: dialog, who: "Ein Gelehrter", text: "Die Erde ist eine Scheibe. Ihr fallt über den Rand!", src: assets/darley_irving_1848.jpg, crop: [0.6, 0.35, 4.0], emotion: angry, y: 0.5, at_word: streiten, note: "nachgestellt"}
+      - {type: stamp, text: "Erfunden", y: 0.42, at_word: erfunden}
+
+  - text: "Später landet die Geschichte in Schulbüchern. Bis heute, auch in Deutschland."
+    transition: whip
+    mood: sad
+    visual:
+      - {type: photo, src: assets/memling_salvator.jpg, from: [0.5, 0.4, 1.2], to: [0.5, 0.4, 1.35]}
+
+  - text: "Also: Mythos. Das Mittelalter war schlauer, als man dir erzählt hat. Welchen Mythos hast du in der Schule gelernt?"
+    transition: flash
+    mood: gold
+    visual:
+      - {type: photo, src: assets/kolumbus_piombo_1519.jpg, from: [0.5, 0.35, 1.4], to: [0.5, 0.3, 2.2], ease: inout}
+      - {type: title, text: "Mythos\noder Wahrheit?", y: 0.15, size: 92}
