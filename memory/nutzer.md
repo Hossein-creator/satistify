@@ -54,3 +54,4 @@
 - 2026-11-07: Zweites Referenzvideo (@surprising.facts6, „The 3 historical events that changed the world“) = Nische **History-Countdown / Top 3** (Teil von „historische Fakten“). Nutzer will genau solche Videos auch → Format D, `playbook/FORMAT-TOP3.md`, neuer Untertitel-Stil `caption_style: pop`. Tägliche Rotation jetzt: Story-Doku + Fakt + Top-3.
 - 2026-11-07: Demo-Video der Referenz-Effekte (Entwurfsstimme, gemischte Bilder, rote Augen, Geister, brennende Karte) hat dem Nutzer **gar nicht gefallen** (Stimme und alles). Diese Effekte nicht ungefragt einsetzen; Glow auf Porträts und Geister vermeiden. Nie wieder Demos mit Entwurfsstimme zeigen.
 - 2026-11-07: Bild-Look bestätigt: **echte Gemälde** (keine KI-Bilder), auch für Formate nach den Vorbild-Videos.
+- 2026-11-08: Nutzer verärgert, weil Claude wieder gefragt hat („Soll ich einplanen?“). **Regel: NIE fragen, ob gepostet/eingeplant werden soll. Fertige Videos immer selbst einplanen und nur berichten.**
