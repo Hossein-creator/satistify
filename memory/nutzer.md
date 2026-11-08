@@ -56,3 +56,4 @@
 - 2026-11-07: Bild-Look bestätigt: **echte Gemälde** (keine KI-Bilder), auch für Formate nach den Vorbild-Videos.
 - 2026-11-08: Nutzer verärgert, weil Claude wieder gefragt hat („Soll ich einplanen?“). **Regel: NIE fragen, ob gepostet/eingeplant werden soll. Fertige Videos immer selbst einplanen und nur berichten.**
 - 2026-11-08 Tageslauf: 3 Videos eingeplant (Metricool 420638032 Top-3 absurde Tode 12:30, 420638114 Pompeji/Plinius 16:00, 420638669 Mythos flache Erde 18:00). 10:00 verpasst, weil die Sitzung nach dem Start neu gestartet wurde.
+- 2026-11-08: **Plan geändert:** Tägliche Aufgabe läuft jetzt abends 21:37 Uhr und plant für den nächsten Tag (10/16/18 Uhr). Nutzer prüft im Metricool-Planer (genehmigen = drin lassen, sonst löschen).

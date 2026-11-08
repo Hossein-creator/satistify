@@ -1,6 +1,6 @@
 # Daily Task: 3 Videos pro Tag
 
-Stand: 06.11.2026. Wunsch des Nutzers. Läuft als geplante Aufgabe, jeden Tag früh (Vorschlag 05:00 Uhr Berlin), damit alles vor 10:00 eingeplant ist.
+Stand: 06.11.2026. Wunsch des Nutzers. **Seit 08.11.2026: läuft jeden Abend um 21:37 Uhr (Berlin) und plant die Videos für den NÄCHSTEN Tag ein** (10:00, 16:00, 18:00). Der Nutzer prüft sie abends/morgens im Metricool-Planer und löscht oder ändert bei Bedarf.
 
 ## Was verstanden ist
 - Jeden Tag **3 neue Videos** (Entscheidung 06.11.2026, vorher 4), Länge **1:10–1:15 Min.** (70–75 s).
@@ -21,7 +21,7 @@ Stand: 06.11.2026. Wunsch des Nutzers. Läuft als geplante Aufgabe, jeden Tag fr
 6. Länge prüfen: 70–75 s. Sonst Text kürzen oder ergänzen und neu rendern.
 7. Pro Video: Titel (YouTube), Caption + 3 Hashtags (`ig-caption`), Cover-Bild.
 8. Videos online ablegen (öffentlicher Link, Ort noch offen) und alles committen + pushen.
-9. In Metricool einplanen (autoPublish: true): Video 1 → 10:00, 2 → 16:00, 3 → 18:00 am selben Tag. Liegt eine Uhrzeit schon in der Vergangenheit, nächsten freien Slot nehmen (z. B. 12:30). Je ein Post mit allen 3 Netzwerken. YouTube Typ „short“, Kategorie EDUCATION, nicht für Kinder. KI-Kennzeichnung an.
+9. In Metricool einplanen (autoPublish: true): Video 1 → 10:00, 2 → 16:00, 3 → 18:00 am NÄCHSTEN Tag. Liegt eine Uhrzeit schon in der Vergangenheit, nächsten freien Slot nehmen (z. B. 12:30). Je ein Post mit allen 3 Netzwerken. YouTube Typ „short“, Kategorie EDUCATION, nicht für Kinder. KI-Kennzeichnung an.
 10. Prüfen: `getScheduledPosts` zeigt alle 3 Posts mit Video.
 11. Tagesbericht an den Nutzer: 3 Themen, Hooks, Uhrzeiten, Links, Probleme.
 12. Fehler (Bild fehlt, Fakt unsicher, Render kaputt) → Video ersetzen statt schlecht posten. Lieber 2 gute als 3 schlechte, und das im Bericht sagen.
