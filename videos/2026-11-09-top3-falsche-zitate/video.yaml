@@ -1,0 +1,151 @@
+# Top-3-Countdown (Format D): 3 berühmte Sätze, die nie so gesagt wurden
+# Hook: "Drei berühmte Sätze. Keiner davon wurde je so gesagt." (hook_check 90/100)
+# Fakten (abgerufen 08.11.2026): en.wikipedia.org/wiki/Evelyn_Beatrice_Hall, en.wikipedia.org/wiki/And_yet_it_moves,
+#   en.wikipedia.org/wiki/Marie_Antoinette (Abschnitt "let them eat cake": Rousseau, Les Confessions, um 1767)
+title: "3 berühmte Sätze, die nie gesagt wurden"
+style: doku
+format: short
+voice: "eleven:george"
+speed: 1.0
+era: barock
+music: {score: epoche, era: barock, key: A, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.10
+flicker: 0.025
+crossfade: 0.35
+pause: 0.16
+mood: cinematic
+bloom: 0.3
+caption_style: pop
+caption_words: 2
+caption_y: 0.62
+
+meta:
+  titles:
+    - "3 berühmte Sätze, die nie gesagt wurden"
+    - "Diese Zitate sind falsch: Voltaire, Galilei, Marie Antoinette"
+    - "Die berühmtesten falschen Zitate der Geschichte"
+  description: |
+    Platz 3: „Ich missbillige, was Sie sagen …“ stammt nicht von Voltaire, sondern von Evelyn Beatrice Hall (1906).
+    Platz 2: „Und sie bewegt sich doch“ ist erst 1757 gedruckt belegt, über 100 Jahre nach Galileis Prozess.
+    Platz 1: „Dann sollen sie Kuchen essen“ steht bei Rousseau über eine namenlose Prinzessin, geschrieben, als Marie Antoinette noch ein Kind in Wien war.
+  sources:
+    - "Evelyn Beatrice Hall – en.wikipedia.org/wiki/Evelyn_Beatrice_Hall (abgerufen 08.11.2026)"
+    - "And yet it moves – en.wikipedia.org/wiki/And_yet_it_moves (abgerufen 08.11.2026)"
+    - "Marie Antoinette – en.wikipedia.org/wiki/Marie_Antoinette (abgerufen 08.11.2026); Rousseau, Les Confessions"
+  pinned_comment: "Welches falsche Zitat kennst du noch?"
+  tags: [Geschichte, Zitate, Voltaire, Galilei, Marie Antoinette, Mythos, History Fakten]
+  keywords: "falsche Zitate,Marie Antoinette Kuchen,Und sie bewegt sich doch"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (CC0), The Met Open Access. Musik: eigene Komposition. Stimme: KI (ElevenLabs „George“) → KI-Kennzeichnung an.
+
+scenes:
+  - text: "Drei berühmte Sätze. Keiner davon wurde je so gesagt."
+    hit: true
+    mood: gold
+    highlight: [Keiner]
+    visual:
+      - {type: triptych, src: [assets/houdon_voltaire_1778.jpg, assets/galilei_villamena_1623.jpg, assets/marie_antoinette_1783.jpg], crops: [[0.5, 0.3, 1.6], [0.5, 0.42, 2.0], [0.42, 0.4, 2.2]]}
+      - {type: teaser, text: "Platz 1 hat die Revolution befeuert", y: 0.1, at: 1.0}
+
+  # ---------- PLATZ 3
+  - text: "Platz drei: Voltaire."
+    transition: flash
+    visual:
+      - {type: photo, src: assets/tintenfass_1770.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.5, 1.35]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 3", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 3 / 3"}
+
+  - text: "Ich missbillige, was Sie sagen, aber ich werde bis zum Tod Ihr Recht verteidigen, es zu sagen."
+    transition: whip
+    mood: warm
+    visual:
+      - {type: photo, src: assets/houdon_voltaire_1778.jpg, from: [0.5, 0.3, 1.8], to: [0.5, 0.28, 2.1]}
+      - {type: dialog, who: "Voltaire?", text: "Ich missbillige, was Sie sagen, aber ich werde bis zum Tod Ihr Recht verteidigen, es zu sagen.", src: assets/houdon_voltaire_1778.jpg, crop: [0.5, 0.25, 3.0], emotion: proud, y: 0.48, at: 0.2, note: "angeblich"}
+
+  - text: "Klingt nach Voltaire. Geschrieben hat es aber eine Engländerin, 1906, in einem Buch über ihn. Evelyn Beatrice Hall."
+    say: "Klingt nach Voltaire. Geschrieben hat es aber eine Engländerin, neunzehnhundertsechs, in einem Buch über ihn. Evelyn Beatrice Hall."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/houdon_voltaire_1778.jpg, from: [0.5, 0.35, 1.4], to: [0.5, 0.33, 1.6]}
+      - {type: stamp, text: "Falsch zugeordnet", y: 0.42, size: 100, at_word: Engländerin}
+      - {type: lower, text: "Evelyn Beatrice Hall", sub: "The Friends of Voltaire · 1906", y: 0.78, at_word: Evelyn}
+
+  # ---------- PLATZ 2
+  - text: "Platz zwei: Galileo Galilei."
+    transition: flash
+    visual:
+      - {type: photo, src: assets/tintenfass_1770.jpg, from: [0.5, 0.5, 1.25], to: [0.5, 0.5, 1.4]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 2", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 2 / 3"}
+
+  - text: "1633 muss er vor der Inquisition abschwören. Danach soll er gemurmelt haben: Und sie bewegt sich doch."
+    say: "Sechzehnhundertdreiunddreißig muss er vor der Inquisition abschwören. Danach soll er gemurmelt haben: Und sie bewegt sich doch."
+    transition: whip
+    mood: mystery
+    slides:
+      - {src: assets/galilei_dialogo_1632.jpg, from: [0.5, 0.6, 1.3], to: [0.5, 0.58, 1.5]}
+      - {src: assets/galilei_villamena_1623.jpg, from: [0.5, 0.45, 2.0], to: [0.5, 0.43, 2.3]}
+    visual:
+      - {type: date, text: "Rom · 1633", y: 0.09, at: 0.2}
+      - {type: dialog, who: "Galileo Galilei?", text: "Und sie bewegt sich doch.", src: assets/galilei_villamena_1623.jpg, crop: [0.5, 0.45, 3.5], emotion: sly, y: 0.48, at_word: gemurmelt, note: "angeblich"}
+
+  - text: "Nur: Seine erste Biografie kennt den Satz nicht. Gedruckt erscheint er erst 1757. In London."
+    say: "Nur: Seine erste Biografie kennt den Satz nicht. Gedruckt erscheint er erst siebzehnhundertsiebenundfünfzig. In London."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/galilei_villamena_1623.jpg, from: [0.5, 0.45, 1.6], to: [0.5, 0.45, 1.8]}
+      - {type: stamp, text: "Nicht belegt", y: 0.42, at_word: Biografie}
+      - {type: count, to: 124, label: "Jahre später", at_word: Gedruckt, y: 0.24, dur: 1.4}
+
+  # ---------- PLATZ 1
+  - text: "Und Platz eins? Der berühmteste Satz der Französischen Revolution."
+    transition: burn
+    mood: danger
+    visual:
+      - {type: photo, src: assets/tintenfass_1770.jpg, from: [0.5, 0.5, 1.3], to: [0.5, 0.5, 1.5]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 1", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 1 / 3"}
+
+  - text: "Marie Antoinette. Das Volk hat kein Brot. Ihre Antwort: Dann sollen sie doch Kuchen essen."
+    transition: whip
+    hit: true
+    mood: gold
+    highlight: [Kuchen]
+    slides:
+      - {src: assets/marie_antoinette_1783.jpg, from: [0.42, 0.35, 1.8], to: [0.42, 0.33, 2.1], ease: out}
+    visual:
+      - {type: dialog, who: "Marie Antoinette?", text: "Dann sollen sie doch Kuchen essen.", src: assets/marie_antoinette_1783.jpg, crop: [0.4, 0.38, 4.0], emotion: sly, y: 0.5, at_word: Antwort, note: "angeblich"}
+
+  - text: "Aufgeschrieben hat ihn Rousseau. Über eine große Prinzessin, ohne Namen."
+    transition: whip
+    mood: warm
+    visual:
+      - {type: photo, src: assets/rousseau_1777.jpg, from: [0.5, 0.42, 1.8], to: [0.5, 0.4, 2.1], reveal_word: Rousseau}
+      - {type: lower, text: "Jean-Jacques Rousseau", sub: "Les Confessions · um 1767", y: 0.78, at_word: Rousseau}
+
+  - text: "Als er das schrieb, lebte Marie Antoinette noch in Wien. Sie war ein Kind. Nach Frankreich kam sie erst mit 14."
+    say: "Als er das schrieb, lebte Marie Antoinette noch in Wien. Sie war ein Kind. Nach Frankreich kam sie erst mit vierzehn."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/marie_antoinette_1770.jpg, from: [0.5, 0.42, 1.8], to: [0.5, 0.4, 2.1]}
+      - {type: stamp, text: "Nie gesagt", y: 0.42, at_word: Kind}
+
+  - text: "Welches falsche Zitat kennst du noch?"
+    mood: gold
+    visual:
+      - {type: photo, src: assets/houdon_voltaire_1778.jpg, from: [0.5, 0.3, 1.3], to: [0.5, 0.3, 2.0], ease: inout}
+      - {type: dust, n: 30}

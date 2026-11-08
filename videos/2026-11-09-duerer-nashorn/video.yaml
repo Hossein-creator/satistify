@@ -1,0 +1,141 @@
+# Story-Doku: Dürers Nashorn (1515)
+# Hook: "Dürer hat dieses Nashorn nie gesehen. Trotzdem stand es in Schulbüchern." (hook_check 90/100)
+# Fakten: en.wikipedia.org/wiki/D%C3%BCrer%27s_Rhinoceros (abgerufen 08.11.2026)
+title: "Das Nashorn, das Dürer nie gesehen hat"
+style: doku
+format: short
+voice: "eleven:george"
+speed: 1.0
+era: renaissance
+music: {score: epoche, era: renaissance, key: D, drop_scene: 2}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.10
+flicker: 0.025
+crossfade: 0.35
+pause: 0.12
+mood: cinematic
+bloom: 0.3
+
+meta:
+  titles:
+    - "Dürer hat dieses Nashorn nie gesehen"
+    - "Das Nashorn, das ertrank, bevor es berühmt wurde"
+    - "Dürers Nashorn: die wahre Geschichte von 1515"
+  description: |
+    1515 kommt das erste lebende Nashorn seit der Römerzeit nach Europa, als Geschenk für König Manuel von Portugal. Er schickt es weiter an Papst Leo X., doch das Schiff sinkt vor Italien, und das angekettete Tier ertrinkt.
+
+    Albrecht Dürer hat es nie gesehen. Aus einem Brief und einer Skizze schuf er den berühmten Holzschnitt, der bis in die 1930er Jahre in deutschen Schulbüchern stand.
+  sources:
+    - "Dürer's Rhinoceros – en.wikipedia.org/wiki/D%C3%BCrer%27s_Rhinoceros (abgerufen 08.11.2026)"
+  pinned_comment: "Panzer, Schuppen, zweites Horn: Hättest du Dürer das Nashorn geglaubt?"
+  tags: [Geschichte, Dürer, Nashorn, Renaissance, Kunstgeschichte, Doku]
+  keywords: "Dürer Nashorn,Rhinocerus 1515,Albrecht Dürer"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (CC0), The Met Open Access. Musik: eigene Komposition (Renaissance). Stimme: KI (ElevenLabs „George“) → KI-Kennzeichnung an.
+
+scenes:
+  - text: "Dürer hat dieses Nashorn nie gesehen. Trotzdem stand es in Schulbüchern."
+    hit: true
+    mood: warm
+    highlight: [nie]
+    visual:
+      - {type: photo, src: assets/duerer_nashorn_1515.jpg, from: [0.85, 0.45, 2.6], to: [0.82, 0.48, 1.8], ease: out, rot: [-1.0, 0.4]}
+      - {type: dust, n: 30}
+
+  - text: "Denn das echte ertrank."
+    blackcard: true
+    silence: 0.8
+
+  - text: "Indien, 1515. Ein Sultan schenkt den Portugiesen ein Nashorn. Es soll zu König Manuel."
+    say: "Indien, fünfzehnhundertfünfzehn. Ein Sultan schenkt den Portugiesen ein Nashorn. Es soll zu König Manuel."
+    hit: true
+    mood: gold
+    visual:
+      - {type: photo, src: assets/vico_nashorn_1542.jpg, from: [0.4, 0.5, 1.6], to: [0.42, 0.5, 1.9], ease: out}
+      - {type: date, text: "Goa · 1515", y: 0.09, at: 0.2}
+      - {type: teaser, text: "Am Ende: wo es 400 Jahre überlebte", y: 0.17, at: 1.2, until: 5.0}
+
+  - text: "120 Tage auf See, einmal um Afrika, bis nach Lissabon."
+    say: "Hundertzwanzig Tage auf See, einmal um Afrika, bis nach Lissabon."
+    transition: whip
+    mood: cold
+    highlight: [Lissabon]
+    slides:
+      - {src: assets/bruegel_dreimaster_galeere.jpg, from: [0.5, 0.4, 1.3], to: [0.5, 0.38, 1.5]}
+      - {src: assets/bruegel_dreimaster_ikarus.jpg, from: [0.45, 0.5, 1.4], to: [0.5, 0.5, 1.6]}
+    visual:
+      - {type: count, to: 120, label: "Tage auf See", at_word: "120", y: 0.24, dur: 1.4}
+
+  - text: "Seit der Römerzeit hat in Europa niemand ein lebendes Nashorn gesehen. Lissabon ist außer sich. Stell dir das mal vor."
+    mood: warm
+    highlight: [niemand]
+    slides:
+      - {src: assets/bruegel_viermaster_insel.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.5, 1.35]}
+      - {src: assets/duerer_nashorn_1515.jpg, from: [0.5, 0.55, 1.2], to: [0.5, 0.55, 1.35], reveal_word: Nashorn}
+
+  - text: "Der König lässt es sogar gegen einen Elefanten antreten. Er will wissen, ob die beiden wirklich Todfeinde sind."
+    transition: flash
+    hit: true
+    mood: danger
+    visual:
+      - {type: photo, src: assets/vico_nashorn_1542.jpg, from: [0.25, 0.4, 2.4], to: [0.27, 0.42, 2.7], shake: true}
+      - {type: bars, size: 0.08}
+      - {type: title, text: "Nashorn\ngegen Elefant", y: 0.3, size: 84, at_word: Elefanten}
+
+  - text: "Dann verschenkt er es weiter, an Papst Leo den Zehnten. Mit einem Halsband aus grünem Samt."
+    transition: whip
+    mood: gold
+    highlight: [Samt]
+    visual:
+      - {type: photo, src: assets/papst_leo10.jpg, from: [0.45, 0.4, 1.4], to: [0.45, 0.38, 1.6]}
+      - {type: lower, text: "Papst Leo X.", sub: "Medici · Papst 1513–1521", y: 0.78, at_word: Papst}
+
+  - text: "Doch vor Italien gerät das Schiff in einen Sturm."
+    transition: burn
+    mood: night
+    heartbeat: true
+    visual:
+      - {type: photo, src: assets/bruegel_dreimaster_galeere.jpg, night: true, from: [0.5, 0.45, 1.6], to: [0.5, 0.45, 1.9], shake: true}
+      - {type: fog, strength: 0.35, color: [140, 150, 170]}
+
+  - text: "Das Nashorn ist an Deck angekettet. Es kann sich nicht retten. Es ertrinkt."
+    heartbeat: true
+    mood: night
+    visual:
+      - {type: photo, src: assets/duerer_nashorn_1515.jpg, night: true, from: [0.6, 0.55, 2.0], to: [0.6, 0.55, 2.3]}
+      - {type: bars, size: 0.08}
+      - {type: spotlight, x: 0.5, y: 0.5, r: 0.3, at: 0.2, dark: 0.55}
+
+  - text: "Und Dürer? Er sitzt in Nürnberg und hat nur einen Brief und eine kleine Skizze."
+    transition: flash
+    mood: warm
+    visual:
+      - {type: photo, src: assets/duerer_nashorn_1515.jpg, from: [0.5, 0.07, 3.0], to: [0.45, 0.07, 3.3]}
+      - {type: date, text: "Nürnberg · 1515", y: 0.09, at: 0.2}
+
+  - text: "Und was macht er daraus? Das hier: Panzerplatten, Schuppen, ein zweites Horn auf dem Rücken."
+    transition: zoom
+    mood: gold
+    highlight: [Horn]
+    slides:
+      - {src: assets/duerer_nashorn_1515.jpg, from: [0.5, 0.5, 1.0], to: [0.5, 0.5, 1.1], ease: out}
+      - {src: assets/duerer_nashorn_1515.jpg, from: [0.4, 0.45, 2.5], to: [0.42, 0.45, 2.8]}
+      - {src: assets/duerer_nashorn_1515.jpg, from: [0.72, 0.3, 3.2], to: [0.72, 0.3, 3.6]}
+
+  - text: "Falsch, aber genial. Bis in die Dreißigerjahre zeigten deutsche Schulbücher genau dieses Bild."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/duerer_nashorn_1515.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.5, 1.3]}
+      - {type: stamp, text: "Falsch", y: 0.42, at_word: Falsch}
+
+  - text: "Für ein Tier, das ertrank, bevor es berühmt wurde:"
+    mood: gold
+    visual:
+      - {type: photo, src: assets/duerer_nashorn_1515.jpg, from: [0.8, 0.45, 1.4], to: [0.85, 0.45, 2.6], ease: inout}
+      - {type: dust, n: 30}
