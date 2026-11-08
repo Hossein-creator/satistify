@@ -55,3 +55,4 @@
 - 2026-11-07: Demo-Video der Referenz-Effekte (Entwurfsstimme, gemischte Bilder, rote Augen, Geister, brennende Karte) hat dem Nutzer **gar nicht gefallen** (Stimme und alles). Diese Effekte nicht ungefragt einsetzen; Glow auf Porträts und Geister vermeiden. Nie wieder Demos mit Entwurfsstimme zeigen.
 - 2026-11-07: Bild-Look bestätigt: **echte Gemälde** (keine KI-Bilder), auch für Formate nach den Vorbild-Videos.
 - 2026-11-08: Nutzer verärgert, weil Claude wieder gefragt hat („Soll ich einplanen?“). **Regel: NIE fragen, ob gepostet/eingeplant werden soll. Fertige Videos immer selbst einplanen und nur berichten.**
+- 2026-11-08 Tageslauf: 3 Videos eingeplant (Metricool 420638032 Top-3 absurde Tode 12:30, 420638114 Pompeji/Plinius 16:00, 420638669 Mythos flache Erde 18:00). 10:00 verpasst, weil die Sitzung nach dem Start neu gestartet wurde.
