@@ -59,3 +59,4 @@
 - 2026-11-08: **Plan geändert:** Tägliche Aufgabe läuft jetzt abends 21:37 Uhr und plant für den nächsten Tag (10/16/18 Uhr). Nutzer prüft im Metricool-Planer (genehmigen = drin lassen, sonst löschen).
 - 2026-11-08 Abendlauf (für 09.11.): nur 2 Videos (ElevenLabs-Kontingent): 421153906 Top-3 falsche Zitate 10:00, 421495644 Dürers Nashorn 16:00. 18:00 leer. Neustarts der Sitzung haben das Einplanen bis 09:27 verzögert.
 - 2026-11-09 Abendlauf (für 10.11.): 0 Videos. ElevenLabs weiter 9.705/10.000 (Rest 295 Zeichen, Reset 07.12.2026), kein neuer Key hinterlegt. Nutzer informiert.
+- 2026-11-09: Nutzer hat keinen ElevenLabs-Key mehr → kostenlose Piper-Stimmen geladen (huggingface.co + us.aws.cdn.hf.co in Umgebung freigeschaltet): de_DE-thorsten-high, de_DE-thorsten_emotional-medium (Sprecher 4 = neutral). Hörproben A/B/C in notizen/stimmproben/, Nutzer soll eine wählen. Keine neuen Gratis-Konten anlegen (verstößt gegen ElevenLabs-Regeln).
