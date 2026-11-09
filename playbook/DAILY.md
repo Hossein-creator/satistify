@@ -48,3 +48,10 @@ Stand: 06.11.2026. Wunsch des Nutzers. **Seit 08.11.2026: läuft jeden Abend um 
 - **Rang-Karten im Top-3-Format:** Kapitel-Bild + `spotlight` (dark 0.7) + `title` Größe 170, sonst ist der Titel auf hellen Stichen kaum lesbar.
 - **Länge nach `say` messen, nicht nach `text`:** Ausgeschriebene Jahreszahlen („siebzehnhundertsechzig“) verlängern den Sprechtext. Probe Top-3 (07.11.) hatte 1.120 Zeichen `text`, aber ~1.250 Zeichen `say` → 79 s statt 75. Ziel: **max. 1.100 Zeichen Sprechtext inklusive ausgeschriebener Zahlen.**
 - **Caption-Linter:** „Schreib es in die Kommentare“ zählt doppelt als Bitte (zwei Muster). Immer „Schreib's in die Kommentare“ verwenden.
+
+## Stimme ab 09.11.2026: kostenlos „piper:thorsten-tief“
+- ElevenLabs ist leer, kein neuer Key. Neue Videos: `voice: "piper:thorsten-tief"` (vom Nutzer gewählt, Probe C).
+- Modell fehlt in neuer Sitzung? Laden (Hosts huggingface.co + us.aws.cdn.hf.co sind freigeschaltet):
+  `cd video-studio/voices && for e in onnx onnx.json; do curl -sSLf -o de_DE-thorsten-high.$e https://huggingface.co/rhasspy/piper-voices/resolve/main/de/de_DE/thorsten/high/de_DE-thorsten-high.$e; done`
+- Keine Wort-Zeitstempel → Untertitel-Timing wird geschätzt; Länge mit Probe-Render messen.
+- **Pflicht-Check nach jedem Render:** `ffmpeg -i output/video_ohne_musik.mp4 -af silencedetect=n=-45dB:d=0.8 -f null -` → Stille gesamt < 10 s, sonst fehlt die Stimme (Bug vom 07.–09.11.).

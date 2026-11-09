@@ -72,6 +72,22 @@ def trim_silence(x, thr=0.012, margin=0.04):
 _voices = {}
 
 
+# Kostenlose Piper-Stimmen mit Klang-Nachbearbeitung (vom Nutzer genehmigt: "thorsten-tief" = Probe C, 09.11.2026)
+PIPER_PRESETS = {
+    "thorsten-tief": {"model": "de_DE-thorsten-high", "ls": 1.08,
+                      "af": "asetrate=22050*0.92,aresample=22050,atempo=1.04,highpass=f=60,bass=g=3:f=120,"
+                            "acompressor=threshold=-18dB:ratio=3,aecho=0.8:0.6:40:0.12"},
+}
+
+
+def tts_preset(text, preset, speed, out_path):
+    p = PIPER_PRESETS[preset]
+    raw = out_path + ".raw.wav"
+    tts(text, p["model"], p["ls"] * speed, raw)
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", raw, "-af", p["af"], out_path], check=True)
+    os.remove(raw)
+
+
 def tts(text, voice_name, length_scale, out_path):
     from piper import PiperVoice, SynthesisConfig
     if voice_name not in _voices:
@@ -253,8 +269,11 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
             h = hashlib.md5(f"{voice}|{ls}|{say}".encode()).hexdigest()[:10]
             src = os.path.join(build_dir, f"tts_{i + 1:02d}_{h}.wav")
             if not os.path.exists(src):
-                tts(say, voice, ls, src)
-            sc["_voice_src"] = f"Computerstimme ({voice})"
+                if str(voice).startswith("piper:"):
+                    tts_preset(say, voice.split(":", 1)[1], ls, src)
+                else:
+                    tts(say, voice, ls, src)
+            sc["_voice_src"] = f"KI-Stimme ({voice})"
         else:
             src = None
         lead = 0.0
@@ -264,10 +283,10 @@ def build_timeline(spec, base_dir, build_dir, use_tts=True):
             lead = float(max(0, int(nz[0]) - int(0.04 * SR)) / SR) if len(nz) else 0.0
             audio = trim_silence(raw)
         sil = float(sc.get("silence", 0) or 0)   # Stille vor dem Satz (Schwarzbild-Pause, Referenz-Regel)
-        if sil > 0 and src:
-            audio = np.concatenate([np.zeros(int(sil * SR)), audio])
-        else:
+        if not src:
             audio = np.zeros(int(max(1.5, len(sc["text"]) / 14) * SR))
+        elif sil > 0:
+            audio = np.concatenate([np.zeros(int(sil * SR)), audio])
         sc["_audio"] = audio
         vd = len(audio) / SR
         sc["_start"] = t
