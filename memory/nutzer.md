@@ -58,3 +58,4 @@
 - 2026-11-08 Tageslauf: 3 Videos eingeplant (Metricool 420638032 Top-3 absurde Tode 12:30, 420638114 Pompeji/Plinius 16:00, 420638669 Mythos flache Erde 18:00). 10:00 verpasst, weil die Sitzung nach dem Start neu gestartet wurde.
 - 2026-11-08: **Plan geändert:** Tägliche Aufgabe läuft jetzt abends 21:37 Uhr und plant für den nächsten Tag (10/16/18 Uhr). Nutzer prüft im Metricool-Planer (genehmigen = drin lassen, sonst löschen).
 - 2026-11-08 Abendlauf (für 09.11.): nur 2 Videos (ElevenLabs-Kontingent): 421153906 Top-3 falsche Zitate 10:00, 421495644 Dürers Nashorn 16:00. 18:00 leer. Neustarts der Sitzung haben das Einplanen bis 09:27 verzögert.
+- 2026-11-09 Abendlauf (für 10.11.): 0 Videos. ElevenLabs weiter 9.705/10.000 (Rest 295 Zeichen, Reset 07.12.2026), kein neuer Key hinterlegt. Nutzer informiert.
