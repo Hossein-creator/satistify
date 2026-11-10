@@ -1,6 +1,6 @@
 # Das Nashorn, das Dürer nie gesehen hat
 
-Länge: 73.5 s · Format: short
+Länge: 67.5 s · Format: short
 
 ## Titel-Optionen
 - Dürer hat dieses Nashorn nie gesehen

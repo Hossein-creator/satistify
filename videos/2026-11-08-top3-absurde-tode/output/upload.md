@@ -1,6 +1,6 @@
 # 3 Herrscher, die auf absurde Weise starben
 
-Länge: 79.3 s · Format: short
+Länge: 78.3 s · Format: short
 
 ## Titel-Optionen
 - 3 Herrscher, die auf absurde Weise starben

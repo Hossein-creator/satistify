@@ -1,6 +1,6 @@
 # 3 berühmte Sätze, die nie gesagt wurden
 
-Länge: 65.3 s · Format: short
+Länge: 61.4 s · Format: short
 
 ## Titel-Optionen
 - 3 berühmte Sätze, die nie gesagt wurden

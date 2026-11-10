@@ -1,6 +1,6 @@
 # Der Admiral, der in den Vulkan segelte
 
-Länge: 75.3 s · Format: short
+Länge: 68.4 s · Format: short
 
 ## Titel-Optionen
 - Dieser Admiral segelte in den Vulkan, statt zu fliehen

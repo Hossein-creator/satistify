@@ -1,6 +1,6 @@
 # Die Erde war im Mittelalter eine Scheibe? Mythos!
 
-Länge: 75.9 s · Format: short
+Länge: 69.7 s · Format: short
 
 ## Titel-Optionen
 - Kolumbus musste niemandem beweisen, dass die Erde rund ist
