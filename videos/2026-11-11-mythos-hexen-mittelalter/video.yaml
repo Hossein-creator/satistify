@@ -1,0 +1,163 @@
+# Historischer Fakt (Format C, Mythos oder Wahrheit): Hexenverbrennungen = Mittelalter?
+# Hook: "Die meisten Hexen starben nicht im Mittelalter, sondern später." (hook_check 90/100)
+# Fakten (abgerufen 10.11.2026): en.wikipedia.org/wiki/Witch_trials_in_the_early_modern_period,
+#   en.wikipedia.org/wiki/Würzburg_witch_trials, en.wikipedia.org/wiki/Anna_Göldi
+# Erste Folge mit Stimme C (piper:thorsten-tief), Nutzerwahl 09.11.2026.
+title: "Hexenverbrennungen im Mittelalter? Mythos!"
+style: doku
+format: short
+voice: "piper:thorsten-tief"
+speed: 1.0
+era: barock
+music: {score: epoche, era: barock, key: D, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.08
+flicker: 0.025
+crossfade: 0.35
+pause: 0.14
+mood: cinematic
+bloom: 0.3
+
+meta:
+  titles:
+    - "Die meisten Hexen starben nicht im Mittelalter"
+    - "Hexenverbrennung im Mittelalter? Ein Mythos"
+    - "Mythos oder Wahrheit: Die Hexenjagd im finsteren Mittelalter"
+  description: |
+    Die großen Hexenverfolgungen fanden nicht im Mittelalter statt, sondern in der Frühen Neuzeit, vor allem zwischen 1560 und 1630. Schätzungen: 40.000 bis 60.000 Hingerichtete.
+
+    Im Mittelalter galt der Glaube an Hexen der Kirche lange als Aberglaube. Den Mythos vom mittelalterlichen Hexenwahn verbreitete auch Lamothe-Langon 1829 mit wohl gefälschten Akten.
+  sources:
+    - "Witch trials in the early modern period – en.wikipedia.org (abgerufen 10.11.2026)"
+    - "Würzburg witch trials – en.wikipedia.org (abgerufen 10.11.2026)"
+    - "Anna Göldi – en.wikipedia.org (abgerufen 10.11.2026)"
+  pinned_comment: "Welchen Geschichtsmythos sollen wir als Nächstes prüfen?"
+  tags: [Geschichte, Hexen, Hexenverfolgung, Mittelalter, Frühe Neuzeit, Mythos, History Fakten]
+  keywords: "Hexenverbrennung Mittelalter,Hexenverfolgung,Mythos Geschichte"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (CC0), The Met Open Access. Musik: eigene Komposition (Barock). Stimme: KI (Piper „Thorsten“) → KI-Kennzeichnung an.
+
+scenes:
+  - text: "Die meisten Hexen starben nicht im Mittelalter, sondern später."
+    hit: true
+    mood: danger
+    highlight: [nicht]
+    visual:
+      - {type: photo, src: assets/gheyn_hexensabbat.jpg, from: [0.5, 0.5, 1.6], to: [0.45, 0.5, 1.2], ease: out, rot: [-1.0, 0.4]}
+      - {type: embers, n: 40}
+
+  - text: "Und zwar zu Zehntausenden."
+    blackcard: true
+    silence: 0.8
+
+  - text: "Du kennst das Bild: finsteres Mittelalter, überall Scheiterhaufen."
+    transition: whip
+    mood: mystery
+    highlight: [Scheiterhaufen]
+    slides:
+      - {src: assets/rosa_hexensabbat.jpg, from: [0.5, 0.6, 1.4], to: [0.5, 0.55, 1.7], ease: out}
+      - {src: assets/totentanz_1493.jpg, from: [0.5, 0.615, 3.6], to: [0.5, 0.615, 3.9]}
+    visual:
+      - {type: teaser, text: "Am Ende: wer den Mythos verbreitet hat", y: 0.17, at: 0.6, until: 4.5}
+
+  - text: "Doch im Mittelalter sagte die Kirche lange: Hexen gibt es nicht. Das ist Aberglaube."
+    transition: flash
+    mood: gold
+    highlight: [nicht]
+    slides:
+      - {src: assets/stundenbuch_gericht_1400.jpg, from: [0.5, 0.3, 1.5], to: [0.5, 0.28, 1.8], ease: out}
+      - {src: assets/stundenbuch_1450.jpg, from: [0.35, 0.35, 1.6], to: [0.35, 0.33, 1.9]}
+    visual:
+      - {type: stamp, text: "Aberglaube", y: 0.42, at_word: Aberglaube}
+
+  - text: "Das kippt erst 1487. Ein Inquisitor namens Heinrich Kramer veröffentlicht den Hexenhammer."
+    say: "Das kippt erst vierzehnhundertsiebenundachtzig. Ein Inquisitor namens Heinrich Kramer veröffentlicht den Hexenhammer."
+    transition: whip
+    mood: cold
+    highlight: [Hexenhammer]
+    visual:
+      - {type: photo, src: assets/buchdruck_1600.jpg, from: [0.5, 0.45, 1.3], to: [0.5, 0.43, 1.5]}
+      - {type: date, text: "1487", y: 0.09, at: 0.1}
+      - {type: lower, text: "Heinrich Kramer", sub: "Malleus Maleficarum · Hexenhammer", y: 0.64, at_word: Kramer}
+
+  - text: "Dank Buchdruck wird es bis 1520 dreizehnmal gedruckt."
+    say: "Dank Buchdruck wird es bis fünfzehnhundertzwanzig dreizehnmal gedruckt."
+    mood: warm
+    slides:
+      - {src: assets/buchdruck_1600.jpg, from: [0.3, 0.4, 2.2], to: [0.32, 0.4, 2.5]}
+      - {src: assets/buchdruck_1600.jpg, from: [0.75, 0.45, 2.4], to: [0.72, 0.45, 2.7]}
+    visual:
+      - {type: count, to: 13, label: "Auflagen bis 1520", at_word: dreizehnmal, y: 0.24, dur: 1.2}
+
+  - text: "Die schlimmste Zeit kommt erst danach, zwischen 1560 und 1630."
+    say: "Die schlimmste Zeit kommt erst danach, zwischen fünfzehnhundertsechzig und sechzehnhundertdreißig."
+    transition: burn
+    hit: true
+    mood: danger
+    highlight: [danach]
+    visual:
+      - {type: photo, src: assets/gheyn_hexensabbat.jpg, from: [0.3, 0.45, 1.8], to: [0.33, 0.45, 2.1], shake: true}
+      - {type: date, text: "1560 – 1630", y: 0.09, at_word: zwischen}
+      - {type: fog, strength: 0.25, color: [120, 110, 100]}
+
+  - text: "Geschätzt 40.000 bis 60.000 Menschen werden hingerichtet. Fast alle in Europa."
+    say: "Geschätzt vierzigtausend bis sechzigtausend Menschen werden hingerichtet. Fast alle in Europa."
+    heartbeat: true
+    mood: night
+    visual:
+      - {type: photo, src: assets/totentanz_1493.jpg, from: [0.42, 0.615, 3.9], to: [0.58, 0.615, 3.9]}
+      - {type: bars, size: 0.08}
+      - {type: count, to: 60000, label: "Hingerichtete (Schätzung)", at_word: Geschätzt, y: 0.24, dur: 1.8}
+
+  - text: "Einer der Schlimmsten: Philipp Adolf von Ehrenberg, Fürstbischof von Würzburg."
+    transition: flash
+    mood: cold
+    visual:
+      - {type: photo, src: assets/ehrenberg_1623.jpg, from: [0.5, 0.5, 2.3], to: [0.5, 0.48, 2.6], reveal_word: Ehrenberg}
+      - {type: lower, text: "Philipp Adolf von Ehrenberg", sub: "Fürstbischof von Würzburg · 1623–1631", y: 0.64, at_word: Philipp}
+
+  - text: "In seiner Amtszeit lässt er rund 900 Menschen hinrichten. Darunter seinen eigenen Neffen. Und Kinder."
+    say: "In seiner Amtszeit lässt er rund neunhundert Menschen hinrichten. Darunter seinen eigenen Neffen. Und Kinder."
+    hit: true
+    mood: blood
+    heartbeat: true
+    visual:
+      - {type: photo, src: assets/callot_strappado_1633.jpg, from: [0.5, 0.5, 2.0], to: [0.5, 0.45, 2.3]}
+      - {type: count, to: 900, label: "Hingerichtete", at_word: rund, y: 0.24, dur: 1.4}
+      - {type: stamp, text: "Kinder", y: 0.42, at_word: Kinder}
+
+  - text: "Die letzte Hexe der Schweiz stirbt sogar erst 1782. Anna Göldi, eine Magd aus Glarus."
+    say: "Die letzte Hexe der Schweiz stirbt sogar erst siebzehnhundertzweiundachtzig. Anna Göldi, eine Magd aus Glarus."
+    transition: whip
+    mood: sad
+    highlight: [Schweiz]
+    visual:
+      - {type: photo, src: assets/towne_glarus_1781.jpg, from: [0.5, 0.45, 1.3], to: [0.5, 0.42, 1.5]}
+      - {type: date, text: "Glarus · 1782", y: 0.09, at: 0.2}
+      - {type: lower, text: "Anna Göldi", sub: "2008 offiziell rehabilitiert", y: 0.64, at_word: Anna}
+
+  - text: "Und woher kommt der Mythos vom Mittelalter? Auch von einem Franzosen namens Lamothe-Langon."
+    transition: burn
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/goya_inquisition_1799.jpg, from: [0.5, 0.4, 1.5], to: [0.5, 0.38, 1.8]}
+      - {type: bars, size: 0.08}
+
+  - text: "1829 zeigt er angebliche Akten über Hexenprozesse im Mittelalter. Historiker halten sie heute für vermutlich gefälscht."
+    say: "Achtzehnhundertneunundzwanzig zeigt er angebliche Akten über Hexenprozesse im Mittelalter. Historiker halten sie heute für vermutlich gefälscht."
+    mood: cold
+    visual:
+      - {type: photo, src: assets/goya_inquisition_1799.jpg, from: [0.45, 0.3, 2.4], to: [0.45, 0.28, 2.7]}
+      - {type: date, text: "1829", y: 0.09, at: 0.1}
+      - {type: stamp, text: "Gefälscht?", y: 0.42, at_word: gefälscht}
+
+  - text: "Also: Mythos. Welchen Mythos soll ich als Nächstes prüfen?"
+    transition: flash
+    mood: gold
+    visual:
+      - {type: photo, src: assets/goya_ya_es_hora_1799.jpg, from: [0.5, 0.4, 1.3], to: [0.5, 0.35, 2.0], ease: inout}
+      - {type: title, text: "Mythos\noder Wahrheit?", y: 0.15, size: 92}
