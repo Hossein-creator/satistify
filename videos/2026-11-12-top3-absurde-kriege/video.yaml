@@ -1,0 +1,165 @@
+# Top-3-Countdown (Format D): Die absurdesten Kriege der Geschichte
+# Hook: "Ein Krieg dauerte 38 Minuten. Ein anderer 335 Jahre." (hook_check 80/100)
+# Fakten (abgerufen 11.11.2026): en.wikipedia.org/wiki/Three_Hundred_and_Thirty_Five_Years'_War,
+#   en.wikipedia.org/wiki/Pig_War_(1859), en.wikipedia.org/wiki/Anglo-Zanzibar_War
+title: "Die 3 absurdesten Kriege der Geschichte"
+style: doku
+format: short
+voice: "piper:thorsten-tief"
+speed: 1.0
+era: barock
+music: {score: epoche, era: barock, key: G, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.08
+flicker: 0.025
+crossfade: 0.35
+pause: 0.14
+mood: cinematic
+bloom: 0.3
+caption_style: pop
+caption_words: 2
+caption_y: 0.62
+
+meta:
+  titles:
+    - "Die 3 absurdesten Kriege der Geschichte"
+    - "38 Minuten, 335 Jahre und ein Schwein: absurde Kriege"
+    - "Der kürzeste Krieg der Geschichte dauerte 38 Minuten"
+  description: |
+    Platz 3: Der „335-jährige Krieg“ zwischen den Niederlanden und den Scilly-Inseln. Kein einziger Schuss, Frieden erst 1986. Ob es je wirklich Krieg war, ist umstritten.
+    Platz 2: Der Schweinekrieg von 1859 auf San Juan Island. Einziges Opfer: ein Schwein. Den Streit entschied am Ende Kaiser Wilhelm I.
+    Platz 1: Der Britisch-Sansibarische Krieg 1896. Dauer: 38 bis 45 Minuten. Der kürzeste Krieg der Geschichte.
+  sources:
+    - "Three Hundred and Thirty Five Years' War – en.wikipedia.org (abgerufen 11.11.2026)"
+    - "Pig War (1859) – en.wikipedia.org (abgerufen 11.11.2026)"
+    - "Anglo-Zanzibar War – en.wikipedia.org (abgerufen 11.11.2026)"
+  pinned_comment: "Welcher absurde Krieg fehlt in der Liste?"
+  tags: [Geschichte, Krieg, Sansibar, Schweinekrieg, Kurioses, History Fakten]
+  keywords: "kürzester Krieg,Schweinekrieg 1859,absurde Kriege"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (CC0), The Met Open Access. Musik: eigene Komposition. Stimme: KI (Piper „Thorsten“) → KI-Kennzeichnung an.
+
+scenes:
+  - text: "Ein Krieg dauerte 38 Minuten. Ein anderer 335 Jahre."
+    say: "Ein Krieg dauerte achtunddreißig Minuten. Ein anderer dreihundertfünfunddreißig Jahre."
+    hit: true
+    mood: gold
+    highlight: ["38", "335"]
+    visual:
+      - {type: triptych, src: [assets/sansibar_flagge.jpg, assets/gillray_schweine.jpg, assets/velde_kriegsschiffe.jpg], crops: [[0.5, 0.35, 1.4], [0.5, 0.55, 1.6], [0.45, 0.5, 2.2]]}
+      - {type: teaser, text: "Platz 1 ist der kürzeste Krieg der Welt", y: 0.1, at: 1.0}
+
+  # ---------- PLATZ 3
+  - text: "Platz drei: der Krieg ohne einen einzigen Schuss."
+    transition: flash
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.5, 1.35]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 3", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 3 / 3"}
+
+  - text: "1651 kreuzt Admiral Tromp vor den Scilly-Inseln auf. Er will Schadenersatz."
+    say: "Sechzehnhunderteinundfünfzig kreuzt Admiral Tromp vor den Scilly-Inseln auf. Er will Schadenersatz."
+    transition: whip
+    mood: cold
+    slides:
+      - {src: assets/tromp_1653.jpg, from: [0.5, 0.45, 1.6], to: [0.5, 0.43, 1.9]}
+      - {src: assets/nooms_seeschlacht.jpg, from: [0.35, 0.45, 1.8], to: [0.38, 0.45, 2.1]}
+    visual:
+      - {type: date, text: "Scilly · 1651", y: 0.09, at: 0.2}
+      - {type: lower, text: "Maarten Tromp", sub: "niederländischer Admiral", y: 0.76, at_word: Tromp}
+
+  - text: "Es heißt, die Niederlande erklären den Krieg. Gefeuert wird nie. Frieden schließt man erst 1986."
+    say: "Es heißt, die Niederlande erklären den Krieg. Gefeuert wird nie. Frieden schließt man erst neunzehnhundertsechsundachtzig."
+    transition: flash
+    hit: true
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.45, 1.5], to: [0.5, 0.45, 1.7]}
+      - {type: count, to: 335, label: "Jahre ohne Schuss", at_word: Frieden, y: 0.24, dur: 1.4}
+      - {type: stamp, text: "Umstritten", y: 0.5, at_word: heißt}
+
+  # ---------- PLATZ 2
+  - text: "Platz zwei: der Krieg wegen eines Schweins."
+    transition: flash
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.5, 1.25], to: [0.5, 0.5, 1.4]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 2", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 2 / 3"}
+
+  - text: "1859, San Juan Island. Ein amerikanischer Farmer erschießt ein Schwein. Es gehört den Briten."
+    say: "Achtzehnhundertneunundfünfzig, San Juan Island. Ein amerikanischer Farmer erschießt ein Schwein. Es gehört den Briten."
+    transition: whip
+    mood: warm
+    highlight: [Schwein]
+    slides:
+      - {src: assets/jacque_schweine_1850.jpg, from: [0.35, 0.6, 2.0], to: [0.38, 0.6, 2.3]}
+      - {src: assets/gillray_schweine.jpg, from: [0.5, 0.6, 1.5], to: [0.5, 0.58, 1.8]}
+    visual:
+      - {type: date, text: "San Juan Island · 1859", y: 0.09, at: 0.2}
+      - {type: dialog, who: "Der Farmer", text: "Es hat meine Kartoffeln gefressen.", src: assets/jacque_schweine_1850.jpg, crop: [0.35, 0.6, 3.0], emotion: angry, y: 0.38, at_word: erschießt, note: "überliefert, wohl erfunden"}
+
+  - text: "Beide Seiten schicken Soldaten. Zwölf Jahre lang. Das einzige Opfer bleibt das Schwein."
+    transition: flash
+    hit: true
+    mood: gold
+    visual:
+      - {type: photo, src: assets/jacque_schweine_1850.jpg, from: [0.4, 0.6, 2.4], to: [0.42, 0.6, 2.8]}
+      - {type: count, to: 12, label: "Jahre Besatzung", at_word: Zwölf, y: 0.24, dur: 1.0}
+      - {type: stamp, text: "1 Schwein", y: 0.42, at_word: einzige}
+
+  - text: "Und weißt du, wer den Streit am Ende entscheidet? Der deutsche Kaiser Wilhelm der Erste."
+    mood: cold
+    visual:
+      - {type: photo, src: assets/wilhelm1_medaille.jpg, from: [0.5, 0.5, 1.6], to: [0.5, 0.5, 1.9], reveal_word: Wilhelm}
+      - {type: lower, text: "Wilhelm I.", sub: "Deutscher Kaiser · Schiedsrichter", y: 0.76, at_word: Wilhelm}
+
+  # ---------- PLATZ 1
+  - text: "Und Platz eins? Der kürzeste Krieg, der je geführt wurde."
+    transition: burn
+    mood: danger
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.5, 1.3], to: [0.5, 0.5, 1.5]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 1", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 1 / 3"}
+
+  - text: "Sansibar, 27. August 1896. Ein neuer Sultan verschanzt sich im Palast. Die Briten stellen ein Ultimatum."
+    say: "Sansibar, siebenundzwanzigster August achtzehnhundertsechsundneunzig. Ein neuer Sultan verschanzt sich im Palast. Die Briten stellen ein Ultimatum."
+    transition: whip
+    mood: warm
+    slides:
+      - {src: assets/sansibar_flagge.jpg, from: [0.5, 0.35, 1.5], to: [0.5, 0.33, 1.8]}
+      - {src: assets/sansibar_tuer.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.5, 1.4]}
+    visual:
+      - {type: date, text: "Sansibar · 1896", y: 0.09, at: 0.2}
+
+  - text: "Dann feuern britische Schiffe auf den Palast. Nach höchstens 45 Minuten ist alles vorbei."
+    say: "Dann feuern britische Schiffe auf den Palast. Nach höchstens fünfundvierzig Minuten ist alles vorbei."
+    transition: flash
+    hit: true
+    mood: danger
+    heartbeat: true
+    visual:
+      - {type: photo, src: assets/nooms_seeschlacht.jpg, from: [0.3, 0.5, 2.0], to: [0.33, 0.5, 2.3], shake: true}
+      - {type: count, to: 38, label: "bis 45 Minuten Krieg", at_word: höchstens, y: 0.24, dur: 1.2}
+      - {type: embers, n: 40}
+
+  - text: "Auf Seiten des Sultans gibt es rund 500 Opfer. Bei den Briten wird ein einziger Matrose verletzt."
+    say: "Auf Seiten des Sultans gibt es rund fünfhundert Opfer. Bei den Briten wird ein einziger Matrose verletzt."
+    mood: blood
+    visual:
+      - {type: photo, src: assets/sansibar_tuer.jpg, night: true, from: [0.6, 0.4, 1.8], to: [0.6, 0.38, 2.1]}
+      - {type: count, to: 500, label: "Opfer", at_word: rund, y: 0.24, dur: 1.2}
+      - {type: stamp, text: "1 Verletzter", y: 0.42, size: 100, at_word: Matrose}
+
+  - text: "Der Sultan flieht ins deutsche Konsulat. Welcher absurde Krieg fehlt in der Liste?"
+    mood: gold
+    visual:
+      - {type: photo, src: assets/sansibar_flagge.jpg, from: [0.5, 0.35, 1.3], to: [0.5, 0.35, 2.0], ease: inout}
+      - {type: dust, n: 30}

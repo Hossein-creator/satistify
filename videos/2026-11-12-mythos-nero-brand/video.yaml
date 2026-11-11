@@ -1,0 +1,146 @@
+# Historischer Fakt (Format C, Mythos oder Wahrheit): Nero spielte, während Rom brannte?
+# Hook: "Rom brannte, aber Nero war gar nicht in der Stadt." (hook_check 80/100)
+# Fakten: en.wikipedia.org/wiki/Great_Fire_of_Rome (abgerufen 11.11.2026); Violine: erst 16. Jh. (en.wikipedia.org/wiki/Violin)
+title: "Nero spielte, während Rom brannte? Mythos!"
+style: doku
+format: short
+voice: "piper:thorsten-tief"
+speed: 1.0
+era: antike
+music: {score: epoche, era: antike, key: A, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.08
+flicker: 0.025
+crossfade: 0.35
+pause: 0.14
+mood: cinematic
+bloom: 0.35
+
+meta:
+  titles:
+    - "Nero war gar nicht in Rom, als es brannte"
+    - "Nero spielte, während Rom brannte? Ein Mythos"
+    - "Mythos oder Wahrheit: Nero und der Brand von Rom"
+  description: |
+    Im Juli 64 brennt Rom, zehn von vierzehn Bezirken werden zerstört. Kaiser Nero war wahrscheinlich gar nicht in der Stadt, sondern in seiner Villa in Antium. Dass er beim Brand sang, war schon damals nur ein Gerücht, und die Geige gab es erst im 16. Jahrhundert.
+
+    Wahr ist das Dunkle danach: Nero machte die Christen zu Schuldigen.
+  sources:
+    - "Great Fire of Rome – en.wikipedia.org/wiki/Great_Fire_of_Rome (abgerufen 11.11.2026)"
+    - "Tacitus, Annalen 15,38–44"
+  pinned_comment: "Welchen Kaiser soll ich als Nächstes prüfen?"
+  tags: [Geschichte, Nero, Rom, Antike, Brand von Rom, Mythos, History Fakten]
+  keywords: "Nero Brand Rom,Nero Geige,Mythos Geschichte"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (CC0), The Met Open Access. Musik: eigene Komposition (Antike). Stimme: KI (Piper „Thorsten“) → KI-Kennzeichnung an.
+
+scenes:
+  - text: "Rom brannte, aber Nero war gar nicht in der Stadt."
+    hit: true
+    mood: danger
+    highlight: [gar]
+    visual:
+      - {type: photo, src: assets/pontius_nero_1638.jpg, from: [0.5, 0.35, 2.2], to: [0.5, 0.37, 1.6], ease: out, rot: [-1.0, 0.4]}
+      - {type: embers, n: 45}
+
+  - text: "Du kennst die Geschichte: Rom brennt, und der Kaiser spielt dazu Musik."
+    transition: whip
+    mood: danger
+    highlight: [Musik]
+    slides:
+      - {src: assets/collaert_brand_rom.jpg, from: [0.5, 0.3, 1.5], to: [0.5, 0.28, 1.8], ease: out}
+      - {src: assets/collaert_brand_rom.jpg, from: [0.75, 0.25, 2.6], to: [0.75, 0.25, 3.0]}
+    visual:
+      - {type: teaser, text: "Am Ende: wen Nero beschuldigte", y: 0.17, at: 0.6, until: 4.5}
+      - {type: embers, n: 40}
+
+  - text: "Juli, im Jahr 64. In Läden am Circus Maximus bricht ein Feuer aus."
+    say: "Juli, im Jahr vierundsechzig. In Läden am Circus Maximus bricht ein Feuer aus."
+    transition: flash
+    mood: warm
+    visual:
+      - {type: photo, src: assets/hollar_ruinen.jpg, from: [0.5, 0.45, 1.4], to: [0.5, 0.43, 1.6]}
+      - {type: date, text: "Rom · 64 n. Chr.", y: 0.09, at: 0.2}
+      - {type: embers, n: 35}
+
+  - text: "Sechs Tage lang brennt es. Dann flammt es wieder auf, noch einmal drei Tage."
+    heartbeat: true
+    mood: danger
+    visual:
+      - {type: photo, src: assets/collaert_brand_rom.jpg, from: [0.18, 0.3, 2.2], to: [0.2, 0.28, 2.5], shake: true}
+      - {type: count, to: 6, label: "Tage Feuer", at_word: Sechs, y: 0.24, dur: 0.8}
+      - {type: embers, n: 60}
+
+  - text: "Zehn von vierzehn Stadtbezirken werden zerstört. Stell dir vor, deine halbe Stadt ist plötzlich weg."
+    transition: burn
+    hit: true
+    mood: night
+    visual:
+      - {type: photo, src: assets/guardi_ruinen.jpg, night: true, from: [0.5, 0.5, 1.4], to: [0.5, 0.5, 1.6]}
+      - {type: count, to: 10, label: "von 14 Bezirken zerstört", at_word: Zehn, y: 0.24, dur: 1.0}
+      - {type: fog, strength: 0.3, color: [120, 110, 100]}
+
+  - text: "Und Nero? Er war vermutlich gar nicht in Rom, sondern in seiner Villa in Antium. Über fünfzig Kilometer entfernt."
+    transition: whip
+    mood: gold
+    highlight: [Antium]
+    visual:
+      - {type: photo, src: assets/nero_muenze_64.jpg, from: [0.5, 0.5, 1.6], to: [0.5, 0.5, 1.9], reveal_word: Nero}
+      - {type: lower, text: "Antium", sub: "heute Anzio · Neros Villa", y: 0.64, at_word: Antium}
+      - {type: stamp, text: "Nicht in Rom", y: 0.42, size: 100, at_word: gar}
+
+  - text: "Er eilt zurück, öffnet Gärten und öffentliche Gebäude für die Obdachlosen."
+    mood: warm
+    visual:
+      - {type: photo, src: assets/hollar_ruinen.jpg, from: [0.3, 0.5, 1.8], to: [0.33, 0.5, 2.1]}
+
+  - text: "Und die Musik? Schon damals nur ein Gerücht: Nero habe auf einer Bühne gesungen."
+    transition: flash
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/pontius_nero_1638.jpg, from: [0.5, 0.4, 1.6], to: [0.5, 0.38, 1.9]}
+      - {type: dialog, who: "Nero?", text: "Ich singe, während meine Stadt brennt.", src: assets/pontius_nero_1638.jpg, crop: [0.5, 0.35, 3.0], emotion: sly, y: 0.5, at_word: Gerücht, note: "Gerücht"}
+      - {type: stamp, text: "Nicht belegt", y: 0.42, at_word: gesungen}
+
+  - text: "Und die berühmte Geige? Die gab es noch gar nicht. Die kam erst rund fünfzehnhundert Jahre später. Nero hätte höchstens eine Leier gehabt."
+    transition: whip
+    mood: cold
+    highlight: [Geige]
+    visual:
+      - {type: photo, src: assets/leier.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.45, 1.4]}
+      - {type: stamp, text: "Erfunden", y: 0.42, at_word: gar}
+
+  - text: "Das wirklich Dunkle kommt danach. Nero braucht Schuldige. Er beschuldigt die Christen."
+    transition: burn
+    hit: true
+    mood: blood
+    heartbeat: true
+    visual:
+      - {type: photo, src: assets/maertyrer_1650.jpg, from: [0.6, 0.3, 1.8], to: [0.6, 0.28, 2.1]}
+      - {type: bars, size: 0.08}
+
+  - text: "Laut Tacitus werden viele grausam hingerichtet. Zur Unterhaltung der Zuschauer."
+    heartbeat: true
+    mood: night
+    visual:
+      - {type: photo, src: assets/maertyrer_1650.jpg, night: true, from: [0.35, 0.35, 2.2], to: [0.35, 0.33, 2.5]}
+      - {type: lower, text: "Tacitus", sub: "Annalen 15,44", y: 0.64, at_word: Tacitus}
+
+  - text: "Und auf dem verbrannten Land baut Nero sich einen riesigen Palast. Das Goldene Haus."
+    transition: flash
+    mood: gold
+    highlight: [Goldene]
+    visual:
+      - {type: photo, src: assets/guardi_ruinen.jpg, from: [0.5, 0.45, 1.3], to: [0.5, 0.43, 1.5]}
+      - {type: lower, text: "Domus Aurea", sub: "das Goldene Haus", y: 0.64, at_word: Goldene}
+
+  - text: "Also: Musik beim Brand? Mythos. Die Jagd auf Schuldige? Leider wahr. Welchen Kaiser soll ich als Nächstes prüfen?"
+    transition: flash
+    mood: gold
+    visual:
+      - {type: photo, src: assets/pontius_nero_1638.jpg, from: [0.5, 0.4, 1.3], to: [0.5, 0.35, 2.0], ease: inout}
+      - {type: title, text: "Mythos\noder Wahrheit?", y: 0.15, size: 92}

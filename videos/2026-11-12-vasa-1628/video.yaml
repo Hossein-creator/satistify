@@ -1,0 +1,154 @@
+# Story-Doku (Bogen nach REFERENZ-DSCHINGIS.md): Die Vasa sinkt 1628 auf der Jungfernfahrt
+# Hook: "Dieses Kriegsschiff sank nach nur 1.300 Metern." (hook_check 80/100)
+# Fakten: en.wikipedia.org/wiki/Vasa_(ship) (abgerufen 11.11.2026)
+title: "Das Kriegsschiff, das nach 1.300 Metern sank"
+style: doku
+format: short
+voice: "piper:thorsten-tief"
+speed: 1.0
+era: barock
+music: {score: epoche, era: barock, key: E, drop_scene: 2}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.08
+flicker: 0.025
+crossfade: 0.35
+pause: 0.14
+mood: cinematic
+bloom: 0.3
+
+meta:
+  titles:
+    - "Dieses Kriegsschiff sank nach nur 1.300 Metern"
+    - "Die Vasa: Der teuerste Fehler Schwedens"
+    - "1628: Das Schiff, das auf der ersten Fahrt sank"
+  description: |
+    10. August 1628: Die Vasa, das neue Prunkschiff von König Gustav II. Adolf, sinkt nach rund 1.300 Metern auf ihrer ersten Fahrt im Hafen von Stockholm. Rund 30 Menschen sterben.
+
+    Das Schiff war zu kopflastig. Ein Stabilitätstest wurde abgebrochen, trotzdem lief sie aus. Bestraft wurde niemand. 1961 wurde die Vasa fast vollständig gehoben.
+  sources:
+    - "Vasa (ship) – en.wikipedia.org/wiki/Vasa_(ship) (abgerufen 11.11.2026)"
+  pinned_comment: "Hättest du nach dem Test noch das Schiff betreten?"
+  tags: [Geschichte, Vasa, Schweden, Schiffbruch, Gustav Adolf, Doku]
+  keywords: "Vasa 1628,Vasa Schiff,Gustav Adolf"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (CC0), The Met Open Access (zeitgenössische Schiffsdarstellungen, nicht die Vasa selbst). Musik: eigene Komposition (Barock). Stimme: KI (Piper „Thorsten“) → KI-Kennzeichnung an.
+
+scenes:
+  - text: "Dieses Kriegsschiff sank nach nur 1.300 Metern."
+    say: "Dieses Kriegsschiff sank nach nur dreizehnhundert Metern."
+    hit: true
+    mood: cold
+    highlight: ["1.300"]
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.6, 1.4], to: [0.5, 0.6, 1.05], ease: out, rot: [-1.0, 0.4]}
+      - {type: fog, strength: 0.2}
+
+  - text: "Auf seiner allerersten Fahrt."
+    blackcard: true
+    silence: 0.8
+
+  - text: "Stockholm, 10. August 1628. Die Vasa ist der neue Stolz der schwedischen Flotte."
+    say: "Stockholm, zehnter August sechzehnhundertachtundzwanzig. Die Vasa ist der neue Stolz der schwedischen Flotte."
+    hit: true
+    mood: gold
+    highlight: [Vasa]
+    slides:
+      - {src: assets/velde_kriegsschiffe.jpg, from: [0.45, 0.45, 1.3], to: [0.47, 0.45, 1.5], ease: out}
+      - {src: assets/nooms_seeschlacht2.jpg, from: [0.35, 0.45, 1.6], to: [0.38, 0.45, 1.8]}
+    visual:
+      - {type: date, text: "Stockholm · 1628", y: 0.09, at: 0.2}
+      - {type: teaser, text: "Am Ende: wo sie heute steht", y: 0.17, at: 1.2, until: 5.0}
+
+  - text: "Bestellt hat sie König Gustav Adolf. Und er will mehr Kanonen als je zuvor."
+    transition: whip
+    mood: warm
+    visual:
+      - {type: photo, src: assets/gustav_adolf_1631.jpg, from: [0.5, 0.45, 1.5], to: [0.5, 0.43, 1.8], reveal_word: Gustav}
+      - {type: lower, text: "Gustav II. Adolf", sub: "König von Schweden · 1611–1632", y: 0.64, at_word: Gustav}
+
+  - text: "Zweiundsiebzig schwere Geschütze. Zu viele für ein Deck. Also bekommt die Vasa zwei."
+    transition: flash
+    mood: danger
+    highlight: [zwei]
+    slides:
+      - {src: assets/nooms_seeschlacht.jpg, from: [0.3, 0.5, 2.2], to: [0.33, 0.5, 2.5]}
+      - {src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.65, 1.5], to: [0.52, 0.65, 1.7]}
+    visual:
+      - {type: count, to: 72, label: "bestellte Geschütze", at_word: Zweiundsiebzig, y: 0.24, dur: 1.2}
+
+  - text: "Doch das Schiff ist zu schwer oben. Vor der Abfahrt gibt es einen Test."
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.62, 1.2], to: [0.5, 0.62, 1.4], shake: true}
+
+  - text: "Dreißig Männer rennen über das Deck, hin und her. Das Schiff schaukelt immer stärker."
+    heartbeat: true
+    mood: danger
+    visual:
+      - {type: photo, src: assets/nooms_seeschlacht2.jpg, from: [0.4, 0.4, 2.4], to: [0.42, 0.42, 2.7], shake: true}
+      - {type: count, to: 30, label: "Männer", at_word: Dreißig, y: 0.24, dur: 1.0}
+
+  - text: "Nach drei Runden bricht der Admiral ab. Er hat Angst, dass sie kentert."
+    transition: flash
+    hit: true
+    mood: cold
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.62, 1.15], to: [0.5, 0.62, 1.3]}
+      - {type: stamp, text: "Abgebrochen", y: 0.42, at_word: Admiral}
+
+  - text: "Und trotzdem darf sie auslaufen. Würdest du da noch einsteigen?"
+    mood: danger
+    highlight: [trotzdem]
+    visual:
+      - {type: photo, src: assets/nooms_seeschlacht.jpg, from: [0.6, 0.45, 1.8], to: [0.58, 0.45, 2.1]}
+      - {type: bars, size: 0.08}
+
+  - text: "Ein Windstoß. Die Vasa legt sich auf die Seite. Wasser dringt ein."
+    transition: burn
+    heartbeat: true
+    mood: night
+    visual:
+      - {type: photo, src: assets/dellabella_sinkendes_schiff.jpg, night: true, from: [0.55, 0.5, 2.0], to: [0.6, 0.5, 2.4], shake: true, rot: [0, 4]}
+      - {type: fog, strength: 0.35, color: [130, 140, 160]}
+
+  - text: "Nach 1.300 Metern sinkt sie, direkt vor der Stadt. Rund dreißig Menschen sterben."
+    say: "Nach dreizehnhundert Metern sinkt sie, direkt vor der Stadt. Rund dreißig Menschen sterben."
+    mood: sad
+    visual:
+      - {type: photo, src: assets/dellabella_sinkendes_schiff.jpg, from: [0.75, 0.45, 2.6], to: [0.78, 0.5, 3.0]}
+      - {type: count, to: 1300, label: "Meter", at_word: "1.300", y: 0.24, dur: 1.4}
+      - {type: stamp, text: "Gesunken", y: 0.42, at_word: sterben}
+
+  - text: "Und wer ist schuld? Eine Untersuchung sucht lange. Am Ende wird niemand bestraft."
+    transition: whip
+    mood: cold
+    highlight: [niemand]
+    visual:
+      - {type: photo, src: assets/gustav_adolf_2.jpg, from: [0.5, 0.45, 1.6], to: [0.5, 0.43, 1.9]}
+      - {type: stamp, text: "Niemand", y: 0.42, at_word: niemand}
+
+  - text: "333 Jahre liegt sie im Schlamm. 1961 wird sie gehoben, fast vollständig."
+    say: "Dreihundertdreiunddreißig Jahre liegt sie im Schlamm. Neunzehnhunderteinundsechzig wird sie gehoben, fast vollständig."
+    transition: flash
+    hit: true
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, night: true, from: [0.5, 0.62, 1.1], to: [0.5, 0.62, 1.25]}
+      - {type: count, to: 333, label: "Jahre unter Wasser", at_word: "333", y: 0.24, dur: 1.4}
+
+  - text: "Heute steht sie in Stockholm im Museum. Über 45 Millionen Menschen haben sie gesehen."
+    say: "Heute steht sie in Stockholm im Museum. Über fünfundvierzig Millionen Menschen haben sie gesehen."
+    mood: gold
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.6, 1.0], to: [0.5, 0.6, 1.1]}
+      - {type: lower, text: "Vasa-Museum", sub: "Stockholm", y: 0.64, at_word: Museum}
+
+  - text: "Alles wegen eines Schiffs, das nach 1.300 Metern sank:"
+    say: "Alles wegen eines Schiffs, das nach dreizehnhundert Metern sank:"
+    visual:
+      - {type: photo, src: assets/velde_kriegsschiffe.jpg, from: [0.5, 0.6, 1.05], to: [0.5, 0.6, 1.4], ease: inout}
+      - {type: dust, n: 30}
