@@ -9,7 +9,7 @@ format: short
 voice: "piper:thorsten-tief"
 speed: 1.0
 era: viktorianisch
-music: {score: epoche, era: barock, key: A, drop_scene: 1}
+music: null   # keine Hintergrundmusik (Nutzer-Wunsch 13.11.2026)
 music_db: 21
 duck: 0.5
 beat_bump: 0.006
@@ -168,7 +168,7 @@ scenes:
       - {type: photo, src: assets/arsen_walzer.jpg, from: [0.62, 0.55, 2.4], to: [0.64, 0.55, 2.8], shake: true}
       - {type: stamp, text: "Grün", y: 0.42, at_word: Fingernägel}
 
-  - text: "Bald darauf zeichnet das Magazin Punch den Arsen-Walzer. Würdest du so etwas tragen? Welche Mode fehlt?"
+  - text: "Das Magazin Punch zeichnet den Arsen-Walzer. Würdest du so etwas tragen? Welche Mode fehlt?"
     mood: gold
     visual:
       - {type: photo, src: assets/arsen_walzer.jpg, from: [0.5, 0.5, 1.1], to: [0.5, 0.5, 1.5], ease: inout}

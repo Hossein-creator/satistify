@@ -8,7 +8,7 @@ format: short
 voice: "piper:thorsten-tief"
 speed: 1.0
 era: barock
-music: {score: epoche, era: barock, key: D, drop_scene: 2}
+music: null   # keine Hintergrundmusik (Nutzer-Wunsch 13.11.2026)
 music_db: 21
 duck: 0.5
 beat_bump: 0.006
