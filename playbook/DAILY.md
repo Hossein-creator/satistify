@@ -17,7 +17,7 @@ Stand: 06.11.2026. Wunsch des Nutzers. **Seit 08.11.2026: läuft jeden Abend um 
 2. Prüfen: Brand 7558808 zeigt noch „Was wirklich geschah“? Sonst abbrechen und melden.
 3. Zahlen von gestern aus Metricool holen (Aufrufe, Retention, Follower). Was lief gut → mehr davon.
 4. **3 Themen, 3 Formate pro Tag:** 1 Story-Doku (Bogen nach `REFERENZ-DSCHINGIS.md`), 1 historischer Fakt / Mythos oder Wahrheit, 1 **Top-3-Countdown** (`FORMAT-TOP3.md`, `caption_style: pop`). Kein Thema doppelt (`videos/` prüfen). Verschiedene Epochen.
-5. Pro Video **Schritte 3–15 aus `GENERIERE.md`**: Fakten + Quellen, Epoche, Bilder, 5 Hooks + `hook_check`, Skript für 70–75 s (ca. 170–190 Wörter), `ig-human`, Szenen mit Detail-Effekten, Farbe, Epochen-Musik, Rendern, Selbstprüfung.
+5. Pro Video **Schritte 3–15 aus `GENERIERE.md`**: Fakten + Quellen, Epoche, Bilder, 5 Hooks + `hook_check`, Skript für 70–75 s (ca. 170–190 Wörter), `ig-human`, Szenen mit Detail-Effekten, Farbe, Rendern (**keine Hintergrundmusik**), Selbstprüfung.
 6. Länge prüfen: 70–75 s. Sonst Text kürzen oder ergänzen und neu rendern.
 7. Pro Video: Titel (YouTube), Caption + 3 Hashtags (`ig-caption`), Cover-Bild.
 8. Videos online ablegen (öffentlicher Link, Ort noch offen) und alles committen + pushen.
@@ -55,3 +55,7 @@ Stand: 06.11.2026. Wunsch des Nutzers. **Seit 08.11.2026: läuft jeden Abend um 
   `cd video-studio/voices && for e in onnx onnx.json; do curl -sSLf -o de_DE-thorsten-high.$e https://huggingface.co/rhasspy/piper-voices/resolve/main/de/de_DE/thorsten/high/de_DE-thorsten-high.$e; done`
 - Keine Wort-Zeitstempel → Untertitel-Timing wird geschätzt; Länge mit Probe-Render messen.
 - **Pflicht-Check nach jedem Render:** `ffmpeg -i output/video_ohne_musik.mp4 -af silencedetect=n=-45dB:d=0.8 -f null -` → Stille gesamt < 10 s, sonst fehlt die Stimme (Bug vom 07.–09.11.).
+
+## Ab 13.11.2026: KEINE Hintergrundmusik (Nutzer-Wunsch)
+- Immer mit `--variants` rendern und **nur `output/video_ohne_musik.mp4`** komprimieren, hochladen (`…-nomusik.mp4`) und in Metricool einplanen.
+- Die Datei `output/video.mp4` (mit Musik) wird nicht mehr verwendet.
