@@ -1,0 +1,175 @@
+# Top-3-Countdown (Format D): Die tödlichsten Moden der Geschichte
+# Hook: "Diese 3 Moden sahen schön aus, aber sie brachten den Tod." (hook_check 90/100)
+# Fakten (abgerufen 13.11.2026): en.wikipedia.org/wiki/Venetian_ceruse, en.wikipedia.org/wiki/Crinoline,
+#   en.wikipedia.org/wiki/Scheele%27s_green
+# Keine Hintergrundmusik (Nutzer-Wunsch 13.11.2026): gepostet wird output/video_ohne_musik.mp4
+title: "Die 3 tödlichsten Moden der Geschichte"
+style: doku
+format: short
+voice: "piper:thorsten-tief"
+speed: 1.0
+era: viktorianisch
+music: {score: epoche, era: barock, key: A, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.08
+flicker: 0.025
+crossfade: 0.35
+pause: 0.14
+mood: cinematic
+bloom: 0.3
+caption_style: pop
+caption_words: 2
+caption_y: 0.62
+
+meta:
+  titles:
+    - "Die 3 tödlichsten Moden der Geschichte"
+    - "Schön, aber tödlich: 3 Moden, die Menschen umbrachten"
+    - "Dieses grüne Kleid war giftig"
+  description: |
+    Platz 3: Venezianisches Bleiweiß. Die Schminke aus Blei und Essig zerstörte Haut und Haare. Die Gräfin Maria Coventry starb 1760 mit 27, vermutlich an Bleivergiftung.
+    Platz 2: Die Krinoline. Florence Nightingale schätzte, dass 1863 und 1864 mindestens 630 Frauen starben, weil ihre Kleider Feuer fingen.
+    Platz 1: Arsengrün. 1861 starb die 19-jährige Matilda Scheurer, die künstliche Blätter mit dem grünen Pulver bestäubt hatte.
+  sources:
+    - "Venetian ceruse – en.wikipedia.org (abgerufen 13.11.2026)"
+    - "Crinoline – en.wikipedia.org (abgerufen 13.11.2026)"
+    - "Scheele's green – en.wikipedia.org (abgerufen 13.11.2026)"
+  pinned_comment: "Welche Mode fehlt?"
+  tags: [Geschichte, Mode, Krinoline, Arsen, Viktorianisch, Kurioses, History Fakten]
+  keywords: "tödliche Mode,Arsen Kleid,Krinoline Feuer"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: CC0 (The Met Open Access), gemeinfrei (Wikimedia Commons), „The Arsenic Waltz“ (Punch 1862): Wellcome Collection, CC BY 4.0 → Credit in der Caption. Stimme: KI (Piper „Thorsten“) → KI-Kennzeichnung an. Keine Hintergrundmusik.
+
+scenes:
+  - text: "Diese 3 Moden sahen schön aus, aber sie brachten den Tod."
+    say: "Diese drei Moden sahen schön aus, aber sie brachten den Tod."
+    hit: true
+    mood: gold
+    highlight: [Tod]
+    visual:
+      - {type: triptych, src: [assets/elisabeth1.jpg, assets/krinoline_feuer.jpg, assets/arsen_walzer.jpg], crops: [[0.5, 0.25, 2.2], [0.5, 0.45, 1.5], [0.4, 0.45, 1.4]]}
+      - {type: teaser, text: "Platz 1 war grün", y: 0.1, at: 1.0}
+
+  # ---------- PLATZ 3
+  - text: "Platz drei: weiße Haut aus Blei."
+    transition: flash
+    visual:
+      - {type: photo, src: assets/elisabeth_passe.jpg, from: [0.5, 0.4, 1.2], to: [0.5, 0.4, 1.35]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 3", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 3 / 3"}
+
+  - text: "Im 16. Jahrhundert gilt blasse Haut als vornehm. Die beste Schminke heißt Venezianisches Bleiweiß."
+    say: "Im sechzehnten Jahrhundert gilt blasse Haut als vornehm. Die beste Schminke heißt Venezianisches Bleiweiß."
+    transition: whip
+    mood: cold
+    highlight: [Bleiweiß]
+    slides:
+      - {src: assets/elisabeth1.jpg, from: [0.5, 0.22, 2.6], to: [0.5, 0.2, 3.0]}
+      - {src: assets/elisabeth_huys.jpg, from: [0.5, 0.3, 2.0], to: [0.5, 0.28, 2.3]}
+
+  - text: "Gemischt aus Blei und Essig. Sie greift die Haut an, die Haare fallen aus."
+    mood: night
+    visual:
+      - {type: photo, src: assets/elisabeth_passe.jpg, night: true, from: [0.48, 0.25, 2.6], to: [0.48, 0.23, 3.0]}
+      - {type: stamp, text: "Blei", y: 0.42, at_word: Blei}
+
+  - text: "1760 stirbt die Gräfin Maria Coventry mit nur 27 Jahren. Vermutlich an ihrer Schminke."
+    say: "Siebzehnhundertsechzig stirbt die Gräfin Maria Coventry mit nur siebenundzwanzig Jahren. Vermutlich an ihrer Schminke."
+    transition: flash
+    hit: true
+    mood: sad
+    visual:
+      - {type: photo, src: assets/coventry.jpg, from: [0.5, 0.35, 1.0], to: [0.5, 0.33, 1.12], reveal_word: Maria}
+      - {type: lower, text: "Maria Coventry", sub: "Gräfin · 1733–1760", y: 0.76, at_word: Maria}
+      - {type: count, to: 27, label: "Jahre alt", at_word: nur, y: 0.24, dur: 1.0}
+
+  # ---------- PLATZ 2
+  - text: "Platz zwei: das Kleid, das brennt."
+    transition: flash
+    visual:
+      - {type: photo, src: assets/krinoline_gestell.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.5, 1.35]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 2", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 2 / 3"}
+
+  - text: "Um 1860 tragen Frauen riesige Röcke über einem Gestell aus Reifen. Die Krinoline."
+    say: "Um achtzehnhundertsechzig tragen Frauen riesige Röcke über einem Gestell aus Reifen. Die Krinoline."
+    transition: whip
+    mood: warm
+    highlight: [Krinoline]
+    slides:
+      - {src: assets/krinoline_1860.jpg, from: [0.5, 0.55, 1.2], to: [0.5, 0.55, 1.4]}
+      - {src: assets/krinoline_gestell.jpg, from: [0.5, 0.6, 1.5], to: [0.5, 0.6, 1.8]}
+
+  - text: "Stell dir vor: Ein Funke vom Kamin genügt. Der weite Stoff steht sofort in Flammen."
+    transition: burn
+    heartbeat: true
+    mood: danger
+    visual:
+      - {type: photo, src: assets/krinoline_feuer.jpg, from: [0.5, 0.45, 1.3], to: [0.5, 0.5, 1.6], shake: true}
+      - {type: embers, n: 60}
+
+  - text: "Florence Nightingale schätzt: In nur zwei Jahren sterben mindestens 630 Frauen, weil ihre Kleider brennen."
+    say: "Florence Nightingale schätzt: In nur zwei Jahren sterben mindestens sechshundertdreißig Frauen, weil ihre Kleider brennen."
+    hit: true
+    mood: blood
+    visual:
+      - {type: photo, src: assets/krinoline_feuer.jpg, night: true, from: [0.4, 0.6, 2.0], to: [0.42, 0.6, 2.3]}
+      - {type: count, to: 630, label: "Tote in zwei Jahren", at_word: mindestens, y: 0.24, dur: 1.4}
+
+  - text: "1871 verbrennen so auch zwei Halbschwestern von Oscar Wilde."
+    say: "Achtzehnhunderteinundsiebzig verbrennen so auch zwei Halbschwestern von Oscar Wilde."
+    mood: sad
+    visual:
+      - {type: photo, src: assets/krinoline_1860.jpg, night: true, from: [0.5, 0.4, 1.5], to: [0.5, 0.38, 1.8]}
+      - {type: stamp, text: "2 Schwestern", y: 0.42, at_word: Halbschwestern}
+
+  # ---------- PLATZ 1
+  - text: "Und Platz eins? Ein Grün, das tötet."
+    transition: burn
+    mood: danger
+    visual:
+      - {type: photo, src: assets/arsen_walzer.jpg, from: [0.5, 0.5, 1.2], to: [0.5, 0.5, 1.35]}
+      - {type: spotlight, x: 0.5, y: 0.38, r: 0.45, at: -1, dark: 0.7}
+      - {type: title, text: "Platz 1", y: 0.34, size: 170, at: 0.0}
+      - {type: counter, text: "Platz 1 / 3"}
+
+  - text: "Im 19. Jahrhundert ist ein leuchtendes Grün in Mode. Für Tapeten, Kleider und Kunstblumen. Die Farbe enthält Arsen."
+    say: "Im neunzehnten Jahrhundert ist ein leuchtendes Grün in Mode. Für Tapeten, Kleider und Kunstblumen. Die Farbe enthält Arsen."
+    transition: whip
+    mood: warm
+    highlight: [Arsen]
+    slides:
+      - {src: assets/modeblatt_1800.jpg, from: [0.5, 0.5, 1.3], to: [0.5, 0.48, 1.5]}
+      - {src: assets/arsen_walzer.jpg, from: [0.3, 0.55, 2.0], to: [0.32, 0.55, 2.3]}
+    visual:
+      - {type: stamp, text: "Arsen", y: 0.42, at_word: Arsen}
+
+  - text: "1861 stirbt Matilda Scheurer, 19 Jahre alt. Sie hat künstliche Blätter mit dem grünen Pulver bestäubt."
+    say: "Achtzehnhunderteinundsechzig stirbt Matilda Scheurer, neunzehn Jahre alt. Sie hat künstliche Blätter mit dem grünen Pulver bestäubt."
+    transition: flash
+    hit: true
+    mood: night
+    visual:
+      - {type: photo, src: assets/arsen_walzer.jpg, night: true, from: [0.35, 0.5, 2.2], to: [0.37, 0.5, 2.5]}
+      - {type: count, to: 19, label: "Jahre alt", at_word: neunzehn, y: 0.24, dur: 1.0}
+      - {type: date, text: "1861", y: 0.09, at: 0.2}
+
+  - text: "Bei der Obduktion sind sogar ihre Fingernägel grün."
+    heartbeat: true
+    mood: blood
+    highlight: [grün]
+    visual:
+      - {type: photo, src: assets/arsen_walzer.jpg, from: [0.62, 0.55, 2.4], to: [0.64, 0.55, 2.8], shake: true}
+      - {type: stamp, text: "Grün", y: 0.42, at_word: Fingernägel}
+
+  - text: "Bald darauf zeichnet das Magazin Punch den Arsen-Walzer. Würdest du so etwas tragen? Welche Mode fehlt?"
+    mood: gold
+    visual:
+      - {type: photo, src: assets/arsen_walzer.jpg, from: [0.5, 0.5, 1.1], to: [0.5, 0.5, 1.5], ease: inout}
+      - {type: dust, n: 30}

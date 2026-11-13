@@ -1,0 +1,151 @@
+# Historischer Fakt (Format C, Mythos oder Wahrheit): Die Eiserne Jungfrau im Mittelalter?
+# Hook: "Die Eiserne Jungfrau hat es im Mittelalter nie gegeben." (hook_check 90/100)
+# Fakten: en.wikipedia.org/wiki/Iron_maiden (abgerufen 13.11.2026)
+# Keine Hintergrundmusik (Nutzer-Wunsch 13.11.2026): gepostet wird output/video_ohne_musik.mp4
+title: "Die Eiserne Jungfrau im Mittelalter? Mythos!"
+style: doku
+format: short
+voice: "piper:thorsten-tief"
+speed: 1.0
+era: mittelalter
+music: {score: epoche, era: barock, key: E, drop_scene: 1}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.08
+flicker: 0.025
+crossfade: 0.35
+pause: 0.14
+mood: cinematic
+bloom: 0.3
+
+meta:
+  titles:
+    - "Die Eiserne Jungfrau gab es im Mittelalter nie"
+    - "Eiserne Jungfrau: Das Folterinstrument, das erfunden wurde"
+    - "Mythos oder Wahrheit: Die Eiserne Jungfrau"
+  description: |
+    Die Eiserne Jungfrau gilt als Folterinstrument des Mittelalters. Doch aus dem Mittelalter gibt es keine einzige Erwähnung. Die Geschichte taucht erst um 1800 in Nürnberg auf, die bekannten Exemplare stammen aus dem 19. Jahrhundert.
+
+    Vorbild war vielleicht der Schandmantel, ein Holzfass ohne Stacheln, mit dem Menschen öffentlich verspottet wurden.
+  sources:
+    - "Iron maiden – en.wikipedia.org/wiki/Iron_maiden (abgerufen 13.11.2026)"
+  pinned_comment: "Welchen Mythos soll ich als Nächstes prüfen?"
+  tags: [Geschichte, Mittelalter, Eiserne Jungfrau, Folter, Mythos, Nürnberg, History Fakten]
+  keywords: "Eiserne Jungfrau,Folter Mittelalter,Mythos Mittelalter"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: CC0 (The Met Open Access; Wikimedia Commons „Iron maiden.jpg“, „Prangermantel thurnau.jpg“), gemeinfrei („Spansk kappe“). Stimme: KI (Piper „Thorsten“) → KI-Kennzeichnung an. Keine Hintergrundmusik.
+
+scenes:
+  - text: "Die Eiserne Jungfrau hat es im Mittelalter nie gegeben."
+    hit: true
+    mood: danger
+    highlight: [nie]
+    visual:
+      - {type: photo, src: assets/jungfrau_cc0.jpg, from: [0.5, 0.35, 1.6], to: [0.5, 0.4, 1.1], ease: out, rot: [-1.0, 0.4]}
+      - {type: embers, n: 30}
+
+  - text: "Du kennst sie: ein eiserner Schrank, innen voller Stacheln."
+    transition: whip
+    mood: night
+    highlight: [Stacheln]
+    slides:
+      - {src: assets/jungfrau_cc0.jpg, from: [0.5, 0.2, 2.2], to: [0.5, 0.18, 2.5], ease: out}
+      - {src: assets/jungfrau_cc0.jpg, from: [0.5, 0.6, 1.8], to: [0.5, 0.62, 2.1]}
+    visual:
+      - {type: teaser, text: "Am Ende: wo sie heute steht", y: 0.17, at: 0.6, until: 4.5}
+
+  - text: "Sie steht in vielen Foltermuseen. Als Symbol für das grausame Mittelalter."
+    mood: cold
+    visual:
+      - {type: photo, src: assets/kerker_1786.jpg, from: [0.5, 0.45, 1.3], to: [0.5, 0.43, 1.5]}
+
+  - text: "Aber aus dem Mittelalter gibt es keine einzige Erwähnung."
+    transition: flash
+    hit: true
+    mood: mystery
+    highlight: [keine]
+    visual:
+      - {type: photo, src: assets/totentanz_1493.jpg, from: [0.5, 0.6, 1.5], to: [0.5, 0.58, 1.8]}
+      - {type: stamp, text: "Keine Quelle", y: 0.42, at_word: Erwähnung}
+
+  - text: "Die Geschichte taucht erst um 1800 auf. In Nürnberg."
+    say: "Die Geschichte taucht erst um achtzehnhundert auf. In Nürnberg."
+    transition: whip
+    mood: gold
+    highlight: [Nürnberg]
+    visual:
+      - {type: photo, src: assets/nuernberg_1552.jpg, from: [0.5, 0.6, 2.0], to: [0.55, 0.6, 2.3]}
+      - {type: date, text: "Nürnberg · um 1800", y: 0.09, at: 0.2}
+
+  - text: "Ein Gelehrter namens Johann Philipp Siebenkees erzählt: Am 14. August 1515 wird damit ein Falschmünzer hingerichtet."
+    say: "Ein Gelehrter namens Johann Philipp Siebenkees erzählt: Am vierzehnten August fünfzehnhundertfünfzehn wird damit ein Falschmünzer hingerichtet."
+    mood: cold
+    visual:
+      - {type: photo, src: assets/hollar_hinrichtung.jpg, from: [0.5, 0.6, 1.8], to: [0.52, 0.6, 2.1]}
+      - {type: lower, text: "Johann Philipp Siebenkees", sub: "Gelehrter · 1759–1796", y: 0.64, at_word: Siebenkees}
+      - {type: date, text: "1515?", y: 0.09, at_word: August}
+
+  - text: "Manche Historiker sagen heute: Diese Geschichte hat er sich ausgedacht."
+    transition: flash
+    hit: true
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/hollar_hinrichtung.jpg, night: true, from: [0.3, 0.3, 2.2], to: [0.32, 0.3, 2.5]}
+      - {type: stamp, text: "Erfunden?", y: 0.42, at_word: ausgedacht}
+
+  - text: "Die berühmte Nürnberger Jungfrau wird ab etwa 1802 gezeigt. Wohl zusammengebaut aus alten Teilen, als Attraktion."
+    say: "Die berühmte Nürnberger Jungfrau wird ab etwa achtzehnhundertzwei gezeigt. Wohl zusammengebaut aus alten Teilen, als Attraktion."
+    mood: warm
+    highlight: [Attraktion]
+    visual:
+      - {type: photo, src: assets/jungfrau_cc0.jpg, from: [0.5, 0.45, 1.3], to: [0.5, 0.45, 1.5]}
+      - {type: count, to: 1802, label: "erste Ausstellung", at_word: etwa, y: 0.24, dur: 1.2}
+
+  - text: "Vielleicht stand ein echtes Strafgerät Pate: der Schandmantel. Ein Fass aus Holz, ganz ohne Stacheln."
+    transition: whip
+    mood: gold
+    highlight: [Schandmantel]
+    slides:
+      - {src: assets/spansk_kappe.jpg, from: [0.5, 0.45, 1.3], to: [0.5, 0.43, 1.5]}
+      - {src: assets/schandmantel_cc0.jpg, from: [0.5, 0.5, 1.3], to: [0.5, 0.48, 1.5]}
+    visual:
+      - {type: stamp, text: "Ohne Stacheln", y: 0.42, size: 90, at_word: ohne}
+
+  - text: "Wer darin steckte, wurde nicht durchbohrt. Sondern öffentlich verspottet."
+    mood: warm
+    visual:
+      - {type: photo, src: assets/spansk_kappe.jpg, from: [0.5, 0.3, 2.0], to: [0.5, 0.28, 2.3], reveal_word: verspottet}
+
+  - text: "Oder eine antike Legende: Die Karthager sollen den Römer Regulus in eine Kiste voller Nägel gesperrt haben."
+    transition: burn
+    mood: blood
+    heartbeat: true
+    visual:
+      - {type: photo, src: assets/regulus.jpg, from: [0.45, 0.55, 1.8], to: [0.45, 0.53, 2.2]}
+      - {type: lower, text: "Regulus", sub: "römischer Feldherr · Legende", y: 0.64, at_word: Regulus}
+      - {type: stamp, text: "Legende", y: 0.42, at_word: Kiste}
+
+  - text: "Das Nürnberger Original verbrennt 1945 im Bombenkrieg."
+    say: "Das Nürnberger Original verbrennt neunzehnhundertfünfundvierzig im Bombenkrieg."
+    transition: flash
+    mood: night
+    visual:
+      - {type: photo, src: assets/nuernberg_1552.jpg, night: true, from: [0.3, 0.6, 2.2], to: [0.33, 0.6, 2.5]}
+      - {type: date, text: "1945", y: 0.09, at_word: verbrennt}
+      - {type: embers, n: 50}
+
+  - text: "Eine Kopie steht heute in Rothenburg ob der Tauber, im Kriminalmuseum."
+    mood: cold
+    visual:
+      - {type: photo, src: assets/jungfrau_cc0.jpg, from: [0.5, 0.3, 1.8], to: [0.5, 0.3, 2.1]}
+      - {type: lower, text: "Rothenburg ob der Tauber", sub: "Kriminalmuseum", y: 0.64, at_word: Rothenburg}
+
+  - text: "Also: Eiserne Jungfrau im Mittelalter? Mythos. Gefoltert wurde trotzdem, nur anders. Welchen Mythos soll ich als Nächstes prüfen?"
+    transition: flash
+    mood: gold
+    visual:
+      - {type: photo, src: assets/kerker_1786.jpg, from: [0.5, 0.4, 1.2], to: [0.5, 0.35, 1.6], ease: inout}
+      - {type: title, text: "Mythos\noder Wahrheit?", y: 0.15, size: 92}

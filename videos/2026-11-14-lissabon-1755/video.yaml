@@ -1,0 +1,166 @@
+# Story-Doku (Bogen nach REFERENZ-DSCHINGIS.md): Das Erdbeben von Lissabon, 1. November 1755
+# Hook: "Lissabon 1755: Die Kerzen sollten die Heiligen ehren, aber sie brachten den Tod." (hook_check 100/100)
+# Fakten: en.wikipedia.org/wiki/1755_Lisbon_earthquake (abgerufen 13.11.2026)
+# Keine Hintergrundmusik (Nutzer-Wunsch 13.11.2026): gepostet wird output/video_ohne_musik.mp4
+title: "Lissabon 1755: Beben, Welle, Feuer"
+style: doku
+format: short
+voice: "piper:thorsten-tief"
+speed: 1.0
+era: barock
+music: {score: epoche, era: barock, key: D, drop_scene: 2}
+music_db: 21
+duck: 0.5
+beat_bump: 0.006
+handheld: 0.7
+leaks: 0.08
+flicker: 0.025
+crossfade: 0.35
+pause: 0.14
+mood: cinematic
+bloom: 0.3
+
+meta:
+  titles:
+    - "Lissabon 1755: Beben, Welle, Feuer"
+    - "Die Stadt, die an Allerheiligen unterging"
+    - "Das Erdbeben, das ganz Europa erschütterte"
+  description: |
+    1. November 1755, Allerheiligen: Ein schweres Erdbeben trifft Lissabon. Etwa 40 Minuten später rollt ein Tsunami in den Hafen, umgestürzte Kerzen lösen einen Feuersturm aus. Allein in Lissabon sterben 30.000 bis 40.000 Menschen, rund 85 Prozent der Gebäude sind zerstört.
+
+    Die Katastrophe erschüttert auch das Denken: Voltaire schreibt darüber, Lissabon wird mit einer der ersten erdbebensicheren Bauweisen Europas neu gebaut.
+  sources:
+    - "1755 Lisbon earthquake – en.wikipedia.org/wiki/1755_Lisbon_earthquake (abgerufen 13.11.2026)"
+  pinned_comment: "Wärst du zum Hafen gerannt?"
+  tags: [Geschichte, Lissabon, Erdbeben 1755, Tsunami, Aufklärung, Doku]
+  keywords: "Erdbeben Lissabon 1755,Lissabon Tsunami,Allerheiligen 1755"
+  thumbnail_time: 0.5
+  notes: |
+    Bilder: gemeinfrei (Wikimedia Commons, Stiche 1755–1757; Pombal-Porträt 1766) und CC0 (The Met Open Access). Stimme: KI (Piper „Thorsten“) → KI-Kennzeichnung an. Keine Hintergrundmusik.
+
+scenes:
+  - text: "Lissabon 1755: Die Kerzen sollten die Heiligen ehren, aber sie brachten den Tod."
+    say: "Lissabon, siebzehnhundertfünfundfünfzig: Die Kerzen sollten die Heiligen ehren, aber sie brachten den Tod."
+    hit: true
+    mood: danger
+    highlight: [Tod]
+    visual:
+      - {type: photo, src: assets/stich_1755.jpg, from: [0.5, 0.5, 1.35], to: [0.5, 0.5, 1.0], ease: out, rot: [-1.0, 0.4]}
+      - {type: embers, n: 45}
+
+  - text: "Doch zuerst bebte die Erde."
+    blackcard: true
+    silence: 0.8
+
+  - text: "Samstag, 1. November 1755. Allerheiligen. Die Kirchen sind voll, überall brennen Kerzen."
+    say: "Samstag, erster November siebzehnhundertfünfundfünfzig. Allerheiligen. Die Kirchen sind voll, überall brennen Kerzen."
+    transition: whip
+    mood: gold
+    highlight: [Kerzen]
+    slides:
+      - {src: assets/lissabon_vorher.jpg, from: [0.5, 0.22, 2.0], to: [0.45, 0.22, 2.1], ease: out}
+      - {src: assets/kirche_nacht.jpg, from: [0.5, 0.5, 1.4], to: [0.5, 0.45, 1.7]}
+    visual:
+      - {type: date, text: "Lissabon · 1.11.1755", y: 0.09, at: 0.2}
+      - {type: teaser, text: "Am Ende: was der Minister befahl", y: 0.17, at: 1.2, until: 5.0}
+
+  - text: "Um 9:40 Uhr bebt die Erde. Drei bis sechs Minuten lang."
+    say: "Um neun Uhr vierzig bebt die Erde. Drei bis sechs Minuten lang."
+    transition: flash
+    hit: true
+    heartbeat: true
+    mood: danger
+    visual:
+      - {type: photo, src: assets/lissabon_vorher.jpg, from: [0.5, 0.75, 2.0], to: [0.52, 0.75, 2.1], shake: true}
+      - {type: count, to: 6, label: "Minuten Beben", at_word: sechs, y: 0.24, dur: 0.8}
+
+  - text: "Im Zentrum reißen breite Spalten auf. Häuser und Kirchen stürzen ein."
+    mood: night
+    visual:
+      - {type: photo, src: assets/robert_ruinen.jpg, night: true, from: [0.6, 0.5, 1.6], to: [0.62, 0.5, 1.9], shake: true}
+      - {type: fog, strength: 0.3, color: [120, 110, 100]}
+
+  - text: "Wer überlebt, rennt zum Hafen. Dort scheint man sicher."
+    transition: whip
+    mood: cold
+    visual:
+      - {type: photo, src: assets/stich_1755.jpg, from: [0.3, 0.6, 1.1], to: [0.33, 0.6, 1.25]}
+
+  - text: "Doch das Meer zieht sich zurück. Auf dem Grund liegen Wracks und verlorene Fracht."
+    mood: mystery
+    highlight: [zurück]
+    visual:
+      - {type: photo, src: assets/sturm_1782.jpg, from: [0.4, 0.6, 1.8], to: [0.42, 0.6, 2.1]}
+      - {type: stamp, text: "Das Meer weicht", y: 0.42, size: 90, at_word: zurück}
+
+  - text: "Etwa vierzig Minuten nach dem Beben kommt die Welle."
+    transition: burn
+    hit: true
+    heartbeat: true
+    mood: danger
+    visual:
+      - {type: photo, src: assets/stich_1755.jpg, from: [0.6, 0.65, 1.15], to: [0.62, 0.65, 1.3], shake: true}
+      - {type: count, to: 40, label: "Minuten später", at_word: vierzig, y: 0.24, dur: 1.0}
+
+  - text: "Sie rast den Tejo hinauf. Reiter galoppieren um ihr Leben. Und es folgen noch zwei Wellen."
+    mood: night
+    visual:
+      - {type: photo, src: assets/flut_cossiers.jpg, from: [0.5, 0.5, 1.5], to: [0.52, 0.5, 1.8], shake: true}
+      - {type: stamp, text: "3 Wellen", y: 0.42, at_word: zwei}
+
+  - text: "Und dann die Kerzen. Überall sind sie umgefallen. Ein Feuersturm wütet stundenlang."
+    transition: flash
+    hit: true
+    mood: blood
+    highlight: [Kerzen]
+    slides:
+      - {src: assets/flucht_brand.jpg, from: [0.5, 0.35, 1.6], to: [0.5, 0.33, 1.9]}
+      - {src: assets/stich_1755.jpg, from: [0.45, 0.35, 1.1], to: [0.48, 0.35, 1.25]}
+    visual:
+      - {type: embers, n: 70}
+
+  - text: "Rund 85 Prozent der Gebäude sind zerstört. Die Bibliothek des Königs verbrennt."
+    say: "Rund fünfundachtzig Prozent der Gebäude sind zerstört. Die Bibliothek des Königs verbrennt."
+    mood: night
+    visual:
+      - {type: photo, src: assets/hollar_ruinen.jpg, night: true, from: [0.5, 0.5, 1.4], to: [0.5, 0.48, 1.6]}
+      - {type: count, to: 85, label: "% der Gebäude zerstört", at_word: Rund, y: 0.24, dur: 1.0}
+      - {type: stamp, text: "Bibliothek verbrannt", y: 0.42, size: 80, at_word: Bibliothek}
+
+  - text: "Allein in Lissabon sterben 30.000 bis 40.000 Menschen."
+    say: "Allein in Lissabon sterben dreißigtausend bis vierzigtausend Menschen."
+    transition: burn
+    hit: true
+    mood: sad
+    visual:
+      - {type: photo, src: assets/lissabon_vorher.jpg, night: true, from: [0.5, 0.75, 1.9], to: [0.5, 0.75, 2.0]}
+      - {type: count, to: 40000, label: "Tote (Schätzung)", at_word: sterben, y: 0.24, dur: 1.6}
+      - {type: bars, size: 0.08}
+
+  - text: "Und sein Minister Pombal? Er soll nur gesagt haben: Begrabt die Toten, kümmert euch um die Lebenden."
+    mood: gold
+    visual:
+      - {type: photo, src: assets/pombal_1766.png, from: [0.42, 0.45, 2.0], to: [0.42, 0.42, 2.4], reveal_word: Pombal}
+      - {type: lower, text: "Marquis von Pombal", sub: "Minister Portugals", y: 0.64, at_word: Pombal}
+      - {type: dialog, who: "Pombal", text: "Begrabt die Toten, kümmert euch um die Lebenden.", src: assets/pombal_1766.png, crop: [0.42, 0.3, 4.0], emotion: calm, y: 0.42, at_word: Begrabt, note: "überliefert"}
+
+  - text: "Gegen Plünderer lässt der König Galgen aufstellen."
+    transition: flash
+    mood: blood
+    visual:
+      - {type: photo, src: assets/robert_ruinen.jpg, night: true, from: [0.3, 0.5, 1.3], to: [0.32, 0.5, 1.5]}
+      - {type: stamp, text: "Galgen", y: 0.42, at_word: Galgen}
+
+  - text: "Ganz Europa fragt: Wie kann Gott das zulassen? Voltaire schreibt darüber ein Gedicht."
+    transition: whip
+    mood: mystery
+    visual:
+      - {type: photo, src: assets/voltaire.jpg, from: [0.5, 0.35, 2.2], to: [0.5, 0.33, 2.6], reveal_word: Voltaire}
+      - {type: lower, text: "Voltaire", sub: "Gedicht über Lissabon · 1756", y: 0.64, at_word: Voltaire}
+
+  - text: "Lissabon wird neu gebaut, mit einer der ersten erdbebensicheren Bauweisen Europas. Wärst du zum Hafen gerannt?"
+    transition: flash
+    mood: gold
+    visual:
+      - {type: photo, src: assets/pombal_1766.png, from: [0.75, 0.45, 1.8], to: [0.75, 0.45, 2.3], ease: inout}
+      - {type: dust, n: 30}
